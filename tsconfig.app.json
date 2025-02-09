@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["client/src", "client/pages/header", "client/models", "client/App/App.tsx", "client/App/main.tsx"]
 }
