@@ -1,15 +1,38 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import reactLogo from '../assets/react.svg'
+import viteLogo from '../public/vite.svg'
 import './App.css'
-import ButtonAppBar from './header/header'
+import ButtonAppBar from '../pages/header/header'
+import { navLinks } from '../models/dashboard'
+import { createTheme } from '@mui/material'
+import { ThemeProvider } from '@emotion/react'
 
-function App() {
+export const App = () => {
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#00A86B',
+      }, 
+      secondary: {
+        main: '#1E1E2E'
+      }
+    }
+  })
   const [count, setCount] = useState(0)
+  const headerContent: navLinks[] = [
+    {
+      title: "Markets",
+      url: '/markets'
+    },
+    { title: "Scanner", url: "/scanner" },
+    { title: "Watchlist", url: "/watchlist" },
+    { title: "Chart", url: "/chart" },
+    { title: "Support", url: "/support" }];
 
   return (
     <>
-      <ButtonAppBar />
+    <ThemeProvider theme={theme}>
+    <ButtonAppBar />
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -30,6 +53,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+    </ThemeProvider>
     </>
   )
 }
