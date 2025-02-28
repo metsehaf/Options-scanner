@@ -1,0 +1,49 @@
+@use '../../scss/globals.module' as *;
+
+.l-footer {
+    width: 100%;
+    background-color: #fff;
+    padding: 2rem;
+    display: block;
+    position: relative;
+    @include max-screen-size;
+
+    &-container{
+        display:  flex;
+        flex-direction: column;
+        justify-content: space-around;
+        gap: 20px;
+        @include breakpoint(md){
+            flex-direction: row;
+        }
+    }
+
+    &-section{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem; /* Adds spacing between list items */
+
+        & h5 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        & ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        & li {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        & li:hover {
+            color: #f0f0f0;
+        }
+    }
+    
+}
+
+
