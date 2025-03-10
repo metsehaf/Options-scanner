@@ -1,0 +1,16 @@
+.logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+
+  .l-active-header{
+    color: $primary;
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  .l-header{
+    color: black
+  }
