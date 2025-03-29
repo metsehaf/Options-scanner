@@ -1,23 +1,45 @@
-import { Box, Button } from '@mui/material'
-import banner from '../../public/assets/image/banner.jpg';
-import Image from 'next/image'
+
 import './scanner.scss'
+import Hero from '../../components/hero/hero';
+import Cta from '../../components/cta/cta';
+import scannerBg from '../../public/assets/image/banners/scanner.jpg';
+import FeatureCard from '../../components/features-card/features';
+import { SearchOutlined, TrendingUpOutlined, TuneOutlined } from '@mui/icons-material';
+
+const features = [
+    {
+        icon: <SearchOutlined />,
+        title: 'Advanced Option Scanning',
+        content: `Instantly filter and identify high-probability options based on volume, open interest, and implied volatility.`
+    },
+    {
+        icon: <TrendingUpOutlined />,
+        title: 'Probability-Based Predictions',
+        content: `AI-powered scoring system ranks option contracts based on risk/reward potential.`
+    },
+    {
+        icon: <TuneOutlined />,
+        title: 'Customizable Filters',
+        content: 'Fine-tune your searches with personalized filters for strikes, expiration dates, and Greeks.'
+    }
+]
+
 export default function scanner() {
+
     return (
         <main className="l-main">
-               <section className=" l-hero" >
-                <div className="l-hero-content">
-                    <h1 className="l-hero-content-title">Option trading with confidence</h1>
-                    <hr className="l-hero-content-divider"></hr>
-                    <Box sx={{ flexGrow: 0, justifyContent: 'flex-start', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <p className="l-hero-content-sub-header">Search any stock ticker and get real-time probabilities.</p>
-                        <Button variant='contained' sx={{ bgcolor: 'primary', color: '#fff', width: '250px', padding: '1.5rem' }}>Signup / Login</Button>
-                    </Box>
-                </div>
-                <div className="l-hero-background">
-                    <Image src={banner} priority={true} className="l-landing-banner" width={500} height={300} alt="banner image" />
-                </div>
+            <Hero title="Trade Smarter with Bullx"
+                subtitle="Scan the market and leverage real-time data that meet your criteria."
+                image={scannerBg} />
+            <section className='l-features'>
+                <h2 className='l-features-title'>Industry Leading Features</h2>
+                <section className='l-features-slot'>
+                    {features.map((ele) => (
+                        <FeatureCard key={ele.title} title={ele.title} content={ele.content} icon={ele.icon} />
+                    ))}
+                </section>
             </section>
+            <Cta ctaText={'Start Scanning for Free'}/>
         </main>
     )
 }

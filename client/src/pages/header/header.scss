@@ -5,12 +5,15 @@
     transition: filter 300ms;
   }
 
-  .l-active-header{
-    color: $primary;
+  .l-header {
+    color: black;
+    font-size: 16px; 
+    text-decoration: none;
+  }
+  
+  .l-active-header {
+    color: $primary !important; 
     text-decoration: underline;
     font-weight: bold;
   }
-
-  .l-header{
-    color: black
-  }
+  

@@ -1,0 +1,96 @@
+.c-plan-hero {
+    position: relative;
+    display: block;
+    z-index: 0;
+    width: 100%;
+    height: 500px; // Full-page height for hero effect
+    color: $light-text;
+    overflow: hidden;
+
+    &__inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; // Center content vertically
+        align-items: center; // Center content horizontally
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        padding: 0 $spacing--lg;
+
+        @include max-screen-size;
+
+        @include breakpoint(lg) {
+            padding: 0 $spacing--2xl;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background-color: #4B0082;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+
+        }
+    }
+
+    &__image {
+        background-size: cover;
+        background-position: 50% 20%;
+        background-repeat: no-repeat;
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-clip: padding-box;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+    
+            /* Improved Gradient for Better Contrast */
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.7) 0%,  /* Darker top */
+                rgba(0, 0, 0, 0.85) 50%, 
+                rgba(0, 0, 0, 0.95) 100%
+            );
+            opacity: 1;
+        }
+    
+
+        &--overlay.c-plan-hero__image::before {
+            opacity: 1;
+        }
+
+        &--blur {
+            filter: blur(14px);
+            transform: scale(1.1);
+        }
+
+        &--blur.c-plan-hero__image::before {
+            opacity: 1;
+        }
+    }
+}

@@ -1,4 +1,4 @@
-.l-main{
+.l-main {
     position: relative;
     display: block;
     height: 100%;
@@ -6,19 +6,93 @@
     margin-bottom: 5.25rem;
 }
 
-.l-section{
+.l-section {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     margin: auto;
     box-sizing: border-box;
     @include max-screen-size;
-    @include breakpoint(md){
+
+    @include breakpoint(md) {
         padding: $spacing--xl $spacing--xl 0;
     }
 }
 
-.l-hero{
+.l-features {
+    background-color: #F3F3F3;
+    width: 100%;
+    display: block;
+    padding: $spacing--4xl;
+
+    &-title {
+        font-size: $text--lg;
+        line-height: 2.5;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &-slot {
+        position: relative;
+        display: flex;
+        align-content: flex-start;
+        flex-wrap: wrap;
+        position: relative;
+        width: 100%;
+        padding: 0 $spacing--2xl;
+        flex-direction: column;
+
+        @include breakpoint(md){
+            flex-direction: row;
+            padding: 0 $spacing--3xl;
+        }
+
+        &--content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+            display: flex;
+            min-height: 1px;
+            position: relative;
+            padding: $spacing--xl;
+
+            &_icon {
+                .MuiSvgIcon-root {
+                    width: 34px;
+                    height: 34px;
+                    fill: $primary;
+                    margin-bottom: $spacing--md;
+                }
+
+                width: 100%;
+                margin-bottom: $spacing--md;
+            }
+
+            &__sub-header {
+                margin-bottom: $spacing--md;
+
+                h4 {
+                    font-size: 22px;
+                    font-weight: bold;
+                    color: #354050;
+
+                }
+            }
+
+            &_p {
+                width: 100%;
+                box-sizing: border-box;
+                height: 250px;
+                overflow-y: auto;
+                max-height: 200px;
+            }
+        }
+    }
+
+}
+
+.l-hero {
     width: 100%;
     position: relative;
     display: flex;
@@ -28,7 +102,7 @@
     padding: $spacing--3xl $spacing--4xl;
     background-color: #f0eaf4;
 
-    &-content{
+    &-content {
         width: 45%;
         display: flex;
         flex-direction: column;
@@ -36,7 +110,7 @@
         align-items: center;
         gap: 20px;
 
-        &-title{
+        &-title {
             font-size: $text--2xl;
             color: $primary;
             font-weight: 700;
@@ -44,20 +118,20 @@
             margin-bottom: $spacing--lg;
         }
 
-        &-sub-header{
+        &-sub-header {
             font-size: $text--sm;
             font-weight: 500;
             margin-bottom: $spacing--lg;
         }
 
-        &-divider{
+        &-divider {
             width: 40%;
             color: $primary;
             align-self: center;
             height: 20px;
         }
 
-        &-cta{
+        &-cta {
             height: 36px;
             width: 150px;
             padding: 15px 20px;
@@ -67,11 +141,12 @@
         }
     }
 
-    &-background{
+    &-background {
         width: 45%;
         // height: 300px;
         max-width: 40%;
-        img{
+
+        img {
             width: 100%;
             object-fit: cover;
             height: 100%;
@@ -80,28 +155,80 @@
     }
 }
 
-.l-features{
+.l-services {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     gap: 20px;
     padding: $spacing--lg;
-    @include breakpoint(md){
+
+    @include breakpoint(md) {
         flex-direction: row;
         padding: 3.35rem $spacing--md;
     }
 
-    .MuiCard-root{
+    .MuiCard-root {
         width: 100%;
-        @include breakpoint(md){
+
+        @include breakpoint(md) {
             width: 23%;
         }
     }
 }
 
-.l-brokerages{
+.l-integrations {
     width: 100%;
     display: block;
     position: relative;
+    margin: auto;
+    box-sizing: border-box;
+    @include max-screen-size;
+
+    @include breakpoint(md) {
+        padding: $spacing--xl $spacing--xl 0;
+    }
+
+    &-brokerages {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        align-items: center;
+        gap: 20px;
+
+        &-container {
+            width: 14.285%;
+            display: block;
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            flex: 1;
+
+            img {
+                width: 110px;
+                display: inline-block;
+                vertical-align: middle;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                height: auto;
+                max-width: 100%;
+            }
+        }
+    }
+
+    &-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        h2{
+            font-size: $text--lg;
+            line-height: 2.5;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
 }
