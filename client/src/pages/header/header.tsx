@@ -13,13 +13,13 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { alpha, InputBase, styled } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const pages = [
     {navTitle: 'Scanner', url: 'scanner'}, 
     {navTitle: 'Watchlist', url: 'watchlist'}, 
-    {navTitle: 'Market Trends', url: 'trends'}, 
+    {navTitle: 'Market Trends', url: 'trends'},
+    {navTitle: 'paper Trading', url: 'paper-trading'},
     {navTitle: 'support', url: 'support'}];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -76,8 +76,7 @@ function changed(ev: React.FormEvent) {
 }
 
 function ButtonAppBar() {
-    const pathname = usePathname()
-    console.log(pathname)
+    const router = useRouter()
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -88,8 +87,9 @@ function ButtonAppBar() {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
+    const handleCloseNavMenu = (url: string) => {
         setAnchorElNav(null);
+        router.push(url)
     };
 
     const handleCloseUserMenu = () => {
@@ -97,7 +97,7 @@ function ButtonAppBar() {
     };
 
     return (
-        <AppBar position="static" sx={{ bgcolor: "#fff" }}>
+        <AppBar position="static" sx={{ bgcolor: "#fff", height: '100px' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
@@ -170,7 +170,7 @@ function ButtonAppBar() {
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page.navTitle} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page.navTitle} onClick={() => handleCloseNavMenu(page.url)}>
                                     <Typography sx={{ textAlign: 'center' }}>{page.navTitle}</Typography>
                                 </MenuItem>
                             ))}
@@ -195,15 +195,15 @@ function ButtonAppBar() {
                     >
                         Bullx
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
                         {pages.map((page) => (
                             <Button
 
                                 key={page.navTitle}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, display: 'block', color: 'black' }}
+                                onClick={() => handleCloseNavMenu(page.url)}
+                                sx={{ my: 2, display: 'block', }}
                             >
-                                <Link className={`l-header ${pathname === page.url ? 'l-active-header' : 'l-header'}`} href={page.url}>{page.navTitle}</Link>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: '600', textAlign: 'center', color: 'black'  }}>{page.navTitle}</Typography>
                             </Button>
                         ))}
                     </Box>
