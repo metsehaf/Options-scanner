@@ -1,50 +1,105 @@
-# React + TypeScript + Vite
+# 🐂 Bullx – Options Scanner & Paper Trading Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Bullx** is an elegant, user-friendly platform designed to help retail investors navigate the stock options market with confidence. Featuring an options scanner, market trends, watchlist management, and paper trading functionality — Bullx combines powerful tools with simplicity and clarity.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🔐 **Authentication**
+  - Auth0 integration using Authorization Code Flow with PKCE
+  - Federated logout via Auth0 `/v2/logout`
+  - Protected dashboard with session-based conditional rendering
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- 📊 **Dashboard**
+  - Personalized layout after login
+  - Sidebar navigation (Scanner, Trends, Watchlist, Paper Trading, Settings)
+  - Responsive layout with future subheaders and user profile menu
 
-- Configure the top-level `parserOptions` property like this:
+- 📈 **Options Scanner** *(In Progress)*
+  - Will allow users to scan options contracts by probability metrics
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- 📋 **Watchlist** *(Coming Soon)*
+  - Manage and track your favorite stocks and contracts
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- 📉 **Market Trends** *(Coming Soon)*
+  - Visualize trending stocks and predictive indicators
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- 💸 **Paper Trading** *(Coming Soon)*
+  - Simulated trading environment with virtual capital
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+---
+
+## 🛠️ Tech Stack
+
+- **Next.js** (App Router)
+- **React** with Client Components
+- **Auth0** for authentication
+- **TypeScript**
+- **SCSS** for styling
+- **Tailwind CSS** (planned for component layouts)
+- **Node.js + Express/NestJS** backend (API integration in progress)
+
+---
+
+## 📦 Setup Instructions
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/your-username/bullx.git
+   cd bullx
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   Create a `.env.local` file in the root of the project:
+
+   ```env
+   AUTH0_SECRET=your-secret
+   AUTH0_BASE_URL=http://localhost:3000
+   AUTH0_ISSUER_BASE_URL=https://your-tenant.auth0.com
+   AUTH0_CLIENT_ID=your-client-id
+   AUTH0_CLIENT_SECRET=your-client-secret
+   AUTH0_POST_LOGOUT_REDIRECT_URI=http://localhost:3000
+   ```
+
+4. **Run the dev server**
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 🔐 Security Notes
+
+- `.env.local` is gitignored and should **never** be committed.
+- Auth0 session handling is managed server-side; logout fully clears sessions and cookies.
+
+---
+
+## 📌 Roadmap
+
+- [ ] Options Scanner UI & Filters
+- [ ] Backend integration for real-time data
+- [ ] Subheaders & profile dropdowns on each dashboard section
+- [ ] Paper trading engine
+- [ ] Mobile responsiveness
+- [ ] Public marketing landing page
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙌 Credits
+
+Made with 💡 by [Girum Hagos]  
+Powered by [Auth0](https://auth0.com) and Next.js
