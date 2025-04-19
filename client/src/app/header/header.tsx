@@ -92,6 +92,10 @@ function ButtonAppBar() {
         router.push(url)
     };
 
+    const handleLogin = () => {
+        window.location.href = '/api/auth/custom-login';
+      };
+    
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
@@ -221,7 +225,7 @@ function ButtonAppBar() {
                         </Search>
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
-                        <Button variant='contained' sx={{ bgcolor: '#4B0082', color: '#fff' }}>Login</Button>
+                        <Button variant='contained' sx={{ bgcolor: '#4B0082', color: '#fff' }} onClick={handleLogin}>Login</Button>
                     </Box>
                     {/* <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
