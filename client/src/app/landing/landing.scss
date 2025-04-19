@@ -24,7 +24,7 @@
     width: 100%;
     display: block;
     padding: $spacing--4xl;
-
+   
     &-title {
         font-size: $text--lg;
         line-height: 2.5;
@@ -41,6 +41,7 @@
         width: 100%;
         padding: 0 $spacing--2xl;
         flex-direction: column;
+        @include max-screen-size;
 
         @include breakpoint(md){
             flex-direction: row;
@@ -196,6 +197,9 @@
         position: relative;
         align-items: center;
         gap: 20px;
+        @include breakpoint(md) {
+            padding: 0 $spacing--3xl;
+        }
 
         &-container {
             width: 14.285%;

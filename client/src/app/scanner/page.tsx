@@ -5,6 +5,7 @@ import Cta from '../../components/cta/cta';
 import scannerBg from '../../public/assets/image/banners/scanner.jpg';
 import FeatureCard from '../../components/features-card/features';
 import { SearchOutlined, TrendingUpOutlined, TuneOutlined } from '@mui/icons-material';
+import React from 'react';
 
 const features = [
     {
