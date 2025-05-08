@@ -9,7 +9,7 @@ export default function MuiLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   // Hide layout for dashboard (or any routes you want)
-  const hideLayout = pathname.startsWith('/main/dashboard');
+  const hideLayout = pathname.startsWith('/main');
 
   if (hideLayout) {
     return <>{children}</>;

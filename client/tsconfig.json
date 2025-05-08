@@ -1,38 +1,46 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
+    "target": "es2022",
     "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
+      "dom",
+      "es2022"
     ],
-    "module": "ESNext",
-    "esModuleInterop": true,
+    "allowJs": true,
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "bundler", // Or "Node16"
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
     "incremental": true,
+    "baseUrl": "./",
+    "paths": {
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@lib/*": [
+        "./src/lib/*"
+      ],
+      "@types/*": [
+        "./src/types/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@scss/*": [
+        "./src/styles/*"
+      ],
+    },
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "baseUrl": "./", // Set the base directory for module resolution
-    "paths": {
-      "@utils/*": ["src/utils/*"],
-      "@lib/*": ["src/lib/*"]
-    }
+    ]
   },
   "include": [
     "client/src",
@@ -40,6 +48,6 @@
     "client/next-env.d.ts"
   ],
   "exclude": [
-    "./node_modules"
+    "node_modules"
   ]
 }

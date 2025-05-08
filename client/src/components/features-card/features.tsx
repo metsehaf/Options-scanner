@@ -1,5 +1,4 @@
 import React from "react";
-import {  SvgIcon, SvgIconTypeMap } from '@mui/material';
 
 type featureProps = {
     title: string;

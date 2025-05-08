@@ -5,14 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvironmentModule } from './environment/environment.module';
+import { ScannerModule } from './scanner/scanner.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, // <-- makes it accessible everywhere
+      expandVariables: true,
     }),
     AuthModule,
     EnvironmentModule,
+    ScannerModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
