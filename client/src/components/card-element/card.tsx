@@ -1,5 +1,5 @@
 import { Card, CardContent, Box, Typography } from '@mui/material';
-import { CustomCardProps } from '../../models/dashboard'
+import { CustomCardProps } from '../../types/dashboard'
 
 
 

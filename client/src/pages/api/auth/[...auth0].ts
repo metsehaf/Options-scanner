@@ -1,4 +1,4 @@
-import { getAuth0 } from '../../../lib/auth';
+import getAuth0  from '@lib/auth';
 
 export default async function auth(req: any, res: any) {
   try {

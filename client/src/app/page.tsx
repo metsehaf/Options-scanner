@@ -2,8 +2,8 @@
 // pages/index.tsx
 import { useUser } from '@auth0/nextjs-auth0/client';
 import React from 'react';
-import LandingPage from './landing/page';
-import Dashboard from './main/dashboard/page'; // Adjust the path as needed
+import LandingPage from './landing/page'; // Adjust the path as needed
+import MainLayout from './main/layout';
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div>
       {user ? (
-        <Dashboard /> // Render the main layout if the user is authenticated
+        <MainLayout children={undefined} /> // Render the main layout if the user is authenticated
       ) : (
         <LandingPage />
       )}

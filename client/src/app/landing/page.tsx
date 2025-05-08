@@ -13,7 +13,7 @@ import wealthsimple from '../../public/assets/image/brokerages/wealthsimple.png'
 import cibc from '../../public/assets/image/brokerages/cibcinvestoredge.png';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Box, Button, Typography } from '@mui/material';
-import { cardType } from '../../models/dashboard'
+import { cardType } from '../../types/dashboard'
 import CustomCard from '../../components/card-element/card';
 import FeatureCard from '../../components/features-card/features';
 import {TrendingUp, NotificationsActive, PlayCircle} from '@mui/icons-material';

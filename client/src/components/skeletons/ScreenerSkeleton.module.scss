@@ -1,0 +1,22 @@
+.skeletonWrapper {
+    padding: 1rem;
+  
+    .skeletonItem {
+      height: 1.5rem;
+      width: 100%;
+      border-radius: 0.5rem;
+      background-color: #e5e7eb; // tailwind's gray-300
+      animation: pulse 1.5s ease-in-out infinite;
+      margin-bottom: 1rem;
+    }
+  
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.4;
+      }
+    }
+  }
+  

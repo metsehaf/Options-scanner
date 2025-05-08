@@ -1,7 +1,7 @@
 // pages/api/auth/logout.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import getDynamicEnvs from '../../../utils/getDynamicEnvs';
-import { getAuth0 } from '../../../lib/auth';
+import getDynamicEnvs from '@utils/getDynamicEnvs';
+import getAuth0  from '@lib/auth';
 
 export default async function logout(req: NextApiRequest, res: NextApiResponse) {
   try {
