@@ -57,28 +57,12 @@ export class ScannerController {
         }
     }
 
-
-    @Get('Pre-market-gainers')
-    async getPreMarketGainers(){}
-
-    @Get('Pre-market-Losers')
-    async getPreMarketLosers(){}
-
-    @Get('after-hour-gainers')
-    async getAfterHourGainers(){}
-
-    @Get('after-hour-losers')
-    async getAfterHourLosers(){}
-
     @Get('active-penny-stocks')
-    async getActivePennyStocks(){}
-
-    @Get('unusual-volume-stocks')
-    async getUnusualVolumeStocks(){}
-
-    @Get('fifty-two-week-high')
-    async getFiftyTwoWeekHigh(){}
-
-    @Get('fifty-two-week-low')
-    async getFiftyTwoWeekLow(){}
+    async getActivePennyStocks(){
+        try {
+            return await this.scannerService.getActivePennyStocks(this.apiKey, this.epURL);
+        } catch (error) {
+            throw new InternalServerErrorException(`Failed to fetch active penny: ${error.message}`);
+        }
+    }
 }

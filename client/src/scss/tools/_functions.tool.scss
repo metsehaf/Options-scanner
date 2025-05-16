@@ -1,0 +1,86 @@
+@use '../settings/_colors.hc.settings' as colors;
+// scss helper functions
+@use "sass:math";
+@use "sass:color";
+@use 'sass:map';
+// scss helper functions
+//
+// Convert pixel value to rems
+// Usage: {property}: rem($value px);
+@function rem($value) {
+  @if (type-of($value) ==number and unit($value) == 'px') {
+    @return ($value / $base-font-size) * 1rem;
+  } @else {
+    @error "`rem()` expected a pixel value. Actual value was: `#{$value}`";
+  }
+}
+
+// z index
+// Usage: {property}: z($layer);
+@function z($layer) {
+  @if not map.has-key($z-indexes, $layer) {
+    @warn 'No layer found for `#{$layer}` in $z-indexes map. Property omitted.';
+  }
+
+  @return map.get($z-indexes, $layer);
+}
+
+// Accessibility color function, takes a color input and outputs
+// the proper contrast color base on the input.
+// NOTE: color must not contain any opacity (RGBA) values
+@function contrast($color) {
+  $r: color.channel($color, 'red', $space: rgb);
+  $g: color.channel($color, 'green');
+  $b: color.channel($color, 'blue');
+
+  $yiq: math.div($r * 299 + $g * 587 + $b * 114, 1000);
+
+  @if ($yiq >=150) {
+    @return $dark-text;
+  } @else {
+    @return white;
+  }
+}
+
+// Custom Material palette function to Generate palette out of input color
+// NOTE: Material only uses, 100, 200, 400, 500, 700 values in the theme
+// but we generate all values incase things change. We've also left out
+// the accent values in the map because they aren't used at all.
+@function palette($color) {
+  $light: #ffffff;
+  $dark: #000000;
+  $base: color.mix($dark, $color, 15%);
+  $results: (
+    50: color.mix($light, $color, 90%),
+    100: color.mix($light, $color, 85%),
+    200: color.mix($light, $color, 50%),
+    300: color.mix($light, $color, 30%),
+    400: color.mix($light, $color, 12%),
+    500: $color,
+    600: color.mix($dark, $color, 25%),
+    700: color.mix($dark, $color, 54%),
+    800: color.mix($dark, $color, 70%),
+    900: color.mix($dark, $color, 87%),
+    A100: color.adjust($base, $saturation: 80%, $lightness: 45.6%),
+    A200: color.adjust($base, $saturation: 80%, $lightness: 35.6%),
+    A400: color.adjust($base, $saturation: 100%, $lightness: 25.6%),
+    A700: color.adjust($base, $saturation: 100%, $lightness: 20.5%),
+    contrast: (
+      50: contrast($color),
+      100: contrast($color),
+      200: contrast($color),
+      300: contrast($color),
+      400: contrast($color),
+      500: contrast($color),
+      600: contrast($color),
+      700: contrast($color),
+      800: contrast($color),
+      900: contrast($color),
+      A100: contrast($color),
+      A200: contrast($color),
+      A400: contrast($color),
+      A700: contrast($color),
+    ),
+  );
+  @return $results;
+}

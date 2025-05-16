@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styles from './dashboard.module.scss';
-import DashboardHeader from '../../../components/header/header';
+import DashboardHeader from '../../../components/scanner-header/header';
 
 
 export default function Dashboard() {

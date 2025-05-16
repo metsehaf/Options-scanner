@@ -1,0 +1,62 @@
+@use '../settings/system.settings' as *;
+/* Typography styles */
+p {
+  margin-bottom: $spacing--lg;
+}
+
+h1,
+h2,
+h3,
+h4,
+form legend {
+  line-height: $heading-line-height;
+  font-weight: inherit;
+  margin: $spacing--lg 0 $spacing--sm;
+}
+
+.text--display {
+  font-size: $text--display;
+}
+
+.text--3xl {
+  font-size: $text--3xl;
+}
+
+h1,
+.text--2xl {
+  font-size: $text--2xl;
+  margin-top: 0;
+}
+
+h2,
+.text--xl {
+  font-size: $text--xl;
+}
+
+h3,
+.text--lg {
+  font-size: $text--lg;
+}
+
+h4,
+.text--md {
+  font-size: $text--md;
+}
+
+.text--xs,
+small {
+  font-size: $text--xs;
+}
+
+.text--2xs {
+  font-size: $text--2xs;
+}
+
+.text--3xs {
+  font-size: $text--3xs;
+}
+
+b,
+strong {
+  font-weight: 500;
+}

@@ -1,0 +1,116 @@
+@use '../settings/system.settings' as *;
+@use '../tools/mixins.tool' as *;
+@use "sass:math";
+@use "sass:map";
+// Grid styles based on Bootstrap 4 grid system
+/* Grid system */
+$grid-columns: 12 !default;
+// Rows
+.o-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 0;
+  margin-left: 0;
+  @include max-screen-size;
+
+  &--fluid[class] {
+    max-width: 100%;
+  }
+}
+
+// Create Column shared classes
+%grid-column {
+  position: relative;
+  width: 100%;
+  min-height: 1px; // Prevent columns from collapsing when empty
+  padding-right: 0;
+  padding-left: 0;
+}
+
+@each $breakpoint in map.keys($breakpoints) {
+  @for $i from 1 through $grid-columns {
+    .o-col,
+    .o-col-auto,
+    .o-col-#{$breakpoint},
+    .o-col-#{$breakpoint}-auto,
+    .o-col-#{$i},
+    .o-col-#{$breakpoint}-#{$i} {
+      @extend %grid-column;
+    }
+  }
+}
+
+.o-col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+
+  &-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+  }
+}
+
+@for $i from 1 through $grid-columns {
+  .o-col-#{$i} {
+    flex: 0 0 math.percentage(math.div($i, $grid-columns));
+    max-width: math.percentage(math.div($i, $grid-columns));
+  }
+}
+
+.o-order-first {
+  order: -1;
+}
+
+@for $i from 1 through $grid-columns {
+  .o-order-#{$i} {
+    order: $i;
+  }
+}
+
+@for $i from 1 to $grid-columns {
+  .o-offset-#{$i} {
+    margin-left: math.percentage(math.div($i, $grid-columns));
+  }
+}
+
+//////
+@each $breakpoint in map.keys($breakpoints) {
+  @include breakpoint($breakpoint) {
+    .o-col-#{$breakpoint} {
+      flex-basis: 0;
+      flex-grow: 1;
+      max-width: 100%;
+    }
+
+    .o-col-#{$breakpoint}-auto {
+      flex: 0 0 auto;
+      width: auto;
+      max-width: none;
+    }
+
+    @for $i from 1 through $grid-columns {
+      .o-col-#{$breakpoint}-#{$i} {
+        flex: 0 0 math.percentage(math.div($i, $grid-columns));
+        max-width: math.percentage(math.div($i, $grid-columns));
+      }
+    }
+
+    .o-order-#{$breakpoint}-first {
+      order: -1;
+    }
+
+    @for $i from 1 through $grid-columns {
+      .o-order-#{$breakpoint}-#{$i} {
+        order: $i;
+      }
+    }
+
+    @for $i from 1 to $grid-columns {
+      .o-offset-#{$breakpoint}-#{$i} {
+        margin-left: math.percentage(math.div($i, $grid-columns));
+      }
+    }
+  }
+}

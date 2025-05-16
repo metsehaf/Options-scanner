@@ -45,20 +45,27 @@ $container-background: #d9e4e8;
   &__card {
     background: #fff;
     border-radius: 0.75rem;
-    padding: 1.25rem;
+    padding: $spacing--md;
     display: flex;
     align-items: flex-start;
     gap: 1rem;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.2s ease;
-    width: 45%;
-    min-width: 300px;
-    max-width: 400px;
+    width: 100%;
+    max-width: 500px;
     cursor: pointer;
+    color: black;
     border: 1px solid #e5e7eb; // tailwind's gray-200
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
+    @include breakpoint('md') {
+      width: 45%;
+      min-width: 300px;
+      max-width: 400px;
+    }
     &:hover {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px) scale(1.02);
     }
   }
 

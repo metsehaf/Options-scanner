@@ -1,0 +1,101 @@
+.l-watchlist {
+    display: block;
+    position: relative;
+    width: 100%;
+    @include max-screen-size;
+    background-color: #f9fafb;
+
+    &__header {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: $spacing--lg;
+        border-bottom: 1px solid #e0e0e0;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #1f2937; // dark grayish blue
+        }
+
+        p {
+            font-size: 1rem;
+            color: #6b7280; // soft gray
+            margin: 0;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: $spacing--lg 0;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        margin-top: $spacing--lg;
+
+        &--left,
+        &--middle,
+        &--right {
+            display: flex;
+            align-items: center;
+            padding: $spacing--sm;
+        }
+
+        &--left {
+            justify-content: flex-start;
+        }
+
+        &--middle {
+            justify-content: center;
+
+            .MuiTabs-root {
+                border-radius: 5px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            }
+        }
+
+        &--right {
+            flex: 1;
+            justify-content: flex-end;
+            min-width: 300px;
+        }
+    }
+
+    &__no-data {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: $spacing--xl;
+        background-color: #fafafa;
+        border-radius: 12px;
+        min-height: 300px;
+        flex-direction: column;
+        &--icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: $spacing--md;
+        }
+      
+          h2 {
+            font-size: 1.5rem;
+            margin-bottom: $spacing--sm;
+            color: #333;
+          }
+      
+          p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: $spacing--md;
+          }
+      
+          button {
+            margin-top: $spacing--sm;
+            text-transform: none;
+            font-weight: 200;
+          }
+      }
+}

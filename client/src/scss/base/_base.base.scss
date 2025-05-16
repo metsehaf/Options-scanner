@@ -1,0 +1,134 @@
+@use '../settings/system.settings' as *;
+@use '../settings/colors.hc.settings' as *;
+@use '../tools/mixins.tool' as *;
+/* CSS Reset */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+p,
+pre,
+dl,
+dd,
+ol,
+ul,
+figure,
+hr,
+fieldset,
+legend {
+  margin: 0;
+  padding: 0;
+}
+//Remove trailing margins from nested lists.
+li > {
+  ol,
+  ul {
+    margin-bottom: 0;
+  }
+}
+//Remove default table spacing.
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+//Form styles
+button,
+input,
+optgroup,
+select,
+textarea {
+  font: inherit;
+}
+// html document setup
+/* Base styles */
+//css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice
+html {
+  box-sizing: border-box;
+  height: 100%;
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: rbga(0, 0 0, 0);
+  -webkit-text-size-adjust: none;
+  &,
+  &:after,
+  &:before {
+    box-sizing: inherit;
+  }
+}
+
+body {
+  font-family: $base-font-family;
+  line-height: $body-line-height;
+  font-weight: 400;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  //color: map.get($system-light, text);
+  // removes bounce in scrolling
+  overscroll-behavior: none;
+  font-size: $base-mobile-font-size;
+  @include breakpoint(sm) {
+    font-size: $base-font-size;
+  }
+}
+// Links
+a {
+  //color: $link-color;
+  text-decoration: underline;
+  // Remove the gray background on active links in IE 11.
+  background-color: transparent;
+  // Remove gaps in links underline in iOS 8+ and Safari 8+.
+  -webkit-text-decoration-skip: ink;
+  @include on-focus {
+    //color: $hover-color;
+    text-decoration: underline;
+  }
+}
+
+/// Images
+img {
+  // Making images responsive by default
+  width: 100%;
+  font-style: italic;
+  vertical-align: middle;
+}
+// if height or width specified then no longer responsive image
+img[height],
+img[width] {
+  width: auto;
+}
+
+// Accessibility
+a,
+button,
+select,
+textarea {
+  @include on-focus {
+    // for accessibility reasons we add browser focus ring
+    outline: -webkit-focus-ring-color auto 5px;
+  }
+}
+
+a {
+  color: $primary;
+  @include on-focus {
+    color: $primary;
+  }
+}
+
+.night-mode {
+  a {
+    color: $accent;
+    @include on-focus {
+      color: $accent;
+    }
+  }
+}

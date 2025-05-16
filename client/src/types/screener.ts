@@ -1,4 +1,5 @@
 export interface IStock {
+    id?: number | string;
     ticker: string;
     changes: number;
     price: string;
@@ -7,14 +8,20 @@ export interface IStock {
   }
   
   export interface mostActiveStock {
+    title: string;
+    description: string;
     "mostActiveStock": IStock[];
   }
   
   export interface mostGainersStock {
+    title: string;
+    description: string;
     "mostGainerStock": IStock[];
   }
   
   export interface mostLosersStock {
+    title: string;
+    description: string;
     "mostLoserStock": IStock[];
   }
   
