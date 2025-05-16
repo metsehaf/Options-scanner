@@ -33,7 +33,10 @@
         "./src/components/*"
       ],
       "@scss/*": [
-        "./src/styles/*"
+        "./src/scss/*"
+      ],
+      "@contexts/*": [
+        "./src/contexts/*"
       ],
     },
     "plugins": [

@@ -12,7 +12,7 @@ interface DashboardHeaderProps {
     navigation?: NavItem[];
 }
 
-export default function DashboardHeader({ navigation = [] }: DashboardHeaderProps) {
+export default function ScannerHeader({ navigation = [] }: DashboardHeaderProps) {
     const [value, setValue] = React.useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);

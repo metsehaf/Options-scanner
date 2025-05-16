@@ -1,0 +1,28 @@
+@use "sass:map";
+@mixin global-theme($theme) {
+  $is-dark: map.get($theme, is-dark);
+  $primary: map.get($theme, primary);
+  $accent: map.get($theme, accent);
+  $background: map.get($theme, background);
+  $foreground: map.get($theme, foreground);
+
+  body {
+    color: map.get($foreground, text);
+    background-color: map.get($background, background);
+  }
+
+  mark {
+    background-color: if($is-dark, rgba(black, 0.75), rgba(black, 0.1));
+  }
+
+  p {
+    color: map.get($foreground, text);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: if($is-dark, rgba(map.get($foreground, heading), 0.8), map.get($foreground, heading));
+  }
+}

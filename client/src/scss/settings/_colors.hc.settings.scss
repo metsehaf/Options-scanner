@@ -1,0 +1,113 @@
+// System color for light and dark core components
+// NOTE: Changing these will have effect on both light and dark themes.
+// Role: Light color for text for dark backgrounds
+$light-text: #ffffff;
+// Role: Default text color for light backgrounds
+$dark-text: #525146;
+// Role: text color for labels and overline text
+$overline-text: #637587;
+// Role: Default document background color
+$default-background: #f6f6f6;
+// Role: Secondary light background color for components
+$light-background: #ffffff;
+// Role: Alternative background color
+$offset-background: #eaeaee;
+// Role: Secondary dark background color for components in dark theme
+$dark-background: #181e29;
+// Role: Default document background color for dark theme
+$dark-offset-background: #212835;
+// Role: For brand color and prominent elements
+$primary: #4B0082;
+$secondary: #39FF14;
+$primary-support: $primary;
+// Role: For instant actions elements
+$accessible-red: #bf263c;
+$accent: #00e5ff;
+// Role: For destructive actions and warnings
+$warn: #bf263c;
+$night-warn: #ff6e66;
+// Role: UI validation colors
+$high: #ea4335;
+$moderate: #fbbc05;
+$low: #62cd7e;
+$hc-prime: $primary;
+$hsp-high: #e35548;
+$hsp-moderate: #f5bb00;
+$hsp-low: #719a00;
+$hsp-high-night: #943830;
+$hsp-moderate-night: #836400;
+$hsp-low-night: #3a7d44;
+
+$scan-veryLow: #ff0000;
+$scan-low: #ff6347;
+$scan-moderate: #f0b800;
+$scan-high: #58a155;
+$scan-veryHigh: #008000;
+///////////////////////////////////////////
+// CUSTOM COMPONENT COLORS
+///////////////////////////////////////////
+// $promoBg: #f7ff9c;
+$promoBg: #f2faf9;
+$promoDarkBg: #dbfd01;
+$promoDark: #252a2c;
+$achieved-background: #fdc16f;
+$challenge-success: #7cef99;
+$challenge-accent: #dbfd00;
+$challenge-dark: #181e29;
+$challenge-background: #ffe08d;
+$challenge-rank: #fd4055;
+$challenge-rank-shade: #d42136;
+$paris: #fabb5a;
+$london: #ff5b5a;
+$newyork: #7e52fd;
+$certificateBg: #f7ff9c;
+$certificateBgDark: #dbfd01;
+$text: #252a2c;
+$badgeBackground: #62cd7e;
+$badgeInProgress: #fbbc05;
+$badgeError: #ab1f12;
+$badgeLocked: #24303e;
+$active: #02e5ff;
+$newsletterBg: #f7ff9c;
+$newsletterBgDark: #dbfd01;
+$text: #252a2c;
+// Disabled
+$disabled-primary: #a6a6a6;
+$disabled-secondary: #cccccc;
+// Fruits
+$fruits-primary: #4dd39f;
+$fruits-secondary: #fe8b6e;
+// Chill
+$chill-primary: #b0f4e6;
+$chill-secondary: #67eaca;
+// Snooze
+$snooze-primary: #9389ff;
+$snooze-secondary: #48d1ff;
+// Kindness
+$kindness-primary: #ffc5e6;
+$kindness-secondary: #fccb8f;
+// Climb
+$climb-primary: #ff6767;
+$climb-secondary: #fe8b6e;
+
+$ring-accent: #24303e;
+$activity-primary: #7373f9;
+$activity-secondary: #fe8b6e;
+$activity-accent: $ring-accent;
+$sleep-primary: purple;
+$sleep-secondary: #48d1ff;
+$sleep-accent: $ring-accent;
+$nutrition-primary: #4dd39f;
+$nutrition-secondary: #fe8b6e;
+$km-primary: #4dd39f;
+$km-secondary: #fe8b6e;
+$nutrition-accent: $ring-accent;
+///////////////////////////////////////////
+// GENERATE MATERIAL PALETTES
+///////////////////////////////////////////
+// NOTE: Material theme only uses three colors, Primary, Accent, Warn.
+// Generate Material color palettes with palette function
+// palettes are a map of shades and tints of a specific color.
+$primary-palette: palette($primary);
+$accent-palette: palette($accent);
+$warn-palette: palette($warn);

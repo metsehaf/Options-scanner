@@ -1,0 +1,64 @@
+@use './colors.hc.settings';
+// Base type
+$base-font-family: 'Roboto', 'Helvetica Neue', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !default;
+$base-font-size: 1rem !default;
+$base-mobile-font-size: 0.875rem !default;
+$heading-line-height: 1.25 !default;
+$body-line-height: 1.5 !default;
+$max-screen-size: 1440px !default;
+// Base card heights
+$card-max-height: 408px !default;
+$card-min-height: 258px !default;
+$card-mini-height: 98px !default;
+// breakpoints
+$breakpoints: (
+  xxsm: 20px,
+  2xsm: 370px,
+  xsm: 400px,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1440px,
+) !default;
+// Border radius
+$border-radius: 0.25rem !default;
+// Type scale
+// Using a modular type scale we define our font size in em units for responsive scaling
+// by multiplying the scale ratio of: 1.2, with our base font size of 1em(browser default of 16px)
+// https://www.modularscale.com/?1&em&1.2
+// http://pxtoem.com/ for EM to PX conversion
+$text--3xs: 0.579rem; //(0.694 / 1.2) 9px
+$text--2xs: 0.694rem; //(0.833 / 1.2) 11px
+$text--xs: 0.833rem; //(1 / 1.2) 13px
+$text--sm: $base-font-size; // 16px
+$text--md: 1.2rem; //(1 * 1.2) 19px
+$text--lg: 1.44rem; //(1.2 * 1.2) 23px
+$text--xl: 1.728rem; //(1.44 * 1.2) 27px
+$text--2xl: 2.074rem; //(1.728 * 1.2) 33px
+$text--3xl: 2.489rem; //(2.074 * 1.2) 39px
+$text--display: 2.987rem; //(2.489 * 1.2) 47px
+// Spacing scale
+$spacing-unit: 1rem !default;
+$spacing--2xs: 0.125 * $spacing-unit; // 2px;
+$spacing--xs: 0.25 * $spacing-unit; // 4px
+$spacing--sm: 0.5 * $spacing-unit; // 8px
+$spacing--md: 0.75 * $spacing-unit; // 12px
+$spacing--lg: 1.25 * $spacing-unit; // 20px
+$spacing--2lg: 1.75 * $spacing-unit; // 28px
+$spacing--xl: 2 * $spacing-unit; // 32px
+$spacing--2xl: 3.25 * $spacing-unit; // 52px
+$spacing--3xl: 5.25 * $spacing-unit; // 84px
+$spacing--4xl: 8.5 * $spacing-unit; // 136px
+$spacing--5xl: 13.75 * $spacing-unit; // 220px
+// z-index
+$z-indexes: (
+  modal: 9000,
+  overlay: 8000,
+  dropdown: 7000,
+  header: 900,
+  footer: 900,
+  hidden: - 1,
+  overflowHidden: - 1,
+  floating: 10000,
+) !default;

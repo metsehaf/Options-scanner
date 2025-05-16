@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
-import {createFetcherWithToken} from '@lib/fetcher';
-import useSWR from 'swr';
+import { createFetcherWithToken } from '@lib/fetcher';
 import styles from './ScreenerClient.module.scss';
-import { ScreenerClientProps, IStock, mostActiveStock, mostGainersStock, mostLosersStock, IStockPercent } from '@types/screener';
+import ScreenerSkeleton from '@components/skeletons/ScreenerSkeleton';
+import { ScreenerClientProps, IStock, IStockPercent } from '@types/screener';
 
 
 const columns: GridColDef[] = [
@@ -20,72 +20,108 @@ const columns: GridColDef[] = [
 export default function ScreenerClient({ slug }: ScreenerClientProps) {
   const [token, setToken] = useState<string | null>(null);
   const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [rows, setRows] = useState<any[]>([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Add error state
 
   useEffect(() => {
-    const getToken = async () => {
+    let isMountedCleanup = true;
+
+    const fetchData = async () => {
       try {
         const res = await fetch('/api/token');
         const json = await res.json();
-        if (json.token) setToken(json.token);
-        else console.error('Token not received:', json);
-      } catch (e) {
-        console.error('Token fetch failed:', e);
+        const fetchedToken = json.token;
+
+        if (isMountedCleanup && fetchedToken) {
+          setToken(fetchedToken);
+          const fetcherWithToken = createFetcherWithToken(fetchedToken);
+
+          const dataResponse = await fetcherWithToken(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/scanner/${slug}`
+          );
+          const fetchedData = await dataResponse;
+
+
+          if (isMountedCleanup) {
+            setDataLoaded(true);
+            const calculatedRows = (() => {
+              if (!fetchedData) return [];
+
+              if ('mostActiveStock' in fetchedData) {
+                return fetchedData.mostActiveStock.map((row: IStock, index: number) => ({
+                  id: row.ticker ?? index,
+                  ...row,
+                }));
+              } else if ('mostGainerStock' in fetchedData) {
+                return fetchedData.mostGainerStock.map((row: IStock, index: number) => ({
+                  id: row.ticker ?? index,
+                  ...row,
+                }));
+              } else if ('mostLoserStock' in fetchedData) {
+                return fetchedData.mostLoserStock.map((row: IStock, index: number) => ({
+                  id: row.ticker ?? index,
+                  ...row,
+                }));
+              }
+              return (fetchedData || []).map((row: any, index: number) => {
+                if ('ticker' in row && 'companyName' in row) {
+                  return {
+                    id: row.ticker ?? index,
+                    ...row,
+                  } as IStock;
+                } else {
+                  return {
+                    id: index,
+                    ticker: row.symbol,
+                    companyName: row.name,
+                    changes: row.change,
+                    ...row,
+                  } as IStockPercent;
+                }
+              });
+            })();
+            setRows(calculatedRows);
+          }
+        } else if (isMountedCleanup && !fetchedToken) {
+          console.error('Token not received:', json);
+          setDataLoaded(true);
+          setRows([]);
+          setError("Failed to retrieve token."); // Set error
+        }
+      } catch (e: any) {
+        if (isMountedCleanup) {
+          console.error('Error fetching data:', e);
+          setDataLoaded(true);
+          setRows([]);
+          setError(e.message || "An error occurred while fetching data."); // Set error
+        }
       }
     };
 
-    getToken();
-  }, []);
+    fetchData();
 
-  const fetcher = token ? createFetcherWithToken(token) : null;
+    return () => {
+      isMountedCleanup = false;
+    };
+  }, [slug]);
 
-  const { data, error, isLoading } = useSWR<mostActiveStock | mostGainersStock | mostLosersStock | IStock[] | IStockPercent[]>(
-    token && fetcher ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/scanner/${slug}` : null,
-    fetcher
-  );
 
-  if (isLoading) return null; //
-  if (error) return <p>Error loading screener data</p>;
-  console.log('Screener data:', data);
-  const rows = (() => {
-    if (data && 'mostActiveStock' in data) {
-      return data?.mostActiveStock.map((row: IStock, index: number) => ({
-        id: row.ticker ?? index, // fallback to index if ticker is missing
-        ...row,
-      }));
-    } else if (data && 'mostGainerStock' in data) { // Updated to match backend format
-      console.log('Screener data:', data);
-      return data?.mostGainerStock.map((row: IStock, index: number) => ({
-        id: row.ticker ?? index,
-        ...row,
-      }));
-    } else if (data && 'mostLoserStock' in data) {
-      return data?.mostLoserStock.map((row: IStock, index: number) => ({
-        id: row.ticker ?? index,
-        ...row,
-      }));
-    }
-    return data?.map((row, index: number) => {
-      if ('ticker' in row && 'companyName' in row) {
-        return {
-          id: row.ticker ?? index,
-          ...row,
-        } as IStock;
-      } else {
-        return {
-          id: index,
-          ticker: row.symbol,
-          companyName: row.name,
-          changes: row.change,
-          ...row,
-        } as IStockPercent;
-      }
-    });
-  })();
+  if (error) {
+    return <div>Error: {error}</div>; // Display error message
+  }
+  if (!dataLoaded) {
+    return (
+    <ScreenerSkeleton />
+    );
+  }
 
   return (
     <section className={styles.wrapper}>
-      <h1 className="text-2xl font-bold">{slug.replace(/-/g, ' ')}</h1>
-      <p className={styles.subheading}>Most Active Stocks</p>
+      <h1 className="text-2xl font-bold">
+        {rows.length > 0 && 'title' in rows[0] ? rows[0].title : 'Screener'}
+      </h1>
+      <p className={styles.subheading}>{rows.length > 0 && 'description' in rows[0] ? rows[0]?.description : ''}</p>
       <div className={styles.dataGridContainer}>
         <DataGrid
           rows={rows}
@@ -96,7 +132,6 @@ export default function ScreenerClient({ slug }: ScreenerClientProps) {
           }}
           checkboxSelection
           sortingMode="client"
-          onSortModelChange={setSortModel}
         />
       </div>
     </section>
