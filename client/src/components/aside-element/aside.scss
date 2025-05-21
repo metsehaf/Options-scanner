@@ -1,17 +1,14 @@
-@use 'src/scss/globals.module' as *;
-$color-sidebar: #2C3E50;
-$color-sidebar-text: #FFFFFF;
-$color-sidebar-hover: #34495E;
+@use 'src/scss/globals.module' as globals;
 
 .sidebar {
     width: 250px;
-    background-color: $color-sidebar;
-    color: $color-sidebar-text;
+    background-color: globals.$color-sidebar;
+    color: globals.$color-sidebar-text;
     padding: 2rem 1rem;
     display: flex;
     flex-direction: column;
-    border-top-left-radius: $spacing--md;
-    border-bottom-left-radius: $spacing--md;
+    border-top-left-radius: globals.$spacing--md;
+    border-bottom-left-radius: globals.$spacing--md;
 }
 
 .logo {
@@ -22,7 +19,7 @@ $color-sidebar-hover: #34495E;
 
 .nav a {
     display: inline-flex;
-    color: $color-sidebar-text;
+    color: globals.$color-sidebar-text;
     text-decoration: none;
     margin: 1rem 0;
     padding: 0.5rem;
@@ -33,5 +30,5 @@ $color-sidebar-hover: #34495E;
 }
 
 .nav a:hover {
-    background-color: $color-sidebar-hover;
+    background-color: globals.$color-sidebar-hover;
 }

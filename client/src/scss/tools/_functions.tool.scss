@@ -1,5 +1,6 @@
 @use '../settings/_colors.hc.settings' as colors;
 // scss helper functions
+@use '../settings//system.settings' as settings;
 @use "sass:math";
 @use "sass:color";
 @use 'sass:map';
@@ -18,11 +19,11 @@
 // z index
 // Usage: {property}: z($layer);
 @function z($layer) {
-  @if not map.has-key($z-indexes, $layer) {
+  @if not map.has-key(settings.$z-indexes, $layer) {
     @warn 'No layer found for `#{$layer}` in $z-indexes map. Property omitted.';
   }
 
-  @return map.get($z-indexes, $layer);
+  @return map.get(settings.$z-indexes, $layer);
 }
 
 // Accessibility color function, takes a color input and outputs

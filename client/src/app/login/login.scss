@@ -15,7 +15,7 @@
     background-color: #f0f0f0;
 
     h1{
-        font-size: $text--lg;
+        font-size: globals.$text--lg;
         color: #333;
         margin-bottom: 1rem;
     }
@@ -34,17 +34,17 @@
             padding: 0.5rem;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: $text--md;
+            font-size: globals.$text--md;
 
             &:focus{
-                border-color: $primary;
+                border-color: globals.$primary;
                 outline: none;
             }
         }
 
         button{
             padding: 0.5rem;
-            background-color: $primary;
+            background-color: globals.$primary;
             color: #fff;
             border: none;
             border-radius: 4px;

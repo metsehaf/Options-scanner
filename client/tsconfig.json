@@ -38,6 +38,9 @@
       "@contexts/*": [
         "./src/contexts/*"
       ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
     },
     "plugins": [
       {

@@ -2,7 +2,7 @@
     display: block;
     position: relative;
     width: 100%;
-    @include max-screen-size;
+    @include globals.max-screen-size;
     background-color: #f9fafb;
 
     &__header {
@@ -10,7 +10,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding-bottom: $spacing--lg;
+        padding-bottom: globals.$spacing--lg;
         border-bottom: 1px solid #e0e0e0;
 
         h1 {
@@ -31,18 +31,18 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
-        padding: $spacing--lg 0;
+        padding: globals.$spacing--lg 0;
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-        margin-top: $spacing--lg;
+        margin-top: globals.$spacing--lg;
 
         &--left,
         &--middle,
         &--right {
             display: flex;
             align-items: center;
-            padding: $spacing--sm;
+            padding: globals.$spacing--sm;
         }
 
         &--left {
@@ -69,7 +69,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: $spacing--xl;
+        padding: globals.$spacing--xl;
         background-color: #fafafa;
         border-radius: 12px;
         min-height: 300px;
@@ -77,23 +77,23 @@
         &--icon {
             width: 100px;
             height: 100px;
-            margin-bottom: $spacing--md;
+            margin-bottom: globals.$spacing--md;
         }
       
           h2 {
             font-size: 1.5rem;
-            margin-bottom: $spacing--sm;
+            margin-bottom: globals.$spacing--sm;
             color: #333;
           }
       
           p {
             font-size: 1rem;
             color: #666;
-            margin-bottom: $spacing--md;
+            margin-bottom: globals.$spacing--md;
           }
       
           button {
-            margin-top: $spacing--sm;
+            margin-top: globals.$spacing--sm;
             text-transform: none;
             font-weight: 200;
           }

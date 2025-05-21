@@ -1,7 +1,4 @@
-@use 'src/scss/globals.module' as *;
-$color-sidebar-active: #3498DB;
-$color-main-bg: #F9FAFB;
-$container-background: #d9e4e8;
+@use 'src/scss/globals.module' as globals;
 
 .dashboardContainer {
   display: flex;
@@ -14,6 +11,6 @@ $container-background: #d9e4e8;
   flex-grow: 1;
   padding: 2rem;
   background-color: #F9FAFB;
-  border-top-right-radius: $spacing--md;
-  border-bottom-right-radius: $spacing--md;
+  border-top-right-radius: globals.$spacing--md;
+  border-bottom-right-radius: globals.$spacing--md;
 }

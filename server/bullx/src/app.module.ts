@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvironmentModule } from './environment/environment.module';
 import { ScannerModule } from './scanner/scanner.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ScannerModule } from './scanner/scanner.module';
     AuthModule,
     EnvironmentModule,
     ScannerModule,
+    SearchModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

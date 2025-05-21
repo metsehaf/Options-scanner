@@ -1,6 +1,4 @@
-$color-sidebar-active: #3498DB;
-$color-main-bg: #F9FAFB;
-$container-background: #d9e4e8;
+@use 'src/scss/globals.module' as globals;
 
 .dashboardContainer {
   display: flex;
@@ -14,8 +12,8 @@ $container-background: #d9e4e8;
   flex-grow: 1;
   padding: 2rem;
   background-color: #F9FAFB;
-  border-top-right-radius: $spacing--md;
-  border-bottom-right-radius: $spacing--md;
+  border-top-right-radius: globals.$spacing--md;
+  border-bottom-right-radius: globals.$spacing--md;
 }
 
 .market-scanners {
@@ -45,7 +43,7 @@ $container-background: #d9e4e8;
   &__card {
     background: #fff;
     border-radius: 0.75rem;
-    padding: $spacing--md;
+    padding: globals.$spacing--md;
     display: flex;
     align-items: flex-start;
     gap: 1rem;
@@ -59,7 +57,7 @@ $container-background: #d9e4e8;
     text-decoration: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
-    @include breakpoint('md') {
+    @include globals.breakpoint('md') {
       width: 45%;
       min-width: 300px;
       max-width: 400px;
