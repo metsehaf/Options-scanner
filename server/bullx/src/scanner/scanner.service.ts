@@ -2,7 +2,6 @@ import { Injectable, Logger } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { catchError, map, Observable, of } from "rxjs";
 import { AxiosResponse } from "axios";
-import { ConfigService } from "@nestjs/config";
 import { IStockPercent, mostActiveStock, mostGainersStock, mostLosersStock } from "./scanner.model";
 import { ScannerServiceModel } from "./scanner.model";
 import { ScannerMapService } from "./scanner.map.service";
@@ -11,7 +10,7 @@ import { ScannerMapService } from "./scanner.map.service";
 @Injectable()
 export class ScannerService implements ScannerServiceModel {
     private readonly logger = new Logger(ScannerService.name); // 📢 this will tag logs with 'ScannerService'
-    constructor(private readonly httpService: HttpService, private configService: ConfigService, private scannerMapService: ScannerMapService) { }
+    constructor(private readonly httpService: HttpService, private scannerMapService: ScannerMapService) { }
     
     getActivePennyStocks(apiKey: string | undefined, epURL: string | undefined): Observable<mostActiveStock>{
         if (!apiKey || !epURL) {

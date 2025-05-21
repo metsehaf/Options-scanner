@@ -4,7 +4,7 @@
     z-index: 0;
     width: 100%;
     height: 500px; // Full-page height for hero effect
-    color: $light-text;
+    color: globals.$light-text;
     overflow: hidden;
 
     &__inner {
@@ -18,12 +18,12 @@
         width: 100%;
         height: 100%;
         margin: auto;
-        padding: 0 $spacing--lg;
+        padding: 0 globals.$spacing--lg;
 
-        @include max-screen-size;
+        @include globals.max-screen-size;
 
-        @include breakpoint(lg) {
-            padding: 0 $spacing--2xl;
+        @include globals.breakpoint(lg) {
+            padding: 0 globals.$spacing--2xl;
         }
 
         h1 {

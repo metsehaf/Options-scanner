@@ -12,7 +12,7 @@
   }
   
   .l-active-header {
-    color: $primary !important; 
+    color: globals.$primary !important; 
     text-decoration: underline;
     font-weight: bold;
   }

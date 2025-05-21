@@ -1,4 +1,4 @@
-@use 'src/scss/globals' as *;
+@use 'src/scss/globals.module' as globals;
 
 .l-footer {
     width: 100%;
@@ -6,14 +6,14 @@
     padding: 2rem;
     display: block;
     position: relative;
-    @include max-screen-size;
+    @include globals.max-screen-size;
 
     &-container{
         display:  flex;
         flex-direction: column;
         justify-content: space-around;
         gap: 20px;
-        @include breakpoint(md){
+        @include globals.breakpoint(md){
             flex-direction: row;
         }
     }

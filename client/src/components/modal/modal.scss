@@ -1,11 +1,15 @@
+@use 'src/scss/globals.module' as globals;
+
 .modal {
-    width: 568px;
-    max-width: 70vw;
-    padding: $spacing--xl;
-    height: auto;
+    width: 600px;
+    max-width: 90vw;
+    min-height: 250px;
+    padding: globals.$spacing--xl;
+    height: 600px;
     border: 0;
-    border-radius: 0.5rem;
+    border-radius: globals.$spacing-unit;
     position: relative;
+    margin: auto;
     box-shadow: hsl(0 0% 0% / 10%) 0 0 0.5rem 0.25rem;
 
     &::backdrop {
@@ -13,7 +17,7 @@
       }
       
       &-close-btn {
-        font-size: 0.75em;
+        font-size: globals.$text--sm;
         position: absolute;
         top: 0.25em;
         right: 0.25em;

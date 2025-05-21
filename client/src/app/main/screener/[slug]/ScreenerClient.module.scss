@@ -5,8 +5,8 @@
     height: 100vh;
     padding: 2rem;
     padding-left: 0; // avoid doubling with sidebar
-    margin: $spacing--lg;
-    @include max-screen-size;
+    margin: globals.$spacing--lg;
+    @include globals.max-screen-size;
   
     h1 {
       margin-bottom: 0.5rem;

@@ -1,7 +1,3 @@
-@use './tools/functions.tool' as *;
-@use './tools/mixins.tool' as *;
-@use './settings/colors.hc.settings' as *;
-@use './settings/system.settings' as *;
 @forward './tools/functions.tool'; // Expose functions
 @forward './settings/colors.hc.settings'; // Expose colors
 @forward './settings/system.settings';

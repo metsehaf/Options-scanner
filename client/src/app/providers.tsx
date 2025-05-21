@@ -21,13 +21,11 @@ const theme = createTheme({
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider theme={theme}>
-      <EnvironmentsProvider>
         <ErrorProvider>
           <ErrorBoundary>
             {children}
           </ErrorBoundary>
         </ErrorProvider>
-      </EnvironmentsProvider>
     </ThemeProvider>
   );
 }

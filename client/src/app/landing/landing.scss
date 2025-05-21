@@ -1,4 +1,4 @@
-@use 'src/scss/globals' as *;
+@use 'src/scss/globals.module' as globals;
 
 .l-main {
     position: relative;
@@ -14,10 +14,10 @@
     width: 100%;
     margin: auto;
     box-sizing: border-box;
-    @include max-screen-size;
+    @include globals.max-screen-size;
 
-    @include breakpoint(md) {
-        padding: $spacing--xl $spacing--xl 0;
+    @include globals.breakpoint(md) {
+        padding: globals.$spacing--xl globals.$spacing--xl 0;
     }
 }
 
@@ -25,10 +25,10 @@
     background-color: #F3F3F3;
     width: 100%;
     display: block;
-    padding: $spacing--4xl;
+    padding: globals.$spacing--4xl;
    
     &-title {
-        font-size: $text--lg;
+        font-size: globals.$text--lg;
         line-height: 2.5;
         font-weight: bold;
         text-align: center;
@@ -41,13 +41,13 @@
         flex-wrap: wrap;
         position: relative;
         width: 100%;
-        padding: 0 $spacing--2xl;
+        padding: 0 globals.$spacing--2xl;
         flex-direction: column;
-        @include max-screen-size;
+        @include globals.max-screen-size;
 
-        @include breakpoint(md){
+        @include globals.breakpoint(md){
             flex-direction: row;
-            padding: 0 $spacing--3xl;
+            padding: 0 globals.$spacing--3xl;
         }
 
         &--content {
@@ -58,22 +58,22 @@
             display: flex;
             min-height: 1px;
             position: relative;
-            padding: $spacing--xl;
+            padding: globals.$spacing--xl;
 
             &_icon {
                 .MuiSvgIcon-root {
                     width: 34px;
                     height: 34px;
-                    fill: $primary;
-                    margin-bottom: $spacing--md;
+                    fill: globals.$primary;
+                    margin-bottom: globals.$spacing--md;
                 }
 
                 width: 100%;
-                margin-bottom: $spacing--md;
+                margin-bottom: globals.$spacing--md;
             }
 
             &__sub-header {
-                margin-bottom: $spacing--md;
+                margin-bottom: globals.$spacing--md;
 
                 h4 {
                     font-size: 22px;
@@ -102,7 +102,7 @@
     flex-direction: row;
     gap: 100px;
     box-sizing: inherit;
-    padding: $spacing--3xl $spacing--4xl;
+    padding: globals.$spacing--3xl globals.$spacing--4xl;
     background-color: #f0eaf4;
 
     &-content {
@@ -114,22 +114,22 @@
         gap: 20px;
 
         &-title {
-            font-size: $text--2xl;
-            color: $primary;
+            font-size: globals.$text--2xl;
+            color: globals.$primary;
             font-weight: 700;
             line-height: 1.2em;
-            margin-bottom: $spacing--lg;
+            margin-bottom: globals.$spacing--lg;
         }
 
         &-sub-header {
-            font-size: $text--sm;
+            font-size: globals.$text--sm;
             font-weight: 500;
-            margin-bottom: $spacing--lg;
+            margin-bottom: globals.$spacing--lg;
         }
 
         &-divider {
             width: 40%;
-            color: $primary;
+            color: globals.$primary;
             align-self: center;
             height: 20px;
         }
@@ -153,7 +153,7 @@
             width: 100%;
             object-fit: cover;
             height: 100%;
-            border-radius: $spacing-unit;
+            border-radius: globals.$spacing-unit;
         }
     }
 }
@@ -164,17 +164,17 @@
     flex-wrap: wrap;
     flex-direction: column;
     gap: 20px;
-    padding: $spacing--lg;
+    padding: globals.$spacing--lg;
 
-    @include breakpoint(md) {
+    @include globals.breakpoint(md) {
         flex-direction: row;
-        padding: 3.35rem $spacing--md;
+        padding: 3.35rem globals.$spacing--md;
     }
 
     .MuiCard-root {
         width: 100%;
 
-        @include breakpoint(md) {
+        @include globals.breakpoint(md) {
             width: 23%;
         }
     }
@@ -186,10 +186,10 @@
     position: relative;
     margin: auto;
     box-sizing: border-box;
-    @include max-screen-size;
+    @include globals.max-screen-size;
 
-    @include breakpoint(md) {
-        padding: $spacing--xl $spacing--xl 0;
+    @include globals.breakpoint(md) {
+        padding: globals.$spacing--xl globals.$spacing--xl 0;
     }
 
     &-brokerages {
@@ -199,8 +199,8 @@
         position: relative;
         align-items: center;
         gap: 20px;
-        @include breakpoint(md) {
-            padding: 0 $spacing--3xl;
+        @include globals.breakpoint(md) {
+            padding: 0 globals.$spacing--3xl;
         }
 
         &-container {
@@ -231,7 +231,7 @@
         width: 100%;
 
         h2{
-            font-size: $text--lg;
+            font-size: globals.$text--lg;
             line-height: 2.5;
             font-weight: bold;
             text-align: center;
