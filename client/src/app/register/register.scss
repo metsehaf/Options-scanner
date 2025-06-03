@@ -1,3 +1,5 @@
+@use 'src/scss/globals.module' as globals;
+
 .register-page {
     max-height: 100vh;
     background-color: #f9fafb;

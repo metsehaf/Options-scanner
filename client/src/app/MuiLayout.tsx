@@ -1,24 +1,24 @@
-'use client'
+"use client";
 
-import ButtonAppBar from './header/header'
-import OptikonFooter from './footer/footer'
-import React from 'react';
-import { usePathname } from 'next/navigation';
+import ButtonAppBar from "./header/header";
+import OptikonFooter from "./footer/footer";
+import React from "react";
+import { usePathname } from "next/navigation";
 
 export default function MuiLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   // Hide layout for dashboard (or any routes you want)
-  const hideLayout = pathname.startsWith('/main');
+  const hideLayout = pathname.startsWith("/main");
 
   if (hideLayout) {
     return <>{children}</>;
   }
   return (
-    <>
+    <main>
       <ButtonAppBar />
       {children}
       <OptikonFooter />
-    </>
+    </main>
   );
 }

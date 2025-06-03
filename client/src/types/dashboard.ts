@@ -14,6 +14,8 @@ export type cardType = {
 
 export type CustomCardProps = {
     image: StaticImageData;
-    title: string;
+    title?: string;
     description?: string;
+    height?: number | string;
+    width?: number | string;
   };

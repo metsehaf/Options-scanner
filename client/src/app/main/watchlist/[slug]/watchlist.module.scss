@@ -1,0 +1,287 @@
+@use "src/scss/globals.module" as globals;
+.container {
+  padding: 2rem;
+}
+
+.header {
+  margin-bottom: 1rem;
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .priceBlock {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  .changeUp {
+    color: #16a34a; // green
+  }
+
+  .changeDown {
+    color: #dc2626; // red
+  }
+}
+
+.chartPlaceholder {
+  display: flex;
+  align-items: flex-end;
+  height: 100px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+
+  .bar {
+    flex: 1;
+    margin: 0 1px;
+    background: #64748b;
+    border-radius: 2px 2px 0 0;
+  }
+}
+
+.metrics {
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .metricGrid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+
+    &-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+
+      > div {
+        flex: 1;
+        padding: 0.5rem;
+        background: #f9fafb;
+        border-radius: 6px;
+        margin-right: 1rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    span {
+      display: block;
+      font-size: 1rem;
+      margin-top: 2px;
+    }
+  }
+}
+
+.meta {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  .addBtn {
+    background: #2563eb;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: #1d4ed8;
+    }
+  }
+}
+
+.l-related-stocks {
+  width: 1200px;
+  max-width: 1200px;
+  display: block;
+  position: relative;
+
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  table {
+    border-collapse: separate !important;
+    border-spacing: 0;
+  }
+  @include globals.breakpoint(xxsm) {
+    overflow-x: auto;
+  }
+
+  @include globals.breakpoint(md) {
+    overflow-x: visible;
+  }
+
+  &__noData {
+    text-align: center;
+
+    @include globals.breakpoint(xxsm) {
+      width: 90%;
+      margin: 0 1rem 0 1rem;
+    }
+
+    @include globals.breakpoint(sm) {
+      margin: auto;
+      width: 50%;
+    }
+
+    .mat-icon {
+      height: auto;
+      fill: globals.$warn;
+      color: globals.$warn;
+
+      @include globals.breakpoint(xxsm) {
+        width: 150px;
+      }
+
+      @include globals.breakpoint(sm) {
+        width: 200px;
+      }
+    }
+
+    &--content {
+      font-size: globals.$text--lg;
+      font-weight: bold;
+    }
+  }
+
+  &--table {
+    width: 100%;
+    table-layout: fixed;
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;
+
+    @include globals.breakpoint(md) {
+      margin-left: 5rem;
+    }
+
+    &__header {
+      width: 100%;
+
+      &__contents {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        height: 50px;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-bottom: 0.2px solid #b9b9b9;
+
+        th {
+          width: 200px;
+        }
+
+        th:nth-child(2) {
+          width: 250px;
+        }
+
+        th:last-child {
+          width: 100px;
+        }
+
+        th:first-child {
+          width: 100px;
+        }
+
+        a {
+          text-decoration: none;
+          color: #68675d;
+          text-decoration: none;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 28px;
+        }
+
+        &--column {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          width: 100%;
+          cursor: pointer;
+
+          span {
+            margin-right: 1rem;
+          }
+        }
+      }
+    }
+
+    &__body {
+      width: 100%;
+
+      &__contents {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 1rem 2rem;
+        border-bottom: 0.2px solid #b9b9b9;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &--column {
+          width: 200px;
+          padding: 0.5rem 0rem 1rem 0rem;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+
+          span {
+            font-size: globals.$text--xs;
+            font-weight: 500;
+          }
+        }
+
+        &--column:nth-child(1) {
+          span {
+            font-weight: 300;
+          }
+        }
+
+        &--column:nth-child(2) {
+          width: 250px;
+        }
+
+        &--column:last-child {
+          width: 100px;
+        }
+
+        &--column:first-child {
+          width: 100px;
+        }
+
+        // &--column:nth-child(4) {
+        //   justify-content: center;
+        // }
+      }
+    }
+  }
+}

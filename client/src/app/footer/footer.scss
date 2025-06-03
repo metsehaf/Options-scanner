@@ -2,36 +2,26 @@
 
 .l-footer {
     width: 100%;
-    background-color: #fff;
-    padding: 2rem;
+    padding: $spacing--xl;
     display: block;
     position: relative;
     @include globals.max-screen-size;
 
     &-container{
-        display:  flex;
-        flex-direction: column;
-        justify-content: space-around;
-        gap: 20px;
-        @include globals.breakpoint(md){
-            flex-direction: row;
-        }
+        display: block;
+        width: 100%;
     }
 
     &-section{
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem; /* Adds spacing between list items */
-        flex-grow: 1;
-        h5 {
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        
+        width: inherit;
+        box-sizing: border-box;
         ul {
-            list-style: none;
-            padding: 0;
+            display: flex;
+            gap: 5rem;
+            justify-content: center;
+            align-items: center;
+            color: $dark-text;
+            @include globals.reset-list // Reset default list styles
         }
         
         li {
@@ -40,7 +30,7 @@
         }
         
         li:hover {
-            color: #f0f0f0;
+            color: $primary;
         }
     }
     

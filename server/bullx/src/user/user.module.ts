@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from './entities/user.entity';

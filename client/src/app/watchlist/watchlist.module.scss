@@ -1,10 +1,30 @@
 @use 'src/scss/globals.module' as globals;
+
 .l-main{
     position: relative;
     display: block;
     height: 100%;
     width: 100%;
     margin-bottom: 5.25rem;
+}
+
+.l-watchlist-header{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+    box-sizing: border-box;
+    padding: globals.$spacing--xl globals.$spacing--3xl 0;
+    @include globals.max-screen-size;
+
+    h1{
+        font-size: globals.$text--xl;
+        line-height: 1.2;
+        font-weight: bold;
+        color: #354050;
+        margin-bottom: globals.$spacing--md;
+    }
 }
 
 .l-section{
@@ -23,52 +43,12 @@
     width: 100%;
     position: relative;
     display: flex;
-    flex-direction: row;
-    gap: 100px;
+    flex-direction: column;
+    align-items: center;
     box-sizing: inherit;
-    padding: globals.$spacing--3xl globals.$spacing--4xl;
-
-    &-content{
-        width: 45%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 20px;
-
-        &-title{
-            font-size: globals.$text--2xl;
-            color: globals.$primary;
-            font-weight: 700;
-            line-height: 1.2em;
-            margin-bottom: globals.$spacing--lg;
-        }
-
-        &-sub-header{
-            font-size: globals.$text--sm;
-            font-weight: 500;
-            margin-bottom: globals.$spacing--lg;
-        }
-
-        &-divider{
-            width: 40%;
-            color: globals.$primary;
-            align-self: center;
-            height: 20px;
-        }
-
-        &-cta{
-            height: 36px;
-            width: 150px;
-            padding: 15px 20px;
-            line-height: 1;
-            font-size: 20px;
-            display: inline-flex;
-        }
-    }
 
     &-background{
-        width: 45%;
+        width: 25%;
         // height: 300px;
         max-width: 40%;
         img{
@@ -78,19 +58,48 @@
             border-radius: globals.$spacing-unit;
         }
     }
+
+    &-content{
+        width: 55%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: globals.$spacing--xl;
+
+        h2{
+            font-size: globals.$text--xl;
+            line-height: 1.2;
+            font-weight: bold;
+            color: #354050;
+            margin-bottom: globals.$spacing--md;
+        }
+
+        p{
+            font-size: globals.$text--lg;
+            line-height: 1.5;
+            color: #354050;
+            margin-bottom: globals.$spacing--md;
+        }
+    }
 }
 
 .l-features {
-    background-color: #F3F3F3;
     width: 100%;
     display: block;
-    padding: globals.$spacing--3xl;
-
+    @include globals.max-screen-size;
     &-title {
-        font-size: globals.$text--lg;
-        line-height: 2.5;
-        font-weight: bold;
-        text-align: center;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 0 globals.$spacing--3xl;
+        h2{
+            font-size: globals.$text--xl;
+            line-height: 2.5;
+            font-weight: bold;
+        }
     }
 
     &-slot {
@@ -100,12 +109,15 @@
         flex-wrap: wrap;
         position: relative;
         width: 100%;
-        padding: 0 globals.$spacing--xl;
+        padding: 0 globals.$spacing--2xl;
         flex-direction: column;
+        gap: 5px;
+        color: globals.$light-text;
+        @include globals.max-screen-size;
 
         @include globals.breakpoint(md){
             flex-direction: row;
-            padding: 0 globals.$spacing--2xl;
+            padding: 0 globals.$spacing--3xl;
         }
 
         &--content {
@@ -115,15 +127,18 @@
             flex: 1;
             display: flex;
             min-height: 1px;
-            max-height: 250px;
             position: relative;
+            background-color: #2B0F47;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid globals.$primary;
+            border-radius: 5px;
             padding: globals.$spacing--xl;
 
             &_icon {
                 .MuiSvgIcon-root {
                     width: 34px;
                     height: 34px;
-                    fill: globals.$primary;
+                    fill: globals.$light-text;
                     margin-bottom: globals.$spacing--md;
                 }
 
@@ -137,8 +152,7 @@
                 h4 {
                     font-size: 22px;
                     font-weight: bold;
-                    color: #354050;
-
+                    color: globals.$light-text;
                 }
             }
 

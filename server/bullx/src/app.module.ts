@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvironmentModule } from './environment/environment.module';
 import { ScannerModule } from './scanner/scanner.module';
 import { SearchModule } from './search/search.module';
+import { WatchlistModule } from './watchlist/watchlist.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SearchModule } from './search/search.module';
     EnvironmentModule,
     ScannerModule,
     SearchModule,
+    WatchlistModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -32,10 +34,10 @@ import { SearchModule } from './search/search.module';
         autoLoadEntities: true,
         synchronize: true,
         logging: true,
-      })
+      }),
     }),
   ],
   controllers: [GetStocksController],
   providers: [StockService],
 })
-export class AppModule { }
+export class AppModule {}

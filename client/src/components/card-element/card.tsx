@@ -1,45 +1,54 @@
-import { Card, CardContent, Box, Typography } from '@mui/material';
-import { CustomCardProps } from '../../types/dashboard'
+"use client";
+import { Card, CardContent, Box, Typography, Button } from "@mui/material";
+import { CustomCardProps } from "../../types/dashboard";
 
-
-
-export default function CustomCard({ image, title, description }: CustomCardProps) {
+export default function CustomCard({
+  image,
+  title,
+  description,
+  height,
+  width,
+}: CustomCardProps) {
+  const handleLogin = () => {
+    window.location.href = "/api/auth/custom-login";
+  };
   return (
     <Card
       sx={{
-        position: 'relative',
-        height: 300,
+        position: "relative",
+        height: height || 300,
+        width: width,
         borderRadius: 4,
-        overflow: 'hidden',
+        overflow: "hidden",
       }}
     >
       {/* Background Image */}
       <Box
         sx={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           left: 0,
-          width: '100%',
-          height: '100%',
+          width: "100%",
+          height: "100%",
           backgroundImage: `url(${image.src})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'brightness(0.6)', // Dims image for text contrast
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.6)", // Dims image for text contrast
         }}
       />
 
       {/* Overlay Content */}
       <CardContent
         sx={{
-          position: 'absolute',
-          bottom: 0,
-          color: 'white',
-          width: '100%',
-          background: 'rgba(0, 0, 0, 0.4)', // Slight dark background for readability
-          padding: 2,
+          position: "absolute",
+          top: "5rem",
+          color: "white",
+          width: "100%",
+          padding: "5rem",
+          textAlign: "center",
         }}
       >
-        <Typography variant="h5" fontWeight="bold">
+        <Typography variant="h2" fontWeight="bolder">
           {title}
         </Typography>
         {description && (
@@ -47,6 +56,29 @@ export default function CustomCard({ image, title, description }: CustomCardProp
             {description}
           </Typography>
         )}
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: { xs: "none", md: "flex" },
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "1px",
+            marginTop: "2rem",
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "primary",
+              color: "black",
+              backgroundColor: "white",
+              borderRadius: "20px",
+            }}
+            onClick={handleLogin}
+          >
+            Sign Up / Log in
+          </Button>
+        </Box>
       </CardContent>
     </Card>
   );
