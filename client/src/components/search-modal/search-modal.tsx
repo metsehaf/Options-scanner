@@ -36,20 +36,6 @@ const SearchModal = ({
     }
   }, [isOpen]);
 
-  // Update local form state
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Handle form submission
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    onSubmit(formData);
-  };
-
   const handleClose = () => {
     setFormData(modalData);
     onClose();
@@ -59,8 +45,18 @@ const SearchModal = ({
     <Modal hasCloseBtn={false} isOpen={isOpen} onClose={handleClose}>
       <div className="l-search-modal">
         <h1>Type an investment name or symbol</h1>
-        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: 'flex-end', marginRight: '1rem' } }}>
-          <ClientOnlySearchBar />
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: {
+              xs: "none",
+              md: "flex",
+              justifyContent: "flex-end",
+              marginRight: "1rem",
+            },
+          }}
+        >
+          <ClientOnlySearchBar isOpen={isOpen} />
         </Box>
       </div>
     </Modal>

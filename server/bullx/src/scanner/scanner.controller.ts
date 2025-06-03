@@ -12,7 +12,7 @@ export class ScannerController {
 
     constructor(private readonly scannerService: ScannerService, private readonly configService: ConfigService) {
         this.apiKey = this.configService.get<string>('FMP_API_KEY');
-        this.epURL = this.configService.get<string>('FMP_API_URL');
+        this.epURL = this.configService.get<string>('FMP_API_URL_v3');
     }
 
     @Get('most-active')

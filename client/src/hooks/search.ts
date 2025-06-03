@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useDebouncedValue } from '@hooks/debounce';
-import { createFetcherWithToken } from '@lib/fetcher';
-import { SearchResult } from '@types/search';
+import { useEffect, useState } from "react";
+import { useDebouncedValue } from "@hooks/debounce";
+import { SearchResult } from "@types/search";
+import { searchService } from "@lib/services/searchService";
 
-export  function useSearch(query: string) {
+export function useSearch(query: string, market: string, enabled: boolean) {
   const debouncedSearch = useDebouncedValue(query, 400);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -12,29 +12,23 @@ export  function useSearch(query: string) {
     let isMounted = true;
 
     const fetchData = async () => {
-      if (!debouncedSearch) return;
+      // Skip only if market is not selected
+      console.log(enabled);
+      if (!enabled || query === "") return;
+
       setLoading(true);
 
       try {
-        // Step 1: Fetch the token from your backend
-        const tokenRes = await fetch('/api/token');
-        const tokenJson = await tokenRes.json();
-        const token = tokenJson.token;
-
-        if (!token || !isMounted) return;
-
-        // Step 2: Call your NestJS API
-        const fetcher = createFetcherWithToken(token);
-        const results: SearchResult[] = await fetcher(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/search?query=${debouncedSearch}`
+        if (!isMounted) return;
+        const response = await searchService.searchStock(
+          debouncedSearch,
+          market
         );
-
-        if (isMounted) {
-          console.log('Search results:', results);
-          setResults(results || []);
-        }
+        console.log("Search results:", response);
+        setResults(response || []);
       } catch (error) {
-        console.error('Search error:', error);
+        console.error("Search error:", error);
+        if (isMounted) setResults([]);
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -45,7 +39,7 @@ export  function useSearch(query: string) {
     return () => {
       isMounted = false;
     };
-  }, [debouncedSearch]);
+  }, [debouncedSearch, market, enabled]);
 
   return { results, loading };
 }

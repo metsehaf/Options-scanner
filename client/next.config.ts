@@ -18,6 +18,17 @@ const nextConfig = {
     scope: 'openid profile email',
     audience: process.env.AUTH0_AUDIENCE,
   },
+  headers: () => [
+    {
+      source: '/(.*)',
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'no-store',
+        },
+      ],
+    },
+  ],
 }
 
 export default nextConfig

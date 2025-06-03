@@ -6,7 +6,8 @@
   }
 
   .l-header {
-    color: black;
+    color: $light--text;
+    background-color: globals.$primary-background;
     font-size: 16px; 
     text-decoration: none;
   }
