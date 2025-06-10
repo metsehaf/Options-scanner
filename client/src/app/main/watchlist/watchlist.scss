@@ -1,103 +1,409 @@
-@use 'src/scss/globals.module' as globals;
+// watchlist.scss
+@use "src/scss/globals.module" as globals;
 
 .l-watchlist {
-    display: block;
-    position: relative;
+  display: flex; // Changed to flex to center content easily
+  flex-direction: column;
+  align-items: center; // Center content
+  width: 100%;
+  padding: globals.$spacing--xl; // Add overall padding
+  background-color: #f9fafb; // Light background for the whole page area
+
+  &__header {
     width: 100%;
-    @include globals.max-screen-size;
-    background-color: #f9fafb;
+    max-width: 1200px; // Constrain width
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: globals.$spacing--lg;
+    // border-bottom: 1px solid #e0e0e0; // Removed as per mockup, integrated into actions box shadow
 
-    &__header {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding-bottom: globals.$spacing--lg;
-        border-bottom: 1px solid #e0e0e0;
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-            color: #1f2937; // dark grayish blue
-        }
-
-        p {
-            font-size: 1rem;
-            color: #6b7280; // soft gray
-            margin: 0;
-        }
+    h1 {
+      font-size: 1.875rem; // Equivalent to 30px
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #1f2937; // Dark grayish blue
     }
 
-    &__actions {
-        display: flex;
-        flex-wrap: wrap;
-        width: 100%;
-        padding: globals.$spacing--lg 0;
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-        margin-top: globals.$spacing--lg;
-
-        &--left,
-        &--middle,
-        &--right {
-            display: flex;
-            align-items: center;
-            padding: globals.$spacing--sm;
-        }
-
-        &--left {
-            justify-content: flex-start;
-        }
-
-        &--middle {
-            justify-content: center;
-
-            .MuiTabs-root {
-                border-radius: 5px;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-            }
-        }
-
-        &--right {
-            flex: 1;
-            justify-content: flex-end;
-            min-width: 300px;
-        }
+    p {
+      font-size: 1rem;
+      color: #6b7280; // Soft gray
+      margin: 0;
     }
+  }
 
-    &__no-data {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: globals.$spacing--xl;
-        background-color: #fafafa;
-        border-radius: 12px;
-        min-height: 300px;
-        flex-direction: column;
-        &--icon {
-            width: 100px;
-            height: 100px;
-            margin-bottom: globals.$spacing--md;
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px; // Constrain width
+    padding: globals.$spacing--md globals.$spacing--lg; // Adjusted padding
+    background-color: globals.$light-text; // White background
+    border-radius: 8px; // Softer border-radius
+    box-shadow:
+      0 4px 6px rgba(0, 0, 0, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.04); // More pronounced shadow
+    margin-top: globals.$spacing--xl; // More space from header
+    justify-content: space-between; // Space out items
+    gap: 10px;
+    align-items: center;
+
+    &--left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .l-watchlist__add-stock-btn {
+        text-transform: none; // Keep button text as is
+        border-color: #d1d5db; // Light gray border
+        color: #374151; // Darker text
+        &:hover {
+          background-color: #f3f4f6; // Light hover
         }
-      
-          h2 {
-            font-size: 1.5rem;
-            margin-bottom: globals.$spacing--sm;
-            color: #333;
-          }
-      
-          p {
-            font-size: 1rem;
-            color: #666;
-            margin-bottom: globals.$spacing--md;
-          }
-      
-          button {
-            margin-top: globals.$spacing--sm;
-            text-transform: none;
-            font-weight: 200;
-          }
       }
+    }
+
+    &--middle {
+      display: flex;
+      justify-content: center;
+      .l-watchlist__tabs {
+        min-height: unset; // Remove min-height from tabs container
+        background-color: #f3f4f6; // Light gray background for tabs
+        border-radius: 6px; // Rounded corners for the tabs container
+        .MuiTabs-indicator {
+          display: none; // Hide the default indicator
+        }
+        .l-watchlist__tab {
+          min-width: 100px; // Minimum width for tabs
+          &.Mui-selected {
+            background-color: globals.$light-text; // White background for selected tab
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); // Subtle shadow for selected tab
+            color: globals.$primary; // Blue text for selected
+          }
+        }
+      }
+    }
+
+    &--right {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      .l-watchlist__new-portfolio-btn {
+        text-transform: none; // Keep button text as is
+        background-color: globals.$primary; // Blue background
+        &:hover {
+          background-color: #2563eb; // Darker blue on hover
+        }
+      }
+    }
+    @include globals.breakpoint(md) {
+      flex-direction: row; // Arrange in a row on medium screens and up
+    }
+  }
+
+  &__no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: globals.$spacing--xl;
+    background-color: globals.$light-text; // White background
+    border-radius: 8px;
+    min-height: 300px;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: globals.$spacing--xl;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    &--icon {
+      width: 80px; // Slightly smaller icon
+      height: 80px;
+      margin-bottom: globals.$spacing--md;
+      color: #9ca3af; // Gray icon color
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: globals.$spacing--sm;
+      color: #374151; // Darker text
+    }
+
+    p {
+      font-size: 1rem;
+      color: #6b7280;
+      margin-bottom: globals.$spacing--md;
+    }
+
+    button {
+      margin-top: globals.$spacing--sm;
+      text-transform: none;
+      font-weight: 500; // Medium font-weight
+      background-color: globals.$primary; // Blue button
+      &:hover {
+        background-color: #2563eb;
+      }
+    }
+  }
+
+  &__populated {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: globals.$spacing--xl; // Gap between sections
+    margin-top: globals.$spacing--xl;
+
+    &--table-wrapper {
+      background-color: globals.$light-text; // White background
+      border-radius: 8px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04); // Shadow
+      overflow-x: auto; // Ensure responsiveness for table
+    }
+
+    &--table {
+      width: 100%;
+      border-collapse: collapse; // Collapse borders
+      font-size: 0.9375rem; // Slightly smaller font for table content
+
+      &__header {
+        background-color: #f9fafb; // Light gray for header background
+        &__contents {
+          display: table-row; // Ensure it behaves like a table row
+          height: 48px; // Fixed height for header row
+          th {
+            font-weight: 600; // Semi-bold for headers
+            color: #6b7280; // Gray color for headers
+            text-align: left;
+            padding: 12px 24px; // Adjusted padding
+            border-bottom: 1px solid #e5e7eb; // Light border at the bottom
+          }
+          th:first-child {
+            border-top-left-radius: 8px; // Rounded corners for first header cell
+          }
+          th:last-child {
+            border-top-right-radius: 8px; // Rounded corners for last header cell
+          }
+        }
+      }
+
+      &__body {
+        background: globals.$light-text;
+        &__contents {
+          display: table-row;
+          border-bottom: 1px solid #e5e7eb; // Light border between rows
+
+          &__positive {
+            color: #10b981; // Green for positive change
+            font-weight: 500;
+          }
+          &__negative {
+            color: #ef4444; // Red for negative change
+            font-weight: 500;
+          }
+          &:last-child {
+            border-bottom: none; // No border for the last row
+          }
+
+          td {
+            padding: 12px 24px; // Adjusted padding
+            color: #374151; // Darker text for content
+            vertical-align: middle;
+
+            .l-watchlist__delete-icon {
+              color: #9ca3af; // Gray trash icon
+              cursor: pointer;
+              &:hover {
+                color: #ef4444; // Red on hover
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &--more {
+      width: 100%;
+      background-color: globals.$light-text; // White background
+      border-radius: 8px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04); // Shadow
+      padding: globals.$spacing--lg globals.$spacing--xl; // Adjusted padding
+
+      h2 {
+        margin-bottom: globals.$spacing--md; // Space below heading
+        font-size: 1.25rem; // Slightly larger heading
+        font-weight: 600; // Semi-bold
+        color: #1f2937;
+      }
+      p {
+        color: #6b7280;
+        font-size: 0.9375rem;
+      }
+
+      &_container {
+        display: grid; // Use grid for flexible layout
+        grid-template-columns: repeat(
+          auto-fill,
+          minmax(150px, 1fr)
+        ); // Responsive columns
+        gap: globals.$spacing--xs; // Gap between cards
+        margin-top: globals.$spacing--lg; // More space from heading
+
+        &--item {
+          display: flex;
+          flex-direction: column;
+          min-height: 180px; // Min height for news items
+          max-width: 220px;
+          padding: globals.$spacing--md;
+          background-color: globals.$light-text;
+          border: 1px solid #e5e7eb; // Subtle border
+          border-radius: 8px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); // Subtle shadow
+          justify-content: space-between; // Push link to bottom
+          align-items: center;
+
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: globals.$spacing--xs;
+            color: #374151;
+          }
+
+          p {
+            font-size: 0.875rem; // Smaller font for content
+            color: #6b7280;
+            margin-bottom: globals.$spacing--sm;
+            flex-grow: 1; // Allow content to grow
+          }
+
+          a {
+            font-size: 0.875rem;
+            color: globals.$primary; // Blue link color
+            text-decoration: none;
+            font-weight: 500;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+    &--news {
+      width: 100%;
+      background-color: globals.$light-text; // White background
+      border-radius: 8px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04); // Shadow
+      padding: globals.$spacing--lg globals.$spacing--xl; // Adjusted padding
+
+      h2 {
+        margin-bottom: globals.$spacing--md; // Space below heading
+        font-size: 1.25rem; // Slightly larger heading
+        font-weight: 600; // Semi-bold
+        color: #1f2937;
+      }
+      p {
+        color: #6b7280;
+        font-size: 0.9375rem;
+      }
+
+      &_container {
+        display: grid; // Use grid for flexible layout
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(280px, 1fr)
+        ); // Responsive columns
+        gap: globals.$spacing--md; // Gap between cards
+        margin-top: globals.$spacing--lg; // More space from heading
+
+        &--item {
+          display: flex;
+          flex-direction: column;
+          min-height: 180px; // Min height for news items
+          padding: globals.$spacing--md;
+          background-color: globals.$light-text;
+          border: 1px solid #e5e7eb; // Subtle border
+          border-radius: 8px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); // Subtle shadow
+          justify-content: space-between; // Push link to bottom
+
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: globals.$spacing--xs;
+            color: #374151;
+          }
+
+          p {
+            font-size: 0.875rem; // Smaller font for content
+            color: #6b7280;
+            margin-bottom: globals.$spacing--sm;
+            flex-grow: 1; // Allow content to grow
+          }
+
+          a {
+            font-size: 0.875rem;
+            color: globals.$primary; // Blue link color
+            text-decoration: none;
+            font-weight: 500;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+
+    &--more {
+      p {
+        margin-bottom: globals.$spacing--md; // Space below "You may be interested in"
+      }
+
+      &__positive {
+        color: #10b981; // Green for positive change
+        font-weight: 500;
+      }
+      &__negative {
+        color: #ef4444; // Red for negative change
+        font-weight: 500;
+      }
+
+      &_container {
+        &--item {
+          min-height: 150px; // Adjusted min height for more items
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #374151;
+          }
+          p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: globals.$spacing--sm;
+          }
+          span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: globals.$spacing--sm;
+            display: block; // Make span a block element for margin
+          }
+          .l-watchlist__view-stock-btn {
+            text-transform: none;
+            background-color: #e0e7ff; // Light blue background
+            color: #3f51b5; // Darker blue text
+            box-shadow: none; // Remove default button shadow
+            width: 100%;
+            margin: 0 1rem;
+            &:hover {
+              background-color: #c7d2fe; // Lighter blue on hover
+            }
+          }
+        }
+      }
+    }
+  }
 }

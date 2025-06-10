@@ -1,12 +1,6 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  BeforeInsert,
-  OneToMany,
-} from 'typeorm';
-import * as bcrypt from 'bcrypt';
-import { WatchlistItem } from 'src/watchlist/watchlist-item.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { WatchlistItem } from '../../watchlist/entities/watchlist-item.entity';
+import { Portfolio } from 'src/portfolio/entities/portfolio.entity';
 
 @Entity()
 export class User {
@@ -18,4 +12,7 @@ export class User {
 
   @OneToMany(() => WatchlistItem, (watchlistItem) => watchlistItem.user)
   watchlistItems: WatchlistItem[];
+
+  @OneToMany(() => Portfolio, (portfolio) => portfolio.user)
+  portfolios: Portfolio[];
 }
