@@ -18,6 +18,7 @@ export default function CustomCard({
         position: "relative",
         height: height || 300,
         width: width,
+        minHeight: 250,
         borderRadius: 4,
         overflow: "hidden",
       }}

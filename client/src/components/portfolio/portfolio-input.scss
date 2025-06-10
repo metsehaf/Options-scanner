@@ -1,0 +1,14 @@
+@use "src/scss/globals.module" as globals;
+
+.l-portfolio-input {
+  width: 100%;
+  display: block;
+  position: relative;
+
+  .l-portfolio-input__form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: globals.$spacing--md;
+  }
+}

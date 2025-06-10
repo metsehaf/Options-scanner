@@ -1,0 +1,17 @@
+@use "src/scss/globals.module" as globals;
+
+.modal {
+  height: 250px;
+}
+
+.l-portfolio-modal {
+  width: 100%;
+  display: block;
+  position: relative;
+
+  h1 {
+    font-size: globals.$text--lg;
+    margin-bottom: globals.$spacing--md;
+    font-weight: 600;
+  }
+}

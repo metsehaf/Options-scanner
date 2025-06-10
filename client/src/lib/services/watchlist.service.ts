@@ -1,6 +1,6 @@
 // lib/services/stockService.ts
 import { apiService } from "./api.service"; // Import the generic service
-import { IWatchlist } from "@types/watchlist"; // Adjust the import path as necessary
+import { IWatchlist, IWatchlistNews } from "@types/watchlist"; // Adjust the import path as necessary
 interface StockData {
   ticker: string;
   price: number;
@@ -19,8 +19,19 @@ export const watchlistService = {
     return apiService.get<IWatchlist[]>(`/api/watchlist`);
   },
 
-  removeFromWatchlist: async (symbol: string): Promise<void> => {
+  getRelatedStocks: async (): Promise<IWatchlist[]> => {
     // You can pass query parameters using the options object
-    return apiService.delete<void>(`/api/watchlist/${symbol}`, {});
+    return apiService.get<IWatchlist[]>(`/api/watchlist/related`);
+  },
+
+  getNews: async (): Promise<IWatchlistNews[]> => {
+    return apiService.get<any>(`/api/watchlist/news`);
+  },
+
+  removeFromWatchlist: async (id: number): Promise<IWatchlist[]> => {
+    // You can pass query parameters using the options object
+    return apiService.delete<IWatchlist[]>(`/api/watchlist`, {
+      params: { id },
+    });
   },
 };

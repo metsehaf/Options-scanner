@@ -8,6 +8,8 @@ import { EnvironmentModule } from './environment/environment.module';
 import { ScannerModule } from './scanner/scanner.module';
 import { SearchModule } from './search/search.module';
 import { WatchlistModule } from './watchlist/watchlist.module';
+import { PortfolioModule } from './portfolio/portfolio.module';
+import { UsersModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { WatchlistModule } from './watchlist/watchlist.module';
     ScannerModule,
     SearchModule,
     WatchlistModule,
+    PortfolioModule,
+    UsersModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
