@@ -1,11 +1,11 @@
 export interface SearchResult {
-    name: string;
-    exchange: string;
-    country: string;
-    currency: string;
-    ticker: string;
-    type: string;
-};
+  name: string;
+  exchange: string;
+  country: string;
+  currency: string;
+  ticker: string;
+  type: string;
+}
 
 export type IStockData = {
   symbol: string;
@@ -22,3 +22,10 @@ export type IStockData = {
   peRatio: number;
   chart: number[];
 };
+
+// Types
+export interface SearchResultAsset {
+  ticker: string;
+  name: string;
+  //   currentPrice: number; // <-- This property is required here...
+}

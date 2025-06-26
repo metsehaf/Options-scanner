@@ -1,6 +1,14 @@
 // System color for light and dark core components
 // NOTE: Changing these will have effect on both light and dark themes.
 // Role: Light color for text for dark backgrounds
+$background-light: #f3f4f6; // Light grey background for pages
+$gray-100: #f8f9fa; // Very light grey for tab containers etc.
+$gray-200: #e5e7eb; // Slightly darker grey for hovers
+$gray-300: #d1d5db; // Border colors
+$text-gray-900: #1f2937; // Darkest text
+$text-gray-800: #374151; // Body text
+$text-gray-600: #4b5563; // Label text
+$text-gray-500: #6b7280; // Placeholder/icon text
 $light-text: #ffffff;
 // Role: Default text color for light backgrounds
 $dark-text: #525146;
@@ -17,9 +25,9 @@ $dark-background: #181e29;
 // Role: Default document background color for dark theme
 $dark-offset-background: #212835;
 // Role: For brand color and prominent elements
-$primary: #4B0082;
-$primary-background: #3C1A5B;
-$secondary: #39FF14;
+$primary: #4b0082;
+$primary-background: #3c1a5b;
+$secondary: #39ff14;
 $primary-support: $primary;
 // Role: For instant actions elements
 $accessible-red: #bf263c;
@@ -103,12 +111,16 @@ $nutrition-secondary: #fe8b6e;
 $km-primary: #4dd39f;
 $km-secondary: #fe8b6e;
 $nutrition-accent: $ring-accent;
-$color-sidebar-active: #3498DB;
-$color-main-bg: #F9FAFB;
+$color-sidebar-active: #3498db;
+$color-main-bg: #f9fafb;
 $container-background: #d9e4e8;
-$color-sidebar: #2C3E50;
-$color-sidebar-text: #FFFFFF;
-$color-sidebar-hover: #34495E;
+$color-sidebar: #2c3e50;
+$color-sidebar-text: #ffffff;
+$color-sidebar-hover: #34495e;
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md:
+  0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
 ///////////////////////////////////////////
 // GENERATE MATERIAL PALETTES
 ///////////////////////////////////////////

@@ -12,7 +12,7 @@ export class PortfolioStock {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Portfolio, (portfolio) => portfolio.stocks, {
+  @ManyToOne(() => Portfolio, (portfolio) => portfolio.holdings, {
     onDelete: 'CASCADE',
   })
   portfolio: Portfolio;
@@ -20,9 +20,12 @@ export class PortfolioStock {
   @Column()
   ticker: string;
 
-  @Column({ nullable: true })
-  notes?: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  avgCost: number;
+
+  @Column()
+  quantity: number;
 
   @CreateDateColumn()
-  addedAt: Date;
+  createdAt: Date;
 }

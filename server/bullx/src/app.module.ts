@@ -10,6 +10,11 @@ import { SearchModule } from './search/search.module';
 import { WatchlistModule } from './watchlist/watchlist.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
 import { UsersModule } from './user/user.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { HoldingsModule } from './holdings/holding.module';
+import { PriceSyncModule } from './price-sync/price-sync.module';
+import { PortfolioSnapshotModule } from './snapshot/snapshot.module';
+import { PortfolioTransactionModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -24,6 +29,11 @@ import { UsersModule } from './user/user.module';
     WatchlistModule,
     PortfolioModule,
     UsersModule,
+    HoldingsModule,
+    PriceSyncModule,
+    PortfolioSnapshotModule,
+    PortfolioTransactionModule,
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

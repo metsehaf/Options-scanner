@@ -3,13 +3,31 @@ import { useEffect, useState } from "react";
 import "./portfolio.scss";
 import ScreenerSkeleton from "@components/skeletons/ScreenerSkeleton";
 import { portfoloioService } from "@lib/services/portfolio.service";
-import { Portfolio } from "@types/portfolio";
+import {
+  Portfolio,
+  PortfolioChartData,
+  PortfolioWithHoldings,
+} from "@types/portfolio";
 import empty_portfolio from "@public/assets/image/portfolio/empty_portfolio.png";
 import investment_green from "@public/assets/image/portfolio/investment_green.png";
 import learn_investing from "@public/assets/image/portfolio/learn_investing.png";
+import PortfolioLineChart from "@components/chart/chart";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import { Trash2 } from "lucide-react";
+import { Itransactions } from "@types/hodlings";
 export default function PortfolioPage() {
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio>();
+  const [holdings, setHoldings] = useState<PortfolioWithHoldings>(); // Adjust type as needed
+  const [transactionsData, setTransactions] = useState<Itransactions[]>();
+  const [chartData, setChart] = useState<PortfolioChartData>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -18,9 +36,22 @@ export default function PortfolioPage() {
       try {
         if (isMountedCleanup) {
           const response = await portfoloioService.getPortfolio();
+          const chart = await portfoloioService.getChartData(response[0].id);
+          const transactions = await portfoloioService.getTransactions(
+            response[0].id
+          );
+          console.log(transactions);
+          console.log("Portfolio response:", chart);
           if (response?.length) {
             setPortfolios(response);
+            setChart(chart);
+            setTransactions(transactions);
             setSelectedPortfolio(response[0]);
+            console.log("Selected Portfolio:", selectedPortfolio);
+            const fetchedHoldings =
+              await portfoloioService.getPortfolioWithHoldings(response[0].id);
+            setHoldings(fetchedHoldings);
+            console.log("Fetched Holdings:", fetchedHoldings);
           }
         }
       } catch (e) {
@@ -33,30 +64,69 @@ export default function PortfolioPage() {
     fetchPortfolioData();
   }, []);
 
-  const isPortfolioEmpty = !selectedPortfolio?.stocks.length;
+  const addInvestment = () => {
+    window.location.href = "/main/portfolio/add";
+  };
+
+  const removeHoldings = async (stockId: string) => {
+    try {
+      await portfoloioService.removeFromHoldings(stockId);
+      // Update holdings after removal
+      const updatedHoldings = await portfoloioService.getPortfolioWithHoldings(
+        selectedPortfolio?.id || ""
+      );
+      setHoldings(updatedHoldings);
+      // Optionally, you can also update the selected portfolio to reflect changes
+      const updatedPortfolio = portfolios.map((portfolio) =>
+        portfolio.id === selectedPortfolio?.id
+          ? { ...portfolio, holdings: updatedHoldings.holdings }
+          : portfolio
+      );
+      setPortfolios(updatedPortfolio);
+      setSelectedPortfolio(updatedPortfolio[0]);
+    } catch (error) {
+      console.error("Error removing stock from holdings:", error);
+    }
+  };
+  const isPortfolioEmpty = !selectedPortfolio?.holdings.length;
 
   return (
     <div className="portfolio-page">
       <div className="portfolio-header">
         <h1>Your Portfolio</h1>
-        <select
-          className="portfolio-dropdown"
-          value={selectedPortfolio?.id || ""}
-          onChange={(e) =>
-            setSelectedPortfolio(
-              portfolios.find((p) => p.id === e.target.value) || portfolios[0]
-            )
-          }
+        <Button
+          className="add-investment-btn"
+          variant="outlined"
+          sx={{ cursor: "pointer" }}
+          onClick={addInvestment}
         >
-          {portfolios.map((portfolio) => (
-            <option key={portfolio.id} value={portfolio.id}>
-              {portfolio.name}
-            </option>
-          ))}
-        </select>
-        <button className="add-investment-btn">Add Investment</button>
+          Add Investment
+        </Button>
       </div>
-
+      <Box sx={{ minWidth: 200, marginRight: 2, marginBottom: "2rem" }}>
+        <FormControl fullWidth>
+          <InputLabel id="portfolio-select-label">Portfolio</InputLabel>
+          <Select
+            sx={{ width: 400 }}
+            labelId="portfolio-select-label"
+            id="portfolio-select"
+            value={selectedPortfolio?.id || ""}
+            label="Portfolio"
+            onChange={(e) =>
+              setSelectedPortfolio(
+                portfolios.find((p) => p.id === e.target.value) || portfolios[0]
+              )
+            }
+            className="portfolio-dropdown"
+          >
+            {portfolios.map((portfolio) => (
+              <MenuItem key={portfolio.id} value={portfolio.id}>
+                {portfolio.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
       {isLoading ? (
         <ScreenerSkeleton />
       ) : isPortfolioEmpty ? (
@@ -67,7 +137,9 @@ export default function PortfolioPage() {
             Start building your investment portfolio by adding your first
             investment.
           </p>
-          <button className="add-investment-btn">Add Investment</button>
+          <Button className="add-investment-btn" onClick={addInvestment}>
+            Add Investment
+          </Button>
 
           <div className="discover-more">
             <h3>Discover More</h3>
@@ -79,7 +151,7 @@ export default function PortfolioPage() {
                   Discover a wide range of investment options and learn about
                   market trends.
                 </p>
-                <button>Browse Investments</button>
+                <Button>Browse Investments</Button>
               </div>
               <img src={investment_green.src} alt="Growth chart" />
             </div>
@@ -91,7 +163,7 @@ export default function PortfolioPage() {
                   Access educational resources and guides to enhance your
                   investment knowledge.
                 </p>
-                <button>Learn More</button>
+                <Button>Learn More</Button>
               </div>
               <img src={learn_investing.src} alt="Plants and books" />
             </div>
@@ -103,7 +175,7 @@ export default function PortfolioPage() {
           <div className="summary-boxes">
             <div className="box">
               <h3>Total Portfolio Value</h3>
-              <p>$125,480</p>
+              <p>{holdings?.totalValue}</p>
             </div>
             <div className="box">
               <h3>Day’s Gain/Loss</h3>
@@ -111,7 +183,7 @@ export default function PortfolioPage() {
             </div>
             <div className="box">
               <h3>Unrealized Gain/Loss</h3>
-              <p>+ $15,000 (12%)</p>
+              <p>+ {holdings?.totalGainLoss} (12%)</p>
             </div>
             <div className="box">
               <h3>Cash Available</h3>
@@ -122,19 +194,116 @@ export default function PortfolioPage() {
           {/* Graph Placeholder */}
           <div className="portfolio-graph">
             <h2>Portfolio Value Over Time</h2>
-            <div className="graph-placeholder">[Graph Component Here]</div>
+            <div className="graph-placeholder">
+              {chartData ? (
+                <PortfolioLineChart data={chartData} />
+              ) : (
+                <div>Loading chart...</div>
+              )}
+            </div>
           </div>
 
           {/* Holdings Table */}
           <div className="portfolio-section">
             <h2>Holdings</h2>
-            <div className="table-placeholder">[Holdings Table]</div>
+            <div className="l-holdings__populated">
+              <div className="l-holdings__populated--table-wrapper">
+                <table className="l-holdings__populated--table">
+                  <thead className="l-holdings__populated--table__header">
+                    {/* Added ACTIONS column */}
+                    <tr className="l-holdings__populated--table__header__contents">
+                      <th>SYMBOL</th>
+                      <th>NAME</th>
+                      <th>PRICE</th>
+                      <th>QUANTITY</th>
+                      <th>GAIN</th>
+                      <th>VALUE</th>
+                      <th>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody className="l-holdings__populated--table__body">
+                    {holdings?.holdings.map((stock, index) => (
+                      <tr
+                        key={stock.id}
+                        className="l-holdings__populated--table__body__contents"
+                      >
+                        <td>{stock.ticker}</td>
+                        <td>{stock.companyName}</td>
+                        <td>{stock.currentPrice}</td>
+                        <td>{stock.quantity}</td>
+                        <td>
+                          <span
+                            className={
+                              Number(stock.gainLoss) > 0
+                                ? "l-holdings__populated--table__body__contents__positive"
+                                : Number(stock.gainLoss) < 0
+                                  ? "l-holdings__populated--table__body__contents__negative"
+                                  : ""
+                            }
+                          >
+                            {stock.gainLoss}
+                          </span>
+                        </td>
+                        <td>{stock.totalValue}</td>
+                        <td>
+                          <Button
+                            variant="outlined"
+                            sx={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() => removeHoldings(stock.id)}
+                          >
+                            <Trash2
+                              size={18}
+                              className="l-holdings__delete-icon"
+                              style={{ cursor: "pointer" }}
+                            />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           {/* Transactions */}
           <div className="portfolio-section">
             <h2>Recent Transactions</h2>
-            <div className="table-placeholder">[Transactions Table]</div>
+            <div className="l-holdings__populated">
+              <div className="l-holdings__populated--table-wrapper">
+                <table className="l-holdings__populated--table">
+                  <thead className="l-holdings__populated--table__header">
+                    {/* Added ACTIONS column */}
+                    <tr className="l-holdings__populated--table__header__contents">
+                      <th>Action</th>
+                      <th>Shares</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="l-holdings__populated--table__body">
+                    {transactionsData?.map((tran) => (
+                      <tr
+                        key={tran.id}
+                        className="l-holdings__populated--table__body__contents"
+                      >
+                        <td>
+                          {" "}
+                          {tran.type.toUpperCase() === "BUY"
+                            ? "Bought"
+                            : "Sold"}
+                          &nbsp;
+                          {tran.ticker}
+                        </td>
+                        <td>{tran.quantity}</td>
+                        <td>{tran.date}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           {/* Insights */}

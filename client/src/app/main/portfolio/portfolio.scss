@@ -51,6 +51,11 @@
     }
 
     .portfolio-graph {
+      width: 50%;
+      display: block;
+      position: relative;
+      max-height: 400px;
+      height: 400px;
       margin-bottom: 2rem;
 
       h2 {
@@ -162,6 +167,271 @@
       img {
         max-width: 140px;
         border-radius: 8px;
+      }
+    }
+  }
+}
+
+.l-holdings {
+  &__populated {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: globals.$spacing--xl; // Gap between sections
+    margin-top: globals.$spacing--xl;
+
+    &--table-wrapper {
+      background-color: globals.$light-text; // White background
+      border-radius: 8px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04); // Shadow
+      overflow-x: auto; // Ensure responsiveness for table
+    }
+
+    &--table {
+      width: 100%;
+      border-collapse: collapse; // Collapse borders
+      font-size: 0.9375rem; // Slightly smaller font for table content
+
+      &__header {
+        background-color: #f9fafb; // Light gray for header background
+        &__contents {
+          display: table-row; // Ensure it behaves like a table row
+          height: 48px; // Fixed height for header row
+          th {
+            font-weight: 600; // Semi-bold for headers
+            color: #6b7280; // Gray color for headers
+            text-align: left;
+            padding: 12px 24px; // Adjusted padding
+            border-bottom: 1px solid #e5e7eb; // Light border at the bottom
+          }
+          th:first-child {
+            border-top-left-radius: 8px; // Rounded corners for first header cell
+          }
+          th:last-child {
+            border-top-right-radius: 8px; // Rounded corners for last header cell
+          }
+        }
+      }
+
+      &__body {
+        background: globals.$light-text;
+        &__contents {
+          display: table-row;
+          border-bottom: 1px solid #e5e7eb; // Light border between rows
+
+          &__positive {
+            color: #10b981; // Green for positive change
+            font-weight: 500;
+          }
+          &__negative {
+            color: #ef4444; // Red for negative change
+            font-weight: 500;
+          }
+          &:last-child {
+            border-bottom: none; // No border for the last row
+          }
+
+          td {
+            padding: 12px 24px; // Adjusted padding
+            color: #374151; // Darker text for content
+            vertical-align: middle;
+
+            .l-watchlist__delete-icon {
+              color: #9ca3af; // Gray trash icon
+              cursor: pointer;
+              &:hover {
+                color: #ef4444; // Red on hover
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &--more {
+      width: 100%;
+      background-color: globals.$light-text; // White background
+      border-radius: 8px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04); // Shadow
+      padding: globals.$spacing--lg globals.$spacing--xl; // Adjusted padding
+
+      h2 {
+        margin-bottom: globals.$spacing--md; // Space below heading
+        font-size: 1.25rem; // Slightly larger heading
+        font-weight: 600; // Semi-bold
+        color: #1f2937;
+      }
+      p {
+        color: #6b7280;
+        font-size: 0.9375rem;
+      }
+
+      &_container {
+        display: grid; // Use grid for flexible layout
+        grid-template-columns: repeat(
+          auto-fill,
+          minmax(150px, 1fr)
+        ); // Responsive columns
+        gap: globals.$spacing--xs; // Gap between cards
+        margin-top: globals.$spacing--lg; // More space from heading
+
+        &--item {
+          display: flex;
+          flex-direction: column;
+          min-height: 180px; // Min height for news items
+          max-width: 220px;
+          padding: globals.$spacing--md;
+          background-color: globals.$light-text;
+          border: 1px solid #e5e7eb; // Subtle border
+          border-radius: 8px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); // Subtle shadow
+          justify-content: space-between; // Push link to bottom
+          align-items: center;
+
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: globals.$spacing--xs;
+            color: #374151;
+          }
+
+          p {
+            font-size: 0.875rem; // Smaller font for content
+            color: #6b7280;
+            margin-bottom: globals.$spacing--sm;
+            flex-grow: 1; // Allow content to grow
+          }
+
+          a {
+            font-size: 0.875rem;
+            color: globals.$primary; // Blue link color
+            text-decoration: none;
+            font-weight: 500;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+    &--news {
+      width: 100%;
+      background-color: globals.$light-text; // White background
+      border-radius: 8px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04); // Shadow
+      padding: globals.$spacing--lg globals.$spacing--xl; // Adjusted padding
+
+      h2 {
+        margin-bottom: globals.$spacing--md; // Space below heading
+        font-size: 1.25rem; // Slightly larger heading
+        font-weight: 600; // Semi-bold
+        color: #1f2937;
+      }
+      p {
+        color: #6b7280;
+        font-size: 0.9375rem;
+      }
+
+      &_container {
+        display: grid; // Use grid for flexible layout
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(280px, 1fr)
+        ); // Responsive columns
+        gap: globals.$spacing--md; // Gap between cards
+        margin-top: globals.$spacing--lg; // More space from heading
+
+        &--item {
+          display: flex;
+          flex-direction: column;
+          min-height: 180px; // Min height for news items
+          padding: globals.$spacing--md;
+          background-color: globals.$light-text;
+          border: 1px solid #e5e7eb; // Subtle border
+          border-radius: 8px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); // Subtle shadow
+          justify-content: space-between; // Push link to bottom
+
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: globals.$spacing--xs;
+            color: #374151;
+          }
+
+          p {
+            font-size: 0.875rem; // Smaller font for content
+            color: #6b7280;
+            margin-bottom: globals.$spacing--sm;
+            flex-grow: 1; // Allow content to grow
+          }
+
+          a {
+            font-size: 0.875rem;
+            color: globals.$primary; // Blue link color
+            text-decoration: none;
+            font-weight: 500;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+
+    &--more {
+      p {
+        margin-bottom: globals.$spacing--md; // Space below "You may be interested in"
+      }
+
+      &__positive {
+        color: #10b981; // Green for positive change
+        font-weight: 500;
+      }
+      &__negative {
+        color: #ef4444; // Red for negative change
+        font-weight: 500;
+      }
+
+      &_container {
+        &--item {
+          min-height: 150px; // Adjusted min height for more items
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #374151;
+          }
+          p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: globals.$spacing--sm;
+          }
+          span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: globals.$spacing--sm;
+            display: block; // Make span a block element for margin
+          }
+          .l-watchlist__view-stock-btn {
+            text-transform: none;
+            background-color: #e0e7ff; // Light blue background
+            color: #3f51b5; // Darker blue text
+            box-shadow: none; // Remove default button shadow
+            width: 100%;
+            margin: 0 1rem;
+            &:hover {
+              background-color: #c7d2fe; // Lighter blue on hover
+            }
+          }
+        }
       }
     }
   }

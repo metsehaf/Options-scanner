@@ -7,7 +7,9 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
-import { PortfolioStock } from './portfolio-stock.entity';
+import { PortfolioHolding } from 'src/holdings/entity/holding.entity';
+import { PortfolioSnapshot } from 'src/snapshot/entity/snapshot-entity';
+import { PortfolioTransaction } from 'src/transactions/entity/transactions.entity';
 
 @Entity()
 export class Portfolio {
@@ -20,9 +22,16 @@ export class Portfolio {
   @ManyToOne(() => User, (user) => user.portfolios, { onDelete: 'CASCADE' })
   user: User;
 
+  @OneToMany(() => PortfolioHolding, (holding) => holding.portfolio)
+  holdings: PortfolioHolding[];
+
+  // src/portfolio/entities/portfolio.entity.ts
+  @OneToMany(() => PortfolioSnapshot, (snap) => snap.portfolio)
+  snapshots: PortfolioSnapshot[];
+
+  @OneToMany(() => PortfolioTransaction, (tx) => tx.portfolio)
+  transactions: PortfolioTransaction[];
+
   @CreateDateColumn()
   createdAt: Date;
-
-  @OneToMany(() => PortfolioStock, (stock) => stock.portfolio)
-  stocks: PortfolioStock[];
 }
