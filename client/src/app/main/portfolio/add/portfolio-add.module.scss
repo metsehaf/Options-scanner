@@ -1,0 +1,220 @@
+// src/app/portfolio/add/portfolio.module.scss
+
+@use "src/scss/globals.module" as globals; // Assuming a global SCSS file for variables/mixins
+@use "sass:color"; // For color manipulation
+.pageContainer {
+  min-height: 100vh;
+  background-color: globals.$background-light; // Light grey background
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Center the main content wrapper
+  padding-top: 60px; // Space for the fixed app header (adjust if header is dynamic)
+  // Ensure the appHeader is outside this or use a global layout wrapper
+}
+
+.mainContentWrapper {
+  background-color: globals.$light-background; // White background for the form container
+  border-radius: globals.$border-radius-lg; // Larger border radius for the main card
+  box-shadow: globals.$shadow-md; // Medium shadow
+  padding: globals.$spacing--xl; // More padding inside the main card
+  max-width: 800px; // Max width for the form container
+  width: 100%;
+  box-sizing: border-box; // Include padding in width
+  margin-top: globals.$spacing--md; // Space below header
+  margin-bottom: globals.$spacing--xl; // Space below the form
+  position: relative; // For absolute positioning of avatar
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: globals.$spacing--lg;
+
+  .backButton {
+    display: flex;
+    align-items: center;
+    gap: globals.$spacing--sm;
+    color: globals.$text-gray-500;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: globals.$primary;
+    }
+  }
+
+  .pageTitle {
+    flex-grow: 1; // Allows title to take up space
+    text-align: center; // Center the title if back button is small
+    font-size: 2.25rem; // h4 equivalent
+    font-weight: bold;
+    color: globals.$text-gray-900;
+  }
+
+  .formCardAvatar {
+    width: 40px; // Adjust size as needed
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid globals.$light-background; // White background for the form container; // Optional: white border
+    box-shadow: globals.$shadow-sm; // Optional: shadow
+    // Positioning based on image_db5e32.png, it seems to be inside the card at the top right
+  }
+}
+
+.tabsContainer {
+  margin-bottom: globals.$spacing--xl; // Space below tabs
+
+  .customTabs {
+    background-color: globals.$gray-100; // Light grey background for tab container
+    border-radius: globals.$border-radius-md; // Rounded corners for tab container
+    padding: globals.$spacing--xs; // Small padding inside the tab container
+    display: flex;
+    justify-content: flex-start; // Align tabs to the start
+    gap: globals.$spacing--xs; // Gap between tabs
+  }
+
+  .customTab {
+    text-transform: none; // Prevent uppercase
+    min-width: unset; // Remove default min-width
+    padding: globals.$spacing--sm globals.$spacing--md; // Custom padding for tab
+    font-weight: 500;
+    color: globals.$text-gray-500; // Default text color
+    border-radius: globals.$border-radius-sm; // Rounded corners for individual tabs
+    transition: all 0.2s ease-in-out;
+
+    &.Mui-selected {
+      // Material-UI class for selected tab
+      background-color: globals.$light-background; // White background for the form container; // White background for selected tab
+      color: globals.$primary; // Blue text for selected tab
+      box-shadow: globals.$shadow-sm; // Subtle shadow for selected tab
+    }
+
+    &:hover {
+      background-color: globals.$gray-200; // Slightly darker hover for unselected
+    }
+  }
+}
+
+.form {
+  .formSection {
+    margin-bottom: globals.$spacing--lg;
+  }
+
+  // Adjust Material-UI TextField and Select styles
+  :global(.MuiFormControl-root) {
+    margin-top: globals.$spacing--md;
+    margin-bottom: globals.$spacing--md;
+  }
+
+  :global(.MuiInputLabel-root) {
+    font-size: 0.875rem; // Smaller label font
+    color: globals.$text-gray-600;
+  }
+
+  :global(.MuiInputBase-input) {
+    padding: globals.$spacing--sm globals.$spacing--md;
+    font-size: 1rem;
+    color: globals.$text-gray-800;
+  }
+
+  :global(.MuiOutlinedInput-root) {
+    border-radius: globals.$border-radius-sm;
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border-color: globals.$primary;
+    }
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: globals.$primary;
+      border-width: 1px; // Keep border thin
+    }
+  }
+
+  :global(.MuiSelect-select) {
+    padding: globals.$spacing--sm globals.$spacing--md;
+  }
+
+  :global(.MuiInputAdornment-root) {
+    color: globals.$text-gray-500; // For search icon color
+  }
+
+  :global(.MuiFormHelperText-root) {
+    color: globals.$warn; // Error text color
+    margin-left: 0; // Align helper text to left
+    font-size: 0.75rem;
+  }
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end; // Align buttons to the right
+  gap: globals.$spacing--md; // Space between buttons
+  margin-top: globals.$spacing--xl; // Space above buttons
+
+  .cancelButton {
+    text-transform: none;
+    color: globals.$text-gray-600;
+    border-color: globals.$gray-300;
+    &:hover {
+      background-color: globals.$gray-100;
+    }
+  }
+
+  .submitButton {
+    text-transform: none;
+    background-color: globals.$primary;
+    color: globals.$light-background; // White background for the form container
+    &:hover {
+      background-color: color.adjust(globals.$primary, $lightness: 10%);
+    }
+    .MuiButton-startIcon {
+      margin-right: globals.$spacing--xs; // Space between icon and text
+    }
+  }
+}
+
+// Media queries for responsiveness
+@include globals.breakpoint(md) {
+  .mainContentWrapper {
+    padding: globals.$spacing--lg;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    .pageTitle {
+      text-align: left;
+      margin-top: globals.$spacing--sm;
+      font-size: 1.75rem;
+    }
+    .formCardAvatar {
+      position: absolute; // Re-position avatar for smaller screens
+      top: globals.$spacing--md;
+      right: globals.$spacing--md;
+    }
+  }
+  .tabsContainer {
+    .customTabs {
+      flex-wrap: wrap; // Allow tabs to wrap
+    }
+    .customTab {
+      flex-grow: 1; // Tabs take equal width
+    }
+  }
+  .formActions {
+    flex-direction: column;
+    gap: globals.$spacing--sm;
+    .cancelButton,
+    .submitButton {
+      width: 100%;
+    }
+  }
+}
+
+@include globals.breakpoint(sm) {
+  .mainContentWrapper {
+    border-radius: 0; // Full width on very small screens
+    box-shadow: none;
+    padding: globals.$spacing--md;
+  }
+}

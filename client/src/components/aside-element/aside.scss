@@ -1,34 +1,38 @@
-@use 'src/scss/globals.module' as globals;
+@use "src/scss/globals.module" as globals;
 
 .sidebar {
-    width: 250px;
-    background-color: globals.$color-sidebar;
-    color: globals.$color-sidebar-text;
-    padding: 2rem 1rem;
-    display: flex;
-    flex-direction: column;
-    border-top-left-radius: globals.$spacing--md;
-    border-bottom-left-radius: globals.$spacing--md;
+  width: 250px;
+  background-color: globals.$color-sidebar;
+  color: globals.$color-sidebar-text;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: globals.$spacing--md;
+  border-bottom-left-radius: globals.$spacing--md;
+
+  &-nav {
+    margin-top: 2.5rem;
+
+    a {
+      display: inline-flex;
+      color: globals.$color-sidebar-text;
+      text-decoration: none;
+      margin: 1rem 0;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: background 0.2s ease;
+      gap: 10px;
+      align-items: center;
+
+      &:hover {
+        background-color: globals.$color-sidebar-hover;
+      }
+    }
+  }
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-}
-
-.nav a {
-    display: inline-flex;
-    color: globals.$color-sidebar-text;
-    text-decoration: none;
-    margin: 1rem 0;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: background 0.2s ease;
-    gap: 10px;
-    align-items: center;
-}
-
-.nav a:hover {
-    background-color: globals.$color-sidebar-hover;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
 }

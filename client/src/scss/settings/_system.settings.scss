@@ -1,6 +1,7 @@
-@use './colors.hc.settings';
+@use "./colors.hc.settings";
 // Base type
-$base-font-family: 'Roboto', 'Helvetica Neue', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !default;
+$base-font-family: "Roboto", "Helvetica Neue", sans-serif, "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol" !default;
 $base-font-size: 1rem !default;
 $base-mobile-font-size: 0.875rem !default;
 $heading-line-height: 1.25 !default;
@@ -23,6 +24,9 @@ $breakpoints: (
 ) !default;
 // Border radius
 $border-radius: 0.25rem !default;
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
 // Type scale
 // Using a modular type scale we define our font size in em units for responsive scaling
 // by multiplying the scale ratio of: 1.2, with our base font size of 1em(browser default of 16px)

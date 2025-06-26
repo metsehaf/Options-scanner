@@ -1,0 +1,9 @@
+@use "src/scss/globals.module" as globals;
+/* components/PortfolioLineChart.module.scss */
+.l-chart-wrapper {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}

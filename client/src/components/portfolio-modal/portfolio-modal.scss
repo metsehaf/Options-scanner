@@ -1,7 +1,9 @@
 @use "src/scss/globals.module" as globals;
 
-.modal {
-  height: 250px;
+:host {
+  .modal {
+    height: 250px;
+  }
 }
 
 .l-portfolio-modal {

@@ -23,7 +23,7 @@ export class PortfolioService {
   async findAllByUser(auth0Id: string): Promise<Portfolio[]> {
     return this.portfolioRepository.find({
       where: { user: { auth0Id } },
-      relations: ['stocks'],
+      relations: ['holdings'],
       order: { createdAt: 'DESC' },
     });
   }
