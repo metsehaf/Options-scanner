@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PortfolioHolding } from 'src/holdings/entity/holding.entity';
 import { HttpModule } from '@nestjs/axios';
 import { PortfolioSnapshotModule } from 'src/snapshot/snapshot.module';
+import { UtilitesService } from 'src/utils/utilities.service';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { PortfolioSnapshotModule } from 'src/snapshot/snapshot.module';
     TypeOrmModule.forFeature([PortfolioHolding]),
     PortfolioSnapshotModule,
   ],
-  providers: [PriceSyncService],
+  providers: [PriceSyncService, UtilitesService],
 })
 export class PriceSyncModule {
   // This module handles the portfolio management functionality

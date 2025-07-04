@@ -224,7 +224,7 @@ export default function Watchlist() {
                               : ""
                         }
                       >
-                        {stock.change}
+                        {stock.change}%
                       </span>
                     </td>
                     <td>{stock.name}</td>

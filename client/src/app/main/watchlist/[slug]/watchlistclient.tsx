@@ -6,11 +6,8 @@ import ScreenerSkeleton from "@components/skeletons/ScreenerSkeleton";
 import { IStockData } from "@types/search";
 import { watchlistService } from "@lib/services/watchlist.service";
 import { searchService } from "@lib/services/searchService";
-
-interface AddToWatchlistButtonProps {
-  ticker: string;
-  onAdded?: () => void; // Optional callback when successful
-}
+import StockAreaChart from "@components/stock-chart/stock-chart";
+import { formatLargeNumber } from "@utils/format";
 
 export default function StockPreviewClient({ slug }: { slug: string }) {
   const [data, setData] = useState<IStockData | null>(null);
@@ -123,13 +120,12 @@ export default function StockPreviewClient({ slug }: { slug: string }) {
       <div className={styles.chart}>
         <div className={styles.chartPlaceholder}>
           {/* Replace with Chart.js or D3.js chart later */}
-          {data.chart.map((price, idx) => (
-            <div
-              key={idx}
-              style={{ height: `${price}px` }}
-              className={styles.bar}
-            ></div>
-          ))}
+          {data.chart ? (
+            <StockAreaChart data={data.chart} />
+          ) : (
+            // <PortfolioLineChart data={data.chart} label="Stock Price ($)" />
+            <div>Loading chart...</div>
+          )}
         </div>
       </div>
 
@@ -140,45 +136,55 @@ export default function StockPreviewClient({ slug }: { slug: string }) {
         <div className={styles.metricGrid}>
           <div className={styles["metricGrid-container"]}>
             <div>
-              <label>Previous Close</label>
+              <label>PREVIOUS CLOSE</label>
               <span>${data.previousClose}</span>
             </div>
             <div>
-              <label>Open</label>
+              <label>OPEN</label>
               <span>${data.open}</span>
             </div>
           </div>
           <hr></hr>
           <div className={styles["metricGrid-container"]}>
             <div>
-              <label>Day Range</label>
+              <label>DAY RANGE</label>
               <span>{data.dayRange}</span>
             </div>
             <div>
-              <label>52-Week Range</label>
+              <label>YEAR RANGE</label>
               <span>{data.yearRange}</span>
             </div>
           </div>
           <hr></hr>
           <div className={styles["metricGrid-container"]}>
             <div>
-              <label>Market Cap</label>
-              <span>{data.marketCap}</span>
+              <label>MARKET CAP</label>
+              <span>{formatLargeNumber(Number(data.marketCap))}</span>
             </div>
             <div>
-              <label>Volume</label>
-              <span>{data.volume}</span>
+              <label>VOLUME</label>
+              <span>{formatLargeNumber(Number(data.volume))}</span>
             </div>
           </div>
           <hr></hr>
           <div className={styles["metricGrid-container"]}>
             <div>
-              <label>Avg. Volume (30d)</label>
-              <span>{data.avgVolume}</span>
+              <label>AVG. VOLUME (30d)</label>
+              <span>{formatLargeNumber(Number(data.avgVolume))}</span>
             </div>
             <div>
-              <label>P/E Ratio</label>
+              <label>P/E RATIO</label>
               <span>{data.peRatio}</span>
+            </div>
+          </div>
+          <div className={styles["metricGrid-container"]}>
+            <div>
+              <label>DIVIDEND YIELD</label>
+              <span>{data.dividendYield}%</span>
+            </div>
+            <div>
+              <label>Primary exchange</label>
+              <span>{data.exchange.toUpperCase()}</span>
             </div>
           </div>
         </div>

@@ -25,6 +25,20 @@
   }
 
   .portfolio-content {
+    &__positive {
+      color: globals.$gain; // Green for positive change
+      font-weight: 500;
+
+      &::before {
+        content: "+$";
+        color: globals.$gain;
+        font-weight: bold;
+      }
+    }
+    &__negative {
+      color: globals.$loss; // Red for negative change
+      font-weight: 500;
+    }
     .summary-boxes {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -51,7 +65,7 @@
     }
 
     .portfolio-graph {
-      width: 50%;
+      width: 100%;
       display: block;
       position: relative;
       max-height: 400px;
@@ -63,11 +77,21 @@
         margin-bottom: 0.5rem;
       }
 
-      .graph-placeholder {
-        height: 200px;
-        background: #eef3f8;
-        border-radius: 8px;
-        border: 1px dashed #ccc;
+      &__container {
+        display: flex;
+        width: inherit;
+        gap: 1rem;
+        &--graph {
+          width: 50%;
+          height: 200px;
+          background: #eef3f8;
+          border-radius: 8px;
+          border: 1px dashed #ccc;
+        }
+
+        &--insights {
+          width: 40%;
+        }
       }
     }
 
@@ -223,11 +247,16 @@
           border-bottom: 1px solid #e5e7eb; // Light border between rows
 
           &__positive {
-            color: #10b981; // Green for positive change
+            color: globals.$gain; // Green for positive change
             font-weight: 500;
+            &::before {
+              content: "+$";
+              color: globals.$gain;
+              font-weight: bold;
+            }
           }
           &__negative {
-            color: #ef4444; // Red for negative change
+            color: globals.$loss; // Red for negative change
             font-weight: 500;
           }
           &:last-child {
@@ -392,11 +421,16 @@
       }
 
       &__positive {
-        color: #10b981; // Green for positive change
+        color: globals.$gain; // Green for positive change
         font-weight: 500;
+        &::before {
+          content: "+$";
+          color: globals.$gain;
+          font-weight: bold;
+        }
       }
       &__negative {
-        color: #ef4444; // Red for negative change
+        color: globals.$loss; // Red for negative change
         font-weight: 500;
       }
 

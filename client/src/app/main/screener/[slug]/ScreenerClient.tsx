@@ -4,7 +4,14 @@ import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import styles from "./ScreenerClient.module.scss";
 import ScreenerSkeleton from "@components/skeletons/ScreenerSkeleton";
-import { ScreenerClientProps, IStock, IStockPercent } from "@types/screener";
+import {
+  ScreenerClientProps,
+  IStock,
+  IStockPercent,
+  mostActiveStock,
+  mostGainersStock,
+  mostLosersStock,
+} from "@types/screener";
 import { scannerService } from "@lib/services/scanner.service";
 
 const columns: GridColDef[] = [
@@ -17,6 +24,8 @@ const columns: GridColDef[] = [
 
 export default function ScreenerClient({ slug }: ScreenerClientProps) {
   const [rows, setRows] = useState<any[]>([]);
+  const [pageTitle, setPageTitle] = useState<string>("Screener");
+  const [pageDescription, setPageDescription] = useState<string>("");
   const [dataLoaded, setDataLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null); // Add error state
 
@@ -26,53 +35,104 @@ export default function ScreenerClient({ slug }: ScreenerClientProps) {
     const fetchData = async () => {
       try {
         if (isMountedCleanup) {
-          const fetchedData = await scannerService.getScanner(slug);
-
+          const fetchedData:
+            | mostActiveStock
+            | mostGainersStock
+            | mostLosersStock
+            | any = await scannerService.getScanner(slug);
           if (isMountedCleanup) {
             setDataLoaded(true);
             const calculatedRows = (() => {
               if (!fetchedData) return [];
 
               if ("mostActiveStock" in fetchedData) {
-                return fetchedData.mostActiveStock.map(
+                const mostActiveStock = fetchedData.mostActiveStock.map(
                   (row: IStock, index: number) => ({
                     id: row.ticker ?? index,
                     ...row,
                   })
                 );
+                return {
+                  fetchedData: mostActiveStock,
+                  title: fetchedData.title,
+                  description: fetchedData.description,
+                };
               } else if ("mostGainerStock" in fetchedData) {
-                return fetchedData.mostGainerStock.map(
+                const mostGainerStock = fetchedData.mostGainerStock.map(
                   (row: IStock, index: number) => ({
                     id: row.ticker ?? index,
                     ...row,
                   })
                 );
+                return {
+                  fetchedData: mostGainerStock,
+                  title: fetchedData.title,
+                  description: fetchedData.description,
+                };
               } else if ("mostLoserStock" in fetchedData) {
-                return fetchedData.mostLoserStock.map(
+                const mostLoserStock = fetchedData.mostLoserStock.map(
                   (row: IStock, index: number) => ({
                     id: row.ticker ?? index,
                     ...row,
                   })
                 );
+                return {
+                  fetchedData: mostLoserStock,
+                  title: fetchedData.title,
+                  description: fetchedData.description,
+                };
               }
-              return (fetchedData || []).map((row: any, index: number) => {
-                if ("ticker" in row && "companyName" in row) {
-                  return {
-                    id: row.ticker ?? index,
-                    ...row,
-                  } as IStock;
-                } else {
-                  return {
-                    id: index,
-                    ticker: row.symbol,
-                    companyName: row.name,
-                    changes: row.change,
-                    ...row,
-                  } as IStockPercent;
+              // Try to find the first array property in fetchedData to map over
+              // Collect all array values except 'title' and 'description'
+              const dataArraysObj = {
+                title: fetchedData.title || "Screener",
+                description: fetchedData.description || "",
+                data: Object.entries(fetchedData)
+                  .filter(
+                    ([key, value]) => key !== "title" && key !== "description"
+                  )
+                  .map(([_, value]) => value)
+                  .flat(),
+              };
+              // Map over the collected dataArrays to normalize the rows
+              const mappedRows = dataArraysObj.data.map(
+                (row: any, index: number) => {
+                  if ("ticker" in row && "companyName" in row) {
+                    return {
+                      id: row.ticker ?? index,
+                      ...row,
+                    } as IStock;
+                  } else {
+                    return {
+                      id: index,
+                      ticker: row.symbol,
+                      companyName: row.name,
+                      changes: row.change,
+                      ...row,
+                    } as IStockPercent;
+                  }
                 }
-              });
+              );
+              return {
+                fetchedData: mappedRows,
+                title: fetchedData.title || "Screener",
+                description: fetchedData.description || "",
+              };
             })();
-            setRows(calculatedRows);
+            // Ensure calculatedRows is always an object with title/description/fetchedData
+            const rowsData = Array.isArray(calculatedRows)
+              ? []
+              : calculatedRows.fetchedData;
+            const title = Array.isArray(calculatedRows)
+              ? "Screener"
+              : calculatedRows.title || "Screener";
+            const description = Array.isArray(calculatedRows)
+              ? ""
+              : calculatedRows.description || "";
+
+            setRows(rowsData);
+            setPageTitle(title);
+            setPageDescription(description);
           }
         } else if (isMountedCleanup) {
           setDataLoaded(true);
@@ -105,14 +165,14 @@ export default function ScreenerClient({ slug }: ScreenerClientProps) {
 
   return (
     <section className={styles.wrapper}>
-      <h1 className="text-2xl font-bold">
-        {rows.length > 0 && "title" in rows[0] ? rows[0].title : "Screener"}
-      </h1>
-      <p className={styles.subheading}>
-        {rows.length > 0 && "description" in rows[0]
-          ? rows[0]?.description
-          : ""}
-      </p>
+      <div className={styles.header}>
+        <h1 className="text-2xl font-bold">
+          {rows.length > 0 ? pageTitle : "Screener"}
+        </h1>
+        <p className={styles.subheading}>
+          {rows.length > 0 ? pageDescription : ""}
+        </p>
+      </div>
       <div className={styles.dataGridContainer}>
         <DataGrid
           rows={rows}
@@ -123,6 +183,21 @@ export default function ScreenerClient({ slug }: ScreenerClientProps) {
           }}
           checkboxSelection
           sortingMode="client"
+          disableRowSelectionOnClick={true}
+          onRowClick={(params) => {
+            if (params.row.ticker) {
+              window.location.href = `/main/watchlist/${params.row.ticker}`;
+            }
+          }}
+          sx={{
+            "& .MuiDataGrid-row": {
+              cursor: "pointer",
+              transition: "background 0.2s",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+            },
+          }}
         />
       </div>
     </section>

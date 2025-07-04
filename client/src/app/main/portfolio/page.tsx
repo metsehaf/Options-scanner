@@ -12,6 +12,7 @@ import empty_portfolio from "@public/assets/image/portfolio/empty_portfolio.png"
 import investment_green from "@public/assets/image/portfolio/investment_green.png";
 import learn_investing from "@public/assets/image/portfolio/learn_investing.png";
 import PortfolioLineChart from "@components/chart/chart";
+import PortfolioHighlights from "@components/highlight/highlight";
 import {
   Box,
   Button,
@@ -68,6 +69,11 @@ export default function PortfolioPage() {
     window.location.href = "/main/portfolio/add";
   };
 
+  const roundUpDecimal = (value: number | undefined, place: number) => {
+    if (typeof value !== "number") return 0;
+    console.log("Rounding value:", value, "to place:", place);
+    return Math.ceil(value * Math.pow(10, place)) / Math.pow(10, place);
+  };
   const removeHoldings = async (stockId: string) => {
     try {
       await portfoloioService.removeFromHoldings(stockId);
@@ -175,31 +181,105 @@ export default function PortfolioPage() {
           <div className="summary-boxes">
             <div className="box">
               <h3>Total Portfolio Value</h3>
-              <p>{holdings?.totalValue}</p>
+              <p>
+                $
+                {holdings?.totalValue.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
             </div>
             <div className="box">
               <h3>Day’s Gain/Loss</h3>
-              <p>+ $520 (0.4%)</p>
+              <p
+                className={
+                  Number(holdings?.totalDayLoss) > 0
+                    ? "portfolio-content__positive"
+                    : Number(holdings?.totalDayLoss) < 0
+                      ? "portfolio-content__negative"
+                      : ""
+                }
+              >
+                {holdings?.totalDayLoss.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                ({holdings?.dayLossPercent}%)
+              </p>
             </div>
             <div className="box">
               <h3>Unrealized Gain/Loss</h3>
-              <p>+ {holdings?.totalGainLoss} (12%)</p>
-            </div>
-            <div className="box">
-              <h3>Cash Available</h3>
-              <p>$5,000</p>
+              <p
+                className={
+                  Number(holdings?.totalGainLoss) > 0
+                    ? "portfolio-content__positive"
+                    : Number(holdings?.totalGainLoss) < 0
+                      ? "portfolio-content__negative"
+                      : ""
+                }
+              >
+                {holdings?.totalGainLoss.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                ({holdings?.gainLossPercent}%)
+              </p>
             </div>
           </div>
 
           {/* Graph Placeholder */}
           <div className="portfolio-graph">
             <h2>Portfolio Value Over Time</h2>
-            <div className="graph-placeholder">
-              {chartData ? (
-                <PortfolioLineChart data={chartData} />
-              ) : (
-                <div>Loading chart...</div>
-              )}
+            <div className="portfolio-graph__container">
+              <div className="portfolio-graph__container--graph">
+                {chartData ? (
+                  <PortfolioLineChart data={chartData} />
+                ) : (
+                  <div>Loading chart...</div>
+                )}
+              </div>
+              <div className="portfolio-graph__container--insights">
+                <PortfolioHighlights
+                  dayGain={holdings?.totalDayLoss}
+                  dayGainPercentage={holdings?.dayLossPercent}
+                  totalGain={holdings?.totalGainLoss}
+                  totalGainPercentage={holdings?.gainLossPercent}
+                  assetBreakdown={[
+                    {
+                      label: "Stocks",
+                      percentage: 60,
+                      value: 12000,
+                      color: "#4caf50",
+                    },
+                    {
+                      label: "Bonds",
+                      percentage: 25,
+                      value: 5000,
+                      color: "#2196f3",
+                    },
+                    {
+                      label: "Cash",
+                      percentage: 15,
+                      value: 3000,
+                      color: "#ff9800",
+                    },
+                  ]}
+                  companySizeBreakdown={[
+                    { label: "Large Cap", percentage: 55 },
+                    { label: "Mid Cap", percentage: 30 },
+                    { label: "Small Cap", percentage: 15 },
+                  ]}
+                  dividendBreakdown={[
+                    { label: "Dividend", percentage: 40 },
+                    { label: "Non-Dividend", percentage: 60 },
+                  ]}
+                  peRatioBreakdown={[
+                    { label: "Low (<15)", percentage: 35 },
+                    { label: "Medium (15-25)", percentage: 45 },
+                    { label: "High (>25)", percentage: 20 },
+                  ]}
+                />
+              </div>
             </div>
           </div>
 
@@ -241,10 +321,12 @@ export default function PortfolioPage() {
                                   : ""
                             }
                           >
-                            {stock.gainLoss}
+                            {Math.ceil(
+                              (stock.gainLoss ?? 0) * Math.pow(10, 2)
+                            ) / Math.pow(10, 2)}
                           </span>
                         </td>
-                        <td>{stock.totalValue}</td>
+                        <td>${stock.totalValue}</td>
                         <td>
                           <Button
                             variant="outlined"
