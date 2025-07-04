@@ -1,0 +1,108 @@
+@use "src/scss/globals.module" as globals;
+// components/portfolio/portfolio-highlights/portfolio-highlights.module.scss
+.highlightsCard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.gainSection {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.dayGain,
+.totalGain {
+  background-color: #f0f9f4;
+  color: globals.$gain;
+  border-radius: 6px;
+  padding: 15px;
+  flex: 1;
+  text-align: center;
+
+  .gainLabel {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 5px;
+  }
+
+  .gainAmount {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 2px;
+
+    &.negative {
+      color: globals.$loss;
+      background-color: #fdecea;
+    }
+  }
+
+  .gainPercentage {
+    font-size: 0.9rem;
+
+    &.negative {
+      color: #c92a2a;
+    }
+  }
+}
+
+.breakdownSection {
+  margin-bottom: 15px;
+}
+
+.progressBar {
+  background-color: #e9ecef;
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  overflow: hidden;
+}
+
+.progressBarSegment {
+  height: 100%;
+}
+
+.breakdownItem {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 5px;
+
+  .indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+  }
+
+  .icon {
+    margin-right: 8px;
+    font-size: 1em;
+    color: #777;
+    display: inline-block;
+  }
+
+  .label {
+    flex-grow: 1;
+  }
+
+  .value {
+    font-weight: bold;
+    color: #333;
+    margin-left: 10px;
+  }
+}

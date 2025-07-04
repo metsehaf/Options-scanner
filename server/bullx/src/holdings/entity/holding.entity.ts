@@ -26,6 +26,6 @@ export class PortfolioHolding {
   @Column('decimal', { nullable: true }) currentPrice: number;
   @Column('decimal', { nullable: true }) totalValue: number;
   @Column('decimal', { nullable: true }) gainLoss: number;
-
+  @Column('decimal', { nullable: true }) dayLoss: number;
   @UpdateDateColumn() lastUpdated: Date;
 }

@@ -155,10 +155,16 @@ export function ClientOnlySearchBar({ isOpen = false }) {
                   ))}
                 </Tabs>
               </Box>
-              {results.map((item: any) => (
+              {results.map((item: any, i: number) => (
                 <ListItem
+                  sx={{
+                    cursor: "pointer",
+                    "&:hover": {
+                      backgroundColor: "#f0f0f0",
+                    },
+                  }}
                   component="li"
-                  key={item.ticker}
+                  key={i}
                   onClick={(e: React.MouseEvent<HTMLLIElement>) =>
                     handleSelection(item.ticker)
                   }

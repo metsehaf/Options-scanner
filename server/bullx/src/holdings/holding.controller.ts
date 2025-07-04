@@ -36,14 +36,6 @@ export class HoldingController {
     return this.stockService.getPortfolioWithHoldings(auth0Id, portfolioId);
   }
 
-  async getTransactions(
-    @Param('portfolioId') portfolioId: string,
-    @Req() req: any,
-  ) {
-    const auth0Id = req.user.userId;
-    return this.stockService.getRecentTransactions(auth0Id, portfolioId);
-  }
-
   @Post()
   async addStock(
     @Query('portfolioId') portfolioId: string,

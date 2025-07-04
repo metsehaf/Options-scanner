@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { PortfolioSnapshotService } from 'src/snapshot/snapshot-service';
 import { PortfolioSnapshotInput } from 'src/snapshot/snapshot.model';
+import { UtilitesService } from 'src/utils/utilities.service';
 
 @Injectable()
 export class PriceSyncService {
@@ -27,19 +28,25 @@ export class PriceSyncService {
     const tickers = [...new Set(holdings.map((h) => h.ticker))];
     const priceMap = await this.fetchPricesFromFMP(tickers);
 
-    // Update each holding with latest price
+    const now = new Date();
+
     for (const holding of holdings) {
       const currentPrice = priceMap[holding.ticker];
+      if (!currentPrice) continue;
+
+      const previousPrice = holding.currentPrice ?? currentPrice;
+      const quantity = holding.quantity;
+      const avgCost = Number(holding.avgCost);
+
       holding.currentPrice = currentPrice;
-      holding.totalValue = Number((currentPrice * holding.quantity).toFixed(2));
-      holding.gainLoss = Number(
-        ((currentPrice - holding.avgCost) * holding.quantity).toFixed(2),
-      );
+      holding.totalValue = currentPrice * quantity;
+      holding.gainLoss = (currentPrice - avgCost) * quantity;
+      holding.dayLoss = (currentPrice - previousPrice) * quantity;
     }
 
     await this.holdingRepo.save(holdings);
 
-    // Group by portfolio and create snapshot per portfolio
+    // Group by portfolio and snapshot
     const portfolioMap = new Map<string, PortfolioSnapshotInput>();
 
     for (const holding of holdings) {
@@ -50,8 +57,8 @@ export class PriceSyncService {
         gainLoss: 0,
       };
 
-      entry.totalValue += Number((holding.totalValue ?? 0).toFixed(2));
-      entry.gainLoss += Number((holding.gainLoss ?? 0).toFixed(2));
+      entry.totalValue += holding.totalValue ?? 0;
+      entry.gainLoss += holding.gainLoss ?? 0;
 
       portfolioMap.set(pid, entry);
     }
@@ -59,8 +66,8 @@ export class PriceSyncService {
     for (const entry of portfolioMap.values()) {
       await this.snapshotSrv.saveSnapshot(
         entry.portfolio,
-        Number(entry.totalValue.toFixed(2)),
-        Number(entry.gainLoss.toFixed(2)),
+        entry.totalValue,
+        entry.gainLoss,
       );
     }
   }

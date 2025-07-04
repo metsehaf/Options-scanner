@@ -7,8 +7,8 @@ import { PortfolioHoldingService } from './holding.service';
 import { HoldingController } from './holding.controller';
 import { PortfolioHolding } from './entity/holding.entity';
 import { Portfolio } from 'src/portfolio/entities/portfolio.entity';
-import { PortfolioTransactionModule } from 'src/transactions/transactions.module';
 import { PortfolioTransaction } from 'src/transactions/entity/transactions.entity';
+import { UtilitesService } from 'src/utils/utilities.service';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { PortfolioTransaction } from 'src/transactions/entity/transactions.entit
     AuthModule, // Ensure AuthModule is imported so JwtStrategy is available
   ],
   controllers: [HoldingController],
-  providers: [PortfolioHoldingService],
+  providers: [PortfolioHoldingService, UtilitesService],
 })
 export class HoldingsModule {
   // This module handles the portfolio management functionality

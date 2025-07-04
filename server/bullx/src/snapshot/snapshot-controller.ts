@@ -10,7 +10,8 @@ export class PortfolioSnapshotController {
 
   @Get(':portfolioId')
   async getChartData(@Param('portfolioId') portfolioId: string) {
-    const snapshots = await this.snapshotService.getSnapshots(portfolioId);
+    const snapshots =
+      await this.snapshotService.getDownsampledSnapshots(portfolioId);
 
     return {
       xAxis: snapshots.map((snap) => snap.createdAt),

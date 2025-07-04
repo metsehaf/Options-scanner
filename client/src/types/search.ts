@@ -7,6 +7,11 @@ export interface SearchResult {
   type: string;
 }
 
+export interface ChartPoint {
+  time: string; // ISO or formatted time
+  price: number;
+}
+
 export type IStockData = {
   symbol: string;
   name: string;
@@ -20,7 +25,9 @@ export type IStockData = {
   volume: string;
   avgVolume: string;
   peRatio: number;
-  chart: number[];
+  dividendYield: number;
+  exchange: string;
+  chart: ChartPoint[]; // Example chart data
 };
 
 // Types

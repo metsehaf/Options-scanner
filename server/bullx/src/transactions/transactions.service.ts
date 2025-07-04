@@ -13,7 +13,7 @@ export class TransactionsService {
   // transaction.service.ts
   async getRecentTransactions(
     portfolioId: string,
-    limit = 5,
+    limit = 10,
   ): Promise<PortfolioTransaction[]> {
     this.logger.log('transaction data');
     return this.txRepo.find({

@@ -8,11 +8,14 @@ import {
 import { PortfolioHolding } from './entity/holding.entity';
 import { PortfolioTransaction } from 'src/transactions/entity/transactions.entity';
 import { Portfolio } from 'src/portfolio/entities/portfolio.entity';
+import { UtilitesService } from 'src/utils/utilities.service';
+import { Iholdings } from './holdings.model';
 
 @Injectable()
 export class PortfolioHoldingService {
   private readonly logger = new Logger(PortfolioHoldingService.name); // 📢 this will tag logs with 'ScannerService'
   constructor(
+    private utilService: UtilitesService,
     @InjectRepository(PortfolioHolding)
     private holdingRepo: Repository<PortfolioHolding>,
     @InjectRepository(PortfolioTransaction)
@@ -31,11 +34,7 @@ export class PortfolioHoldingService {
   async getPortfolioWithHoldings(
     userId: string,
     portfolioId: string,
-  ): Promise<{
-    holdings: PortfolioHolding[];
-    totalValue: number;
-    totalGainLoss: number;
-  }> {
+  ): Promise<Iholdings> {
     this.logger.log(
       `Fetching holdings for userId: ${userId}, portfolioId: ${portfolioId}`,
     );
@@ -58,15 +57,28 @@ export class PortfolioHoldingService {
       (acc, h) => acc + Number(h.gainLoss ?? 0),
       0,
     );
+    const totalDayLoss = holdings.reduce(
+      (acc, h) => acc + Number(h.dayLoss ?? 0),
+      0,
+    );
 
+    const gainLossPercent = this.utilService.calcPercent(
+      totalGainLoss,
+      totalValue,
+    );
+    const dayLossPercent = this.utilService.calcPercent(
+      totalDayLoss,
+      totalValue,
+    );
     return {
       holdings,
-      totalValue,
-      totalGainLoss,
+      totalValue: this.utilService.roundUpDecimal(totalValue, 2),
+      totalGainLoss: this.utilService.roundUpDecimal(totalGainLoss, 2),
+      totalDayLoss: this.utilService.roundUpDecimal(totalDayLoss, 2),
+      gainLossPercent,
+      dayLossPercent,
     };
   }
-
-  async getRecentTransactions(userId: string, portfolioId: string) {}
 
   async addHolding(portfolioId: string, dto: CreateHoldingDto) {
     this.logger.log('payload for adding holdings', dto);

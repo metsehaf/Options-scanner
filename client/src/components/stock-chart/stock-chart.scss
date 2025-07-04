@@ -1,0 +1,54 @@
+@use "src/scss/globals.module" as globals;
+.stock-chart-wrapper {
+  background-color: #fff;
+  padding: globals.$spacing--lg;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+
+  .recharts-wrapper {
+    font-family: "Inter", sans-serif;
+
+    .recharts-cartesian-grid {
+      stroke: #e5e7eb;
+    }
+
+    .recharts-tooltip-wrapper {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      padding: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .recharts-tooltip-label {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .recharts-tooltip-item {
+      color: #4b5563;
+    }
+
+    .recharts-x-axis,
+    .recharts-y-axis {
+      font-size: 0.75rem;
+      fill: #6b7280;
+    }
+
+    .recharts-surface path {
+      stroke-linecap: round;
+    }
+
+    .recharts-area {
+      stroke: #7e57c2; // main line
+      fill: rgba(126, 87, 194, 0.1); // subtle purple fill
+    }
+
+    .recharts-active-dot circle {
+      fill: #7e57c2;
+      r: 5;
+    }
+  }
+}

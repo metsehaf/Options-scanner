@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { groupBy } from 'lodash';
 import { PortfolioSnapshot } from './entity/snapshot-entity';
 import { Portfolio } from 'src/portfolio/entities/portfolio.entity';
 
@@ -30,5 +31,25 @@ export class PortfolioSnapshotService {
       where: { portfolio: { id: portfolioId } },
       order: { createdAt: 'ASC' },
     });
+  }
+
+  async getDownsampledSnapshots(portfolioId: string, limitPerDay = 3) {
+    const snapshots = await this.snapshotRepo.find({
+      where: { portfolio: { id: portfolioId } },
+      order: { createdAt: 'ASC' },
+    });
+
+    // Group by date (YYYY-MM-DD)
+    const grouped = groupBy(
+      snapshots,
+      (snap: any) => snap.createdAt.toISOString().split('T')[0],
+    );
+
+    // Limit to N snapshots per day
+    const reduced = Object.values(grouped).flatMap(
+      (daily: any) => daily.slice(-limitPerDay), // Last N snapshots of the day
+    );
+
+    return reduced;
   }
 }

@@ -47,6 +47,9 @@ export interface PortfolioWithHoldings {
   holdings: PortfolioHolding[];
   totalValue: number;
   totalGainLoss: number;
+  totalDayLoss: number;
+  gainLossPercent: number;
+  dayLossPercent: number;
 }
 
 interface PortfolioHolding {
@@ -85,3 +88,19 @@ export type PortfolioService = {
   getChartData: (portfolioId: string) => Promise<PortfolioChartData>;
   getTransactions: (portfolioId: string) => Promise<any>;
 };
+
+export interface PortfolioHighlightsProps {
+  dayGain: number | undefined;
+  dayGainPercentage: number | undefined;
+  totalGain: number | undefined;
+  totalGainPercentage: number | undefined;
+  assetBreakdown: {
+    label: string;
+    percentage: number;
+    value: number;
+    color: string;
+  }[];
+  companySizeBreakdown: { label: string; percentage: number }[];
+  dividendBreakdown: { label: string; percentage: number }[];
+  peRatioBreakdown: { label: string; percentage: number }[];
+}

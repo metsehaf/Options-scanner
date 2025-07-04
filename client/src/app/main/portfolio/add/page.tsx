@@ -307,7 +307,7 @@ export default function AddInvestmentPage() {
             />
 
             <TextField
-              label="Quantity"
+              label="Total shares bought / Quantity"
               name="quantity"
               type="number"
               value={formData.quantity}
@@ -320,7 +320,7 @@ export default function AddInvestmentPage() {
             />
 
             <TextField
-              label="Price"
+              label="Price per share"
               name="price"
               type="number"
               value={formData.price}

@@ -1,41 +1,45 @@
-@use 'src/scss/globals.module' as globals;
+@use "src/scss/globals.module" as globals;
 /* ScreenerClient.module.scss */
 .wrapper {
-    position: relative;
-    display: block;
-    height: 100vh;
-    padding: 2rem;
-    padding-left: 0; // avoid doubling with sidebar
-    margin: globals.$spacing--lg;
-    @include globals.max-screen-size;
-  
-    h1 {
-      margin-bottom: 0.5rem;
-    }
-  
-    .subheading {
-      margin-bottom: 1.5rem;
-      color: #6b7280; // Tailwind gray-500
-      font-size: 1rem;
-    }
+  position: relative;
+  display: block;
+  height: 100vh;
+  padding: 2rem;
+  padding-left: 0; // avoid doubling with sidebar
+  margin: globals.$spacing--lg;
+  @include globals.max-screen-size;
+
+  h1 {
+    margin-bottom: 0.5rem;
   }
-  
-  .dataGridContainer {
-    height: calc(100vh - 120px); // fills available height but leaves room for header
-    width: 100%;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    padding: 1rem;
-  
-    .MuiDataGrid-root {
-      border: none;
-    }
-  
-    .MuiDataGrid-columnHeaders,
-    .MuiDataGrid-cell {
-      font-size: 1rem;
-    }
+
+  .header {
+    padding: globals.$spacing--lg;
   }
-  
-  
+
+  .subheading {
+    margin-bottom: 1.5rem;
+    color: #6b7280; // Tailwind gray-500
+    font-size: 1rem;
+  }
+}
+
+.dataGridContainer {
+  height: calc(
+    100vh - 120px
+  ); // fills available height but leaves room for header
+  width: 100%;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+
+  .MuiDataGrid-root {
+    border: none;
+  }
+
+  .MuiDataGrid-columnHeaders,
+  .MuiDataGrid-cell {
+    font-size: 1rem;
+  }
+}
