@@ -1,6 +1,10 @@
 // lib/services/stockService.ts
 import { apiService } from "./api.service"; // Import the generic service
-import { IWatchlist, IWatchlistNews } from "@types/watchlist"; // Adjust the import path as necessary
+import {
+  IWatchlist,
+  IWatchlistNews,
+  IWatchlistResponse,
+} from "@types/watchlist"; // Adjust the import path as necessary
 interface StockData {
   ticker: string;
   price: number;
@@ -15,8 +19,16 @@ export const watchlistService = {
     return apiService.post<any>(`/api/watchlist`, body, {});
   },
 
-  getWatchlist: async (): Promise<IWatchlist[]> => {
-    return apiService.get<IWatchlist[]>(`/api/watchlist`);
+  getWatchlist: async (
+    limit?: number,
+    cursorId?: number | null
+  ): Promise<IWatchlistResponse> => {
+    return apiService.get<IWatchlistResponse>(`/api/watchlist`, {
+      params: {
+        limit: limit,
+        cursorId: cursorId,
+      }, // Default pagination parameters,
+    });
   },
 
   getRelatedStocks: async (): Promise<IWatchlist[]> => {
@@ -28,10 +40,13 @@ export const watchlistService = {
     return apiService.get<any>(`/api/watchlist/news`);
   },
 
-  removeFromWatchlist: async (id: number): Promise<IWatchlist[]> => {
+  removeFromWatchlist: async (
+    id: number,
+    cursorId: number | null = null
+  ): Promise<IWatchlistResponse> => {
     // You can pass query parameters using the options object
-    return apiService.delete<IWatchlist[]>(`/api/watchlist`, {
-      params: { id },
+    return apiService.delete<IWatchlistResponse>(`/api/watchlist`, {
+      params: { id, limit: 10, cursorId: cursorId },
     });
   },
 };

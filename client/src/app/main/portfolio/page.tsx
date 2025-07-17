@@ -4,8 +4,10 @@ import "./portfolio.scss";
 import ScreenerSkeleton from "@components/skeletons/ScreenerSkeleton";
 import { portfoloioService } from "@lib/services/portfolio.service";
 import {
+  Cursor,
   Portfolio,
   PortfolioChartData,
+  PortfolioTransactionData,
   PortfolioWithHoldings,
 } from "@types/portfolio";
 import empty_portfolio from "@public/assets/image/portfolio/empty_portfolio.png";
@@ -19,15 +21,19 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Pagination,
   Select,
 } from "@mui/material";
 import { Trash2 } from "lucide-react";
-import { Itransactions } from "@types/hodlings";
+
 export default function PortfolioPage() {
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio>();
   const [holdings, setHoldings] = useState<PortfolioWithHoldings>(); // Adjust type as needed
-  const [transactionsData, setTransactions] = useState<Itransactions[]>();
+  const [nextCursor, setNextCursor] = useState<Cursor | null>(null);
+  const [hasMore, setHasMore] = useState(true); // To control "Show More" button visibility
+  const [transactionsData, setTransactions] =
+    useState<PortfolioTransactionData>();
   const [chartData, setChart] = useState<PortfolioChartData>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -53,6 +59,8 @@ export default function PortfolioPage() {
               await portfoloioService.getPortfolioWithHoldings(response[0].id);
             setHoldings(fetchedHoldings);
             console.log("Fetched Holdings:", fetchedHoldings);
+            setNextCursor(fetchedHoldings.nextCursor);
+            setHasMore(!!fetchedHoldings.nextCursor); // If nextCursor is null, no more pages
           }
         }
       } catch (e) {
@@ -85,13 +93,31 @@ export default function PortfolioPage() {
       // Optionally, you can also update the selected portfolio to reflect changes
       const updatedPortfolio = portfolios.map((portfolio) =>
         portfolio.id === selectedPortfolio?.id
-          ? { ...portfolio, holdings: updatedHoldings.holdings }
+          ? { ...portfolio, holdings: updatedHoldings.data }
           : portfolio
       );
       setPortfolios(updatedPortfolio);
       setSelectedPortfolio(updatedPortfolio[0]);
     } catch (error) {
       console.error("Error removing stock from holdings:", error);
+    }
+  };
+
+  const loadMore = async () => {
+    if (!nextCursor) return;
+    // IMPORTANT: Convert cursor.createdAt string back to a Date object
+    try {
+      const newHoldings = await portfoloioService.getPortfolioWithHoldings(
+        selectedPortfolio?.id || "",
+        10,
+        nextCursor.cursorId
+      );
+      setHoldings((prev) => ({
+        ...newHoldings,
+        data: [...(prev?.data || []), ...newHoldings.data],
+      }));
+    } catch (error) {
+      console.error("Error loading more holdings:", error);
     }
   };
   const isPortfolioEmpty = !selectedPortfolio?.holdings.length;
@@ -302,7 +328,7 @@ export default function PortfolioPage() {
                     </tr>
                   </thead>
                   <tbody className="l-holdings__populated--table__body">
-                    {holdings?.holdings.map((stock, index) => (
+                    {holdings?.data.map((stock, index) => (
                       <tr
                         key={stock.id}
                         className="l-holdings__populated--table__body__contents"
@@ -346,6 +372,18 @@ export default function PortfolioPage() {
                     ))}
                   </tbody>
                 </table>
+                {holdings?.nextCursor && (
+                  <button
+                    onClick={loadMore}
+                    className="l-holdings__populated--table-wrapper--show-more"
+                  >
+                    Show More
+                  </button>
+                )}
+                {!hasMore &&
+                  !isLoading &&
+                  holdings?.data &&
+                  holdings.data.length > 0 && <div>No more holdings.</div>}
               </div>
             </div>
           </div>
@@ -357,7 +395,6 @@ export default function PortfolioPage() {
               <div className="l-holdings__populated--table-wrapper">
                 <table className="l-holdings__populated--table">
                   <thead className="l-holdings__populated--table__header">
-                    {/* Added ACTIONS column */}
                     <tr className="l-holdings__populated--table__header__contents">
                       <th>Action</th>
                       <th>Shares</th>
@@ -365,13 +402,12 @@ export default function PortfolioPage() {
                     </tr>
                   </thead>
                   <tbody className="l-holdings__populated--table__body">
-                    {transactionsData?.map((tran) => (
+                    {transactionsData?.transactions?.map((tran) => (
                       <tr
                         key={tran.id}
                         className="l-holdings__populated--table__body__contents"
                       >
                         <td>
-                          {" "}
                           {tran.type.toUpperCase() === "BUY"
                             ? "Bought"
                             : "Sold"}
@@ -385,6 +421,27 @@ export default function PortfolioPage() {
                   </tbody>
                 </table>
               </div>
+              <Pagination
+                count={Math.ceil((transactionsData?.total || 0) / 10)}
+                variant="outlined"
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "flex-end",
+                }}
+                color="primary"
+                shape="rounded"
+                onChange={(_, page) => {
+                  const limit = 10;
+                  const offset = page;
+                  if (selectedPortfolio?.id) {
+                    portfoloioService
+                      .getTransactions(selectedPortfolio.id, limit, offset)
+                      .then(setTransactions)
+                      .catch(console.error);
+                  }
+                }}
+              />
             </div>
           </div>
 

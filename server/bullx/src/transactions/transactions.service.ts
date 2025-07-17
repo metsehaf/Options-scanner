@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PortfolioTransaction } from './entity/transactions.entity';
 import { Repository } from 'typeorm';
+import { PortfolioTransactionData } from './transactions.model';
 
 @Injectable()
 export class TransactionsService {
@@ -13,13 +14,18 @@ export class TransactionsService {
   // transaction.service.ts
   async getRecentTransactions(
     portfolioId: string,
-    limit = 10,
-  ): Promise<PortfolioTransaction[]> {
-    this.logger.log('transaction data');
-    return this.txRepo.find({
-      where: { portfolio: { id: portfolioId } },
-      order: { createdAt: 'DESC' },
-      take: limit,
-    });
+    offset: number,
+    limit: number = 10,
+  ): Promise<PortfolioTransactionData> {
+    const [transactions, total] = await this.txRepo
+      .createQueryBuilder('transaction')
+      .where('transaction.portfolioId = :portfolioId', { portfolioId })
+      .orderBy('transaction.createdAt', 'DESC')
+      .skip(offset)
+      .take(limit)
+      .getManyAndCount();
+
+    this.logger.log('transaction data', { transactions, total });
+    return { transactions, total };
   }
 }

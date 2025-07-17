@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import {
   CreateHoldingDto,
   UpdateHoldingDto,
@@ -9,7 +9,7 @@ import { PortfolioHolding } from './entity/holding.entity';
 import { PortfolioTransaction } from 'src/transactions/entity/transactions.entity';
 import { Portfolio } from 'src/portfolio/entities/portfolio.entity';
 import { UtilitesService } from 'src/utils/utilities.service';
-import { Iholdings } from './holdings.model';
+import { NextCursor, PortfolioHoldingsResult } from './holdings.model';
 
 @Injectable()
 export class PortfolioHoldingService {
@@ -34,30 +34,50 @@ export class PortfolioHoldingService {
   async getPortfolioWithHoldings(
     userId: string,
     portfolioId: string,
-  ): Promise<Iholdings> {
+    limit: number = 10,
+    cursorId?: number,
+  ): Promise<PortfolioHoldingsResult> {
     this.logger.log(
-      `Fetching holdings for userId: ${userId}, portfolioId: ${portfolioId}`,
+      `Fetching holdings for userId: ${userId}, portfolioId: ${portfolioId}, limit: ${limit}, cursorId: ${cursorId ?? 'N/A'}`,
     );
-    const holdings = await this.holdingRepo
+
+    const query = this.holdingRepo
       .createQueryBuilder('holding')
       .leftJoinAndSelect('holding.portfolio', 'portfolio')
       .leftJoinAndSelect('portfolio.user', 'user')
       .where('portfolio.id = :portfolioId', { portfolioId })
       .andWhere('user.auth0Id = :userId', { userId })
-      .getMany();
+      .orderBy('holding.cursorId', 'DESC')
+      .take(limit + 1);
 
-    this.logger.log(
-      `Found ${holdings.length} holdings for portfolioId: ${portfolioId}`,
-    );
-    const totalValue = holdings.reduce(
+    if (cursorId) {
+      this.logger.log(`Applying cursor: cursorId=${cursorId}`);
+      query.andWhere('holding.cursorId < :cursorId', { cursorId });
+    }
+
+    const [sql, params] = query.getQueryAndParameters();
+    this.logger.log('Generated SQL Query:', sql);
+    this.logger.log('Query Parameters:', JSON.stringify(params));
+
+    const results = await query.getMany();
+    this.logger.log(`Query results count: ${results.length}`);
+    if (results.length === 0) {
+      this.logger.warn('No records found. Check cursor values or data.');
+    }
+
+    const hasNext = results.length > limit;
+    const data = results.slice(0, limit);
+
+    // Aggregate calculations
+    const totalValue = data.reduce(
       (acc, h) => acc + Number(h.totalValue ?? 0),
       0,
     );
-    const totalGainLoss = holdings.reduce(
+    const totalGainLoss = data.reduce(
       (acc, h) => acc + Number(h.gainLoss ?? 0),
       0,
     );
-    const totalDayLoss = holdings.reduce(
+    const totalDayLoss = data.reduce(
       (acc, h) => acc + Number(h.dayLoss ?? 0),
       0,
     );
@@ -70,8 +90,22 @@ export class PortfolioHoldingService {
       totalDayLoss,
       totalValue,
     );
+
+    const lastItem = data[data.length - 1];
+    let nextCursor: NextCursor | null = null;
+
+    if (hasNext && lastItem) {
+      nextCursor = {
+        cursorId: lastItem.cursorId,
+      } as any; // Adjust NextCursor type if needed
+      this.logger.log(`Next cursor: cursorId=${nextCursor?.cursorId}`);
+    } else {
+      this.logger.log('No next cursor (no more results or no last item)');
+    }
+
     return {
-      holdings,
+      data,
+      nextCursor,
       totalValue: this.utilService.roundUpDecimal(totalValue, 2),
       totalGainLoss: this.utilService.roundUpDecimal(totalGainLoss, 2),
       totalDayLoss: this.utilService.roundUpDecimal(totalDayLoss, 2),
@@ -79,7 +113,6 @@ export class PortfolioHoldingService {
       dayLossPercent,
     };
   }
-
   async addHolding(portfolioId: string, dto: CreateHoldingDto) {
     this.logger.log('payload for adding holdings', dto);
     const portfolio = await this.portfolioRepo.findOneBy({ id: portfolioId });

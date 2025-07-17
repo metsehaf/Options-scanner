@@ -656,7 +656,7 @@ export default function AddInvestmentPage() {
     <Box className={styles.pageContainer}>
       <Box className={styles.mainContentWrapper}>
         <Box className={styles.header}>
-          <Link href="/portfolio" className={styles.backButton}>
+          <Link href="/main/portfolio" className={styles.backButton}>
             <ArrowLeft size={20} />
             <Typography variant="body1">Back to Portfolio</Typography>
           </Link>

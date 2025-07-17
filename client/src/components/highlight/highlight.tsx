@@ -1,6 +1,6 @@
 // components/portfolio/portfolio-highlights/PortfolioHighlights.tsx
 import React from "react";
-import {PortfolioHighlightsProps} from '@types/portfolio';
+import { PortfolioHighlightsProps } from "@types/portfolio";
 import styles from "./portfolio-highlights.module.scss";
 
 const PortfolioHighlights: React.FC<PortfolioHighlightsProps> = ({
@@ -17,32 +17,32 @@ const PortfolioHighlights: React.FC<PortfolioHighlightsProps> = ({
     <div className={styles.highlightsCard}>
       <h2 className={styles.cardTitle}>Portfolio highlights</h2>
       <div className={styles.gainSection}>
-        <div className={styles.dayGain}>
+        <div className={dayGain > 0 ? styles.dayGain : styles.dayLoss}>
           <p className={styles.gainLabel}>DAY GAIN</p>
           <p
             className={`${styles.gainAmount} ${dayGain >= 0 ? styles.positive : styles.negative}`}
           >
-            ${dayGain.toFixed(2)}
+            ${dayGain ? dayGain?.toFixed(2) : ""}
           </p>
           <p
             className={`${styles.gainPercentage} ${dayGainPercentage >= 0 ? "+" : ""}{dayGainPercentage.toFixed(2)}%`}
           >
             {dayGainPercentage >= 0 ? "+" : ""}
-            {dayGainPercentage.toFixed(2)}%
+            {dayGainPercentage >= 0 ? dayGainPercentage?.toFixed(2) : ""}%
           </p>
         </div>
-        <div className={styles.totalGain}>
+        <div className={totalGain > 0 ? styles.totalGain : styles.totalLoss}>
           <p className={styles.gainLabel}>TOTAL GAIN</p>
           <p
             className={`${styles.gainAmount} ${totalGain >= 0 ? styles.positive : styles.negative}`}
           >
-            ${totalGain.toFixed(2)}
+            ${totalGain ? totalGain?.toFixed(2) : ""}
           </p>
           <p
             className={`${styles.gainPercentage} ${totalGainPercentage >= 0 ? "+" : ""}{totalGainPercentage.toFixed(2)}%`}
           >
             {totalGainPercentage >= 0 ? "+" : ""}
-            {totalGainPercentage.toFixed(2)}%
+            {totalGainPercentage ? totalGainPercentage?.toFixed(2) : ""}%
           </p>
         </div>
       </div>

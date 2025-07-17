@@ -166,6 +166,29 @@
       border-collapse: collapse; // Collapse borders
       font-size: 0.9375rem; // Slightly smaller font for table content
 
+      &-wrapper {
+        background-color: globals.$light-text; // White background
+        border-radius: 8px;
+        box-shadow:
+          0 4px 6px rgba(0, 0, 0, 0.08),
+          0 1px 3px rgba(0, 0, 0, 0.04); // Shadow
+        overflow-x: auto; // Ensure responsiveness for table
+
+        &--show-more {
+          margin: 20px auto;
+          display: block;
+          padding: 10px 20px;
+          font-size: 0.95rem;
+          background: #7e57c2;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          &:hover {
+            background: #5e3ea1;
+          }
+        }
+      }
       &__header {
         background-color: #f9fafb; // Light gray for header background
         &__contents {
@@ -311,6 +334,7 @@
             color: globals.$primary; // Blue link color
             text-decoration: none;
             font-weight: 500;
+            cursor: pointer;
             &:hover {
               text-decoration: underline;
             }

@@ -2,6 +2,7 @@ import { Portfolio } from 'src/portfolio/entities/portfolio.entity';
 
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -11,7 +12,8 @@ import {
 @Entity('portfolio_holdings')
 export class PortfolioHolding {
   @PrimaryGeneratedColumn('uuid') id: string;
-
+  @Column({ type: 'int', unique: true, generated: 'increment' })
+  cursorId: number;
   @ManyToOne(() => Portfolio, (portfolio) => portfolio.holdings, {
     onDelete: 'CASCADE',
   })
@@ -27,5 +29,6 @@ export class PortfolioHolding {
   @Column('decimal', { nullable: true }) totalValue: number;
   @Column('decimal', { nullable: true }) gainLoss: number;
   @Column('decimal', { nullable: true }) dayLoss: number;
+  @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() lastUpdated: Date;
 }

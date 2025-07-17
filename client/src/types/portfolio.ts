@@ -1,4 +1,4 @@
-import { TransactionType } from "./hodlings";
+import { Itransactions, TransactionType } from "./hodlings";
 import { SearchResultAsset } from "./search";
 
 export type Portfolio = {
@@ -43,8 +43,13 @@ export interface FormErrors {
   assetCategory?: string;
 }
 
+interface cursor {
+  cursorId: number;
+}
+
 export interface PortfolioWithHoldings {
-  holdings: PortfolioHolding[];
+  data: PortfolioHolding[];
+  nextCursor: cursor | null;
   totalValue: number;
   totalGainLoss: number;
   totalDayLoss: number;
@@ -62,6 +67,7 @@ interface PortfolioHolding {
   totalValue?: number;
   gainLoss?: number;
   lastUpdated: Date;
+  createdAt: Date;
 }
 
 export interface PortfolioChartData {
@@ -69,11 +75,17 @@ export interface PortfolioChartData {
   series: number[];
 }
 
+export interface Cursor {
+  cursorId: number;
+}
+
 export type PortfolioService = {
   addToPortfolio: (portfolio: string) => Promise<any>;
   getPortfolio: () => Promise<Portfolio[]>;
   getPortfolioWithHoldings: (
-    portfolioId: string | undefined
+    portfolioId: string | undefined,
+    limit?: number,
+    cursorId?: number
   ) => Promise<PortfolioWithHoldings>;
   addHolding: (
     portfolioId: string,
@@ -86,8 +98,17 @@ export type PortfolioService = {
   ) => Promise<any>;
   removeFromHoldings: (stockId: string | undefined) => Promise<any>;
   getChartData: (portfolioId: string) => Promise<PortfolioChartData>;
-  getTransactions: (portfolioId: string) => Promise<any>;
+  getTransactions: (
+    portfolioId: string,
+    limit?: number,
+    offset?: number
+  ) => Promise<any>;
 };
+
+export interface PortfolioTransactionData {
+  transactions: Itransactions[];
+  total: number;
+}
 
 export interface PortfolioHighlightsProps {
   dayGain: number | undefined;
