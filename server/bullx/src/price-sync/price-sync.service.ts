@@ -19,7 +19,7 @@ export class PriceSyncService {
     private holdingRepo: Repository<PortfolioHolding>,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_2_HOURS)
   async updatePrices() {
     const holdings = await this.holdingRepo.find({
       relations: ['portfolio'],
@@ -57,17 +57,23 @@ export class PriceSyncService {
         gainLoss: 0,
       };
 
-      entry.totalValue += holding.totalValue ?? 0;
-      entry.gainLoss += holding.gainLoss ?? 0;
+      entry.totalValue += Number(holding.totalValue) ?? 0;
+      entry.gainLoss += Number(holding.gainLoss) ?? 0;
 
       portfolioMap.set(pid, entry);
     }
 
     for (const entry of portfolioMap.values()) {
+      const totalValue = Number(entry.totalValue);
+      const gainLoss = Number(entry.gainLoss);
+
+      if (typeof totalValue !== 'number' || typeof gainLoss !== 'number') {
+        throw new Error('Invalid snapshot data: must be numbers');
+      }
       await this.snapshotSrv.saveSnapshot(
         entry.portfolio,
-        entry.totalValue,
-        entry.gainLoss,
+        totalValue,
+        gainLoss,
       );
     }
   }

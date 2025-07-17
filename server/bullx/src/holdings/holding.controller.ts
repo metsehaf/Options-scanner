@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Patch,
   Post,
@@ -20,6 +21,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 @Controller('api/holdings')
 @UseGuards(JwtAuthGuard)
 export class HoldingController {
+  private readonly logger = new Logger(HoldingController.name); // 📢 this will tag logs with 'holding service'
   constructor(private readonly stockService: PortfolioHoldingService) {}
 
   @Get()
@@ -30,10 +32,20 @@ export class HoldingController {
   @Get(':portfolioId')
   async getHoldings(
     @Param('portfolioId') portfolioId: string,
+    @Query('limit') limit: number,
+    @Query('cursorId') cursorId: number,
     @Req() req: any,
   ) {
     const auth0Id = req.user.userId;
-    return this.stockService.getPortfolioWithHoldings(auth0Id, portfolioId);
+    this.logger.log(
+      `Fetching holdings for userId: ${auth0Id}, portfolioId: ${portfolioId}, limit: ${limit}, cursorId: ${cursorId}`,
+    );
+    return this.stockService.getPortfolioWithHoldings(
+      auth0Id,
+      portfolioId,
+      limit,
+      cursorId,
+    );
   }
 
   @Post()

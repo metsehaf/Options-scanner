@@ -3,6 +3,7 @@ import {
   Portfolio,
   PortfolioChartData,
   PortfolioService,
+  PortfolioTransactionData,
   PortfolioWithHoldings,
 } from "@types/portfolio";
 import { CreateHolding } from "@types/hodlings"; // Import the type for creating a holding
@@ -21,10 +22,18 @@ export const portfoloioService: PortfolioService = {
   },
 
   getPortfolioWithHoldings: async (
-    portfolioId: string | undefined
+    portfolioId: string | undefined,
+    limit: number = 10,
+    cursorId: number | null = null
   ): Promise<PortfolioWithHoldings> => {
     return apiService.get<PortfolioWithHoldings>(
-      `/api/holdings/${portfolioId}`
+      `/api/holdings/${portfolioId}`,
+      {
+        params: {
+          limit: limit,
+          cursorId: cursorId,
+        }, // Default pagination parameters,
+      }
     );
   },
 
@@ -67,10 +76,16 @@ export const portfoloioService: PortfolioService = {
     );
   },
 
-  getTransactions: async (portfolioId: string): Promise<any> => {
-    return apiService.get<any>(
-      `/api/portfolio/transactions/${portfolioId}`,
-      {}
-    );
+  getTransactions: async (
+    portfolioId: string,
+    limit: number = 10,
+    offset?: number
+  ): Promise<PortfolioTransactionData> => {
+    return apiService.get<any>(`/api/portfolio/transactions/${portfolioId}`, {
+      params: {
+        limit: limit,
+        offset: offset,
+      }, // Default pagination parameters,
+    });
   },
 };

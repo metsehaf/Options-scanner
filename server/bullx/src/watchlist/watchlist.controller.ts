@@ -42,19 +42,36 @@ export class WatchlistController {
   }
 
   @Get()
-  async getWatchlist(@Request() req: { user: { userId: string } }) {
+  async getWatchlist(
+    @Request() req: { user: { userId: string } },
+    @Query('limit') limit: number,
+    @Query('cursorId') cursorId: number,
+  ) {
     const auth0Id = req.user.userId;
-    return this.watchlistService.getWatchlist(auth0Id, this.apiKey, this.epURL);
+    return this.watchlistService.getWatchlist(
+      auth0Id,
+      this.apiKey,
+      this.epURL,
+      limit,
+      cursorId,
+    );
   }
 
   @Delete()
-  async removeStockFromWatchlist(@Request() req: any, @Query('id') id: number) {
+  async removeStockFromWatchlist(
+    @Request() req: any,
+    @Query('id') id: number,
+    @Query('limit') limit: number,
+    @Query('cursorId') cursorId: number,
+  ) {
     const auth0Id = req.user.userId;
     return this.watchlistService.removeStock(
       auth0Id,
       id,
       this.apiKey,
       this.epURL,
+      limit,
+      cursorId,
     );
   }
 
@@ -64,7 +81,6 @@ export class WatchlistController {
     return this.watchlistService.getRelatedStocks(
       auth0Id,
       this.polygonApiKey,
-      this.polygon_URL_BASE,
       this.epURL,
       this.apiKey,
     );

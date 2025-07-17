@@ -24,7 +24,7 @@
 
 .dayGain,
 .totalGain {
-  background-color: #f0f9f4;
+  background-color: globals.$gain-background;
   color: globals.$gain;
   border-radius: 6px;
   padding: 15px;
@@ -52,7 +52,42 @@
     font-size: 0.9rem;
 
     &.negative {
-      color: #c92a2a;
+      color: globals.$loss;
+    }
+  }
+}
+
+.dayLoss,
+.totalLoss {
+  background-color: globals.$loss-background;
+  color: globals.$loss;
+  border-radius: 6px;
+  padding: 15px;
+  flex: 1;
+  text-align: center;
+
+  .gainLabel {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 5px;
+  }
+
+  .gainAmount {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 2px;
+
+    &.negative {
+      color: globals.$loss;
+      background-color: #fdecea;
+    }
+  }
+
+  .gainPercentage {
+    font-size: 0.9rem;
+
+    &.negative {
+      color: globals.$loss;
     }
   }
 }

@@ -4,15 +4,20 @@ import React, { useEffect, useState } from "react";
 import "./watchlist.scss";
 import Button from "@mui/material/Button";
 import { Plus, Eye, Trash2 } from "lucide-react";
-import { Tab, Tabs } from "@mui/material";
+import { Link, Tab, Tabs } from "@mui/material";
 import SearchModal, {
   SearchModalData,
 } from "@components/search-modal/search-modal";
 import PortfolioModal from "@components/portfolio-modal/portfolio-modal";
 import ScreenerSkeleton from "@components/skeletons/ScreenerSkeleton";
 import { watchlistService } from "@lib/services/watchlist.service";
-import { IWatchlist, IWatchlistNews } from "@types/watchlist";
+import {
+  IWatchlist,
+  IWatchlistNews,
+  IWatchlistResponse,
+} from "@types/watchlist";
 import { useRouter } from "next/navigation";
+import { Cursor } from "@types/portfolio";
 
 interface NavItem {
   id: number;
@@ -23,7 +28,9 @@ export default function Watchlist() {
   const router = useRouter();
   const [value, setValue] = useState(0);
   const [isSearchModalOpen, setSearchModalOpen] = useState<boolean>(false);
-  const [watchlistData, setWatchlistData] = useState<IWatchlist[]>([]); // Initialize with an empty array
+  const [watchlistData, setWatchlistData] = useState<IWatchlistResponse>(); // Initialize with an empty array
+  const [nextCursor, setNextCursor] = useState<Cursor | null>(null);
+  const [hasMore, setHasMore] = useState(true); // To control "Show More" button visibility
   const [isPortfolioModalOpen, setPortfolioModalOpen] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -45,14 +52,17 @@ export default function Watchlist() {
     const fetchData = async () => {
       try {
         if (isMountedCleanup) {
-          const fetchedData = await watchlistService.getWatchlist();
+          const fetchedWatchlist = await watchlistService.getWatchlist();
           const relatedStocks = await watchlistService.getRelatedStocks();
           const newsData = await watchlistService.getNews();
+          console.log(fetchedWatchlist);
           if (isMountedCleanup) {
-            setWatchlistData(fetchedData);
+            setWatchlistData(fetchedWatchlist);
             setMore(relatedStocks); // Update the 'more' state with related stocks
             setNews(newsData || []); // Update the 'news' state with fetched news data
             setIsLoading(false); // Set loading to false after data is fetched
+            setNextCursor(fetchedWatchlist.nextCursor);
+            setHasMore(!!fetchedWatchlist.nextCursor); // If nextCursor is null, no more pages
           }
         }
       } catch (error) {
@@ -64,6 +74,22 @@ export default function Watchlist() {
       isMountedCleanup = false; // Cleanup function to prevent state updates on unmounted component
     };
   }, []);
+
+  const loadMore = async () => {
+    if (!nextCursor) return;
+    // IMPORTANT: Convert cursor.createdAt string back to a Date object
+    try {
+      const newWatchlists = await watchlistService.getWatchlist(
+        nextCursor.cursorId
+      );
+      setWatchlistData((prev) => ({
+        ...newWatchlists,
+        watchlist: [...(prev?.results || []), ...newWatchlists.results],
+      }));
+    } catch (error) {
+      console.error("Error loading more holdings:", error);
+    }
+  };
 
   const truncateText = (text: string, maxLength = 150) =>
     text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
@@ -78,7 +104,7 @@ export default function Watchlist() {
     // Optionally, send a request to the server to remove the stock
     try {
       watchlistService
-        .removeFromWatchlist(id)
+        .removeFromWatchlist(id, nextCursor?.cursorId)
         .then((updatedWatchlist) => {
           setWatchlistData(updatedWatchlist); // Update the state with the new watchlist data
           console.log("Stock removed successfully");
@@ -113,6 +139,16 @@ export default function Watchlist() {
   };
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+  };
+
+  const handleSelection = (e: string) => {
+    console.log("Item clicked:", e);
+    const ticker = e;
+    console.log("Selected ticker:", ticker);
+    if (ticker) {
+      // window.location.href = `/main/watchlist/${ticker}`;
+      router.push(`/main/watchlist/${ticker}`);
+    }
   };
 
   const navigation: NavItem[] = [
@@ -192,7 +228,7 @@ export default function Watchlist() {
       </div>
       {isLoading ? (
         <ScreenerSkeleton />
-      ) : watchlistData && watchlistData.length > 0 ? (
+      ) : watchlistData?.results && watchlistData.results.length > 0 ? (
         <div className="l-watchlist__populated">
           <div className="l-watchlist__populated--table-wrapper">
             <table className="l-watchlist__populated--table">
@@ -207,10 +243,14 @@ export default function Watchlist() {
                 </tr>
               </thead>
               <tbody className="l-watchlist__populated--table__body">
-                {watchlistData.map((stock, index) => (
+                {watchlistData.results.map((stock, index) => (
                   <tr
                     key={stock.id}
                     className="l-watchlist__populated--table__body__contents"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      router.push(`/main/watchlist/${stock.ticker}`)
+                    }
                   >
                     <td>{stock.ticker}</td>
                     <td>{stock.lastPrice}</td>
@@ -232,7 +272,10 @@ export default function Watchlist() {
                       <Trash2
                         size={18}
                         className="l-watchlist__delete-icon"
-                        onClick={() => removeFromWatchlist(stock.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeFromWatchlist(stock.id);
+                        }}
                         style={{ cursor: "pointer" }}
                       />
                     </td>
@@ -240,6 +283,18 @@ export default function Watchlist() {
                 ))}
               </tbody>
             </table>
+            {watchlistData?.nextCursor && (
+              <button
+                onClick={loadMore}
+                className="l-watchlist__populated--table-wrapper--show-more"
+              >
+                Show More
+              </button>
+            )}
+            {!hasMore &&
+              !isLoading &&
+              watchlistData?.results &&
+              watchlistData?.results.length > 0 && <div></div>}
           </div>
           <div className="l-watchlist__populated--news">
             <h2>Your Watchlist in the News</h2>

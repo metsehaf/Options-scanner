@@ -20,6 +20,9 @@ export class WatchlistItem {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   addedAt: Date;
 
+  @Column({ type: 'int', unique: true, generated: 'increment' })
+  cursorId: number;
+
   @ManyToOne(() => User, (user) => user.watchlistItems, { onDelete: 'CASCADE' })
   user: User; // Foreign key to the User entity
 }

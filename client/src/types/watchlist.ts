@@ -6,8 +6,13 @@ export interface IWatchlist {
   change: number; // or changePercent
 }
 
+interface cursor {
+  cursorId: number;
+}
+
 export interface IWatchlistResponse {
-  watchlist: IWatchlist[];
+  results: IWatchlist[];
+  nextCursor: cursor | null;
 }
 
 export type IWatchlistNews = {

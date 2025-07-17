@@ -1,9 +1,23 @@
+import { NextCursor } from 'src/holdings/holdings.model';
+
 export type EnrichedWatchlistItem = {
+  nextCursor: NextCursor | null;
+  results: watchlistResults[];
+};
+
+type watchlistResults = {
   id: number;
   ticker: string;
   name: string;
   lastPrice: number;
   change: number; // or changePercent
+};
+export type watchlistRelated = {
+  id: number;
+  ticker: string;
+  name: string;
+  lastPrice: number;
+  change: number;
 };
 
 export interface NewsPublisher {

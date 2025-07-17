@@ -7,8 +7,10 @@ import {
   ApiNewsResponse,
   EnrichedWatchlistItem,
   IWatchlistData,
+  watchlistRelated,
 } from './watchlist.model';
 import { HttpService } from '@nestjs/axios';
+import { NextCursor } from 'src/holdings/holdings.model';
 
 @Injectable()
 export class WatchlistService {
@@ -53,16 +55,27 @@ export class WatchlistService {
     auth0Id: string,
     apiKey: string | undefined,
     epURL: string | undefined,
-  ): Promise<EnrichedWatchlistItem[]> {
+    limit: number = 10,
+    cursorId?: number,
+  ): Promise<EnrichedWatchlistItem> {
     const url = `${epURL}/quote/`;
-    const items = await this.watchlistItemRepository.find({
-      where: { user: { auth0Id } },
-      order: { addedAt: 'DESC' },
-    });
+    const query = await this.watchlistItemRepository
+      .createQueryBuilder('watchlistItem')
+      .leftJoinAndSelect('watchlistItem.user', 'user')
+      .where('user.auth0Id = :auth0Id', { auth0Id })
+      .orderBy('watchlistItem.cursorId', 'DESC')
+      .take(limit + 1);
 
-    const tickers = items.map((item) => item.ticker);
-    const id = items.map((item) => item.id);
-    console.log(url);
+    if (cursorId) {
+      query.andWhere('watchlistItem.cursorId < :cursorId', { cursorId });
+    }
+    const items = await query.getMany();
+    const hasNext = items.length > limit;
+    const data = items.slice(0, limit);
+
+    const tickers = data.map((item) => item.ticker);
+    const id = data.map((item) => item.id);
+    console.log('tickers list', tickers);
     const results = await Promise.all(
       tickers.map(async (ticker) => {
         try {
@@ -89,8 +102,20 @@ export class WatchlistService {
         }
       }),
     );
+    this.logger.log('watchlist results', results);
+    const lastItem = data[data.length - 1];
+    let nextCursor: NextCursor | null = null;
 
-    return results;
+    if (hasNext && lastItem) {
+      nextCursor = {
+        cursorId: lastItem.cursorId,
+      } as any; // Adjust NextCursor type if needed
+      this.logger.log(`Next cursor: cursorId=${nextCursor?.cursorId}`);
+    } else {
+      this.logger.log('No next cursor (no more results or no last item)');
+    }
+
+    return { nextCursor, results };
   }
 
   async removeStock(
@@ -98,7 +123,9 @@ export class WatchlistService {
     watchlistItemId: number,
     apiKey: string | undefined,
     epURL: string | undefined,
-  ): Promise<EnrichedWatchlistItem[]> {
+    limit: number,
+    cursorId: number,
+  ): Promise<EnrichedWatchlistItem> {
     // First, find the item to ensure it belongs to the user
     // This performs a SELECT query first
     const itemToDelete = await this.watchlistItemRepository.findOne({
@@ -126,16 +153,15 @@ export class WatchlistService {
     }
 
     // Return the updated watchlist
-    return this.getWatchlist(auth0Id, apiKey, epURL);
+    return this.getWatchlist(auth0Id, apiKey, epURL, limit, cursorId);
   }
 
   async getRelatedStocks(
     auth0Id: string,
     apiKey: string | undefined,
-    epURL: string | undefined,
     FMPURL: string | undefined,
     FMP_API_KEY: string | undefined,
-  ): Promise<EnrichedWatchlistItem[]> {
+  ): Promise<watchlistRelated[]> {
     // Get all watchlist items for the user
     const items = await this.watchlistItemRepository.find({
       where: { user: { auth0Id } },
