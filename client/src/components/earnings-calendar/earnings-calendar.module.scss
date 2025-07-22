@@ -1,0 +1,37 @@
+@use "src/scss/globals.module" as globals;
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7fafd;
+  border-radius: 12px;
+  padding: 1.2rem 1.6rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.symbol {
+  font-weight: 500;
+  color: #555;
+}
+
+.date {
+  color: #3f6ea3;
+  font-size: 0.92rem;
+}
+
+.logo img {
+  width: 80px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.5rem;
+}

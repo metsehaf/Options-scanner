@@ -1,6 +1,7 @@
 // lib/services/stockService.ts
 import { apiService } from "./api.service"; // Import the generic service
 import {
+  IEarningsCalendar,
   IWatchlist,
   IWatchlistNews,
   IWatchlistResponse,
@@ -29,6 +30,12 @@ export const watchlistService = {
         cursorId: cursorId,
       }, // Default pagination parameters,
     });
+  },
+
+  getEarningsCalendar: async (): Promise<IEarningsCalendar[]> => {
+    return apiService.get<IEarningsCalendar[]>(
+      `/api/watchlist/earnings-calendar`
+    );
   },
 
   getRelatedStocks: async (): Promise<IWatchlist[]> => {

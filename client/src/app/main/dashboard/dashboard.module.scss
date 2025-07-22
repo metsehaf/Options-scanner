@@ -1,16 +1,354 @@
-@use 'src/scss/globals.module' as globals;
+@use "src/scss/globals.module" as globals;
 
 .dashboardContainer {
   display: flex;
   height: 100vh;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   box-sizing: border-box;
 }
 
 .content {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
   border-top-right-radius: globals.$spacing--md;
   border-bottom-right-radius: globals.$spacing--md;
+}
+
+.dashboardPage {
+  display: flex;
+  flex-direction: column;
+  gap: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg (20px)
+  padding: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+  background-color: globals.$background-light; // $secondary-color -> globals.$background-light
+  min-height: 100vh;
+  font-family: globals.$base-font-family; // 'Inter', sans-serif -> globals.$base-font-family
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+
+  .greeting {
+    font-size: globals.$text--xl; // 1.8rem -> globals.$text--xl (27px)
+    font-weight: 600;
+    color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+    margin: 0;
+  }
+
+  .searchContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 1200px;
+    max-width: 100%; // Ensure it doesn't overflow on smaller screens
+    border-radius: globals.$border-radius-md; // $border-radius -> globals.$border-radius-md (8px)
+    padding: globals.$spacing--sm globals.$spacing--md; // 8px 12px -> globals.$spacing--sm globals.$spacing--md
+    box-shadow: globals.$shadow-sm; // 0 1px 3px rgba(0, 0, 0, 0.05) -> globals.$shadow-sm
+
+    .searchIcon {
+      color: globals.$text-gray-500; // $text-color-light -> globals.$text-gray-500
+      margin-right: globals.$spacing--sm; // 8px -> globals.$spacing--sm
+    }
+
+    .searchInput {
+      border: none;
+      outline: none;
+      font-size: globals.$base-font-size; // 1rem -> globals.$base-font-size
+      padding: 0;
+      width: 200px; // Adjust as needed
+      color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+
+      &::placeholder {
+        color: globals.$text-gray-500; // $text-color-light -> globals.$text-gray-500
+      }
+    }
+  }
+}
+
+.summaryCards {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+  margin-bottom: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+
+  .summaryCard {
+    width: 45%;
+    background-color: globals.$light-background; // $card-bg -> globals.$light-background
+    border-radius: globals.$border-radius-md; // $border-radius -> globals.$border-radius-md
+    padding: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+    box-shadow: globals.$shadow-md; // 0 2px 5px rgba(0, 0, 0, 0.1) -> globals.$shadow-md
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cardLabel {
+    font-size: globals.$text--xs; // 0.9rem -> globals.$text--xs (13px)
+    color: globals.$text-gray-600; // $text-color-light -> globals.$text-gray-600
+    margin-bottom: globals.$spacing--2xs; // 5px -> globals.$spacing--2xs
+  }
+
+  .cardValue {
+    font-size: globals.$text--xl; // 1.8rem -> globals.$text--xl
+    font-weight: 700;
+    color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+    margin-bottom: globals.$spacing--2xs; // 5px -> globals.$spacing--2xs
+  }
+
+  .cardChange {
+    font-size: globals.$base-font-size; // 1rem -> globals.$base-font-size
+    font-weight: 500;
+
+    &.positive {
+      color: globals.$gain; // $positive-gain -> globals.$gain
+    }
+    &.negative {
+      color: globals.$loss; // $negative-loss -> globals.$loss
+    }
+  }
+}
+
+.portfolioSection {
+  background-color: globals.$light-background; // $card-bg -> globals.$light-background
+  border-radius: globals.$border-radius-md; // $border-radius -> globals.$border-radius-md
+  padding: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+  box-shadow: globals.$shadow-md; // 0 2px 5px rgba(0, 0, 0, 0.1) -> globals.$shadow-md
+  margin-bottom: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+
+  .sectionTitle {
+    font-size: globals.$text--lg; // 1.5rem -> globals.$text--lg (23px)
+    font-weight: 600;
+    color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+    margin-bottom: globals.$spacing--sm; // 10px -> globals.$spacing--sm
+  }
+
+  .portfolioValue {
+    font-size: globals.$text--xl; // 1.8rem -> globals.$text--xl
+    font-weight: 700;
+    color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+    margin-bottom: globals.$spacing--2xs; // 5px -> globals.$spacing--2xs
+  }
+
+  .portfolioChange {
+    font-size: globals.$base-font-size; // 1rem -> globals.$base-font-size
+    font-weight: 500;
+    margin-bottom: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+
+    &.positive {
+      color: globals.$gain; // $positive-gain -> globals.$gain
+    }
+    &.negative {
+      color: globals.$loss; // $negative-loss -> globals.$loss
+    }
+  }
+
+  .chartPlaceholder {
+    background-color: globals.$gray-100; // #f8f8f8 -> globals.$gray-100
+    border: 1px dashed globals.$gray-300; // $border-color -> globals.$gray-300
+    border-radius: globals.$border-radius-md; // $border-radius -> globals.$border-radius-md
+    height: 250px; // Fixed height for placeholder
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: globals.$text-gray-600; // $text-color-light -> globals.$text-gray-600
+    font-style: italic;
+    margin-top: globals.$spacing--md; // 15px -> globals.$spacing--md
+  }
+}
+
+.yourListsSection {
+  background-color: globals.$light-background; // $card-bg -> globals.$light-background
+  border-radius: globals.$border-radius-md; // $border-radius -> globals.$border-radius-md
+  padding: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+  box-shadow: globals.$shadow-md; // 0 2px 5px rgba(0, 0, 0, 0.1) -> globals.$shadow-md
+  margin-bottom: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+
+  .sectionTitle {
+    font-size: globals.$text--lg; // 1.5rem -> globals.$text--lg
+    font-weight: 600;
+    color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+    margin-bottom: globals.$spacing--md; // 15px -> globals.$spacing--md
+  }
+
+  .listCardsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+  }
+
+  .listCard {
+    background-color: globals.$gray-100; // $secondary-color -> globals.$gray-100 (lighter background for nested cards)
+    border-radius: globals.$border-radius-md; // $border-radius -> globals.$border-radius-md
+    padding: globals.$spacing--md; // 15px -> globals.$spacing--md
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: globals.$shadow-sm; // 0 1px 3px rgba(0, 0, 0, 0.05) -> globals.$shadow-sm
+
+    .listCardIcon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: globals.$light-background; // $card-bg -> globals.$light-background
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: globals.$spacing--sm; // 10px -> globals.$spacing--sm
+      overflow: hidden; // Ensure image fits
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .listCardTitle {
+      font-size: globals.$text--md; // 1.1rem -> globals.$text--md
+      font-weight: 600;
+      color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+      margin-bottom: globals.$spacing--2xs; // 5px -> globals.$spacing--2xs
+    }
+
+    .listCardDescription {
+      font-size: globals.$text--xs; // 0.85rem -> globals.$text--xs
+      color: globals.$text-gray-600; // $text-color-light -> globals.$text-gray-600
+      margin: 0;
+    }
+  }
+}
+
+.topMoversSection {
+  background-color: globals.$light-background; // $card-bg -> globals.$light-background
+  border-radius: globals.$border-radius-md; // $border-radius -> globals.$border-radius-md
+  padding: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+  box-shadow: globals.$shadow-md; // 0 2px 5px rgba(0, 0, 0, 0.1) -> globals.$shadow-md
+  margin-bottom: globals.$spacing--lg; // $padding-base -> globals.$spacing--lg
+
+  .sectionTitle {
+    font-size: globals.$text--lg; // 1.5rem -> globals.$text--lg
+    font-weight: 600;
+    color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+    margin-bottom: globals.$spacing--md; // 15px -> globals.$spacing--md
+  }
+
+  .tabs {
+    display: flex;
+    gap: globals.$spacing--sm; // 10px -> globals.$spacing--sm
+    margin-bottom: globals.$spacing--md; // 15px -> globals.$spacing--md
+  }
+
+  .tabButton {
+    background-color: transparent;
+    border: 1px solid globals.$gray-300; // $border-color -> globals.$gray-300
+    border-radius: 20px; // Keep as fixed px for pill shape
+    padding: globals.$spacing--sm globals.$spacing--md; // 8px 15px -> globals.$spacing--sm globals.$spacing--md
+    font-size: globals.$text--xs; // 0.9rem -> globals.$text--xs
+    font-weight: 500;
+    color: globals.$text-gray-600; // $text-color-light -> globals.$text-gray-600
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: globals.$gray-200; // $secondary-color -> globals.$gray-200
+    }
+
+    &.active {
+      background-color: globals.$primary; // $primary-color -> globals.$primary
+      color: globals.$light-text; // $card-bg -> globals.$light-text (white text on primary)
+      border-color: globals.$primary; // $primary-color -> globals.$primary
+    }
+  }
+
+  .moversTable {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      text-align: left;
+      padding: globals.$spacing--md globals.$spacing--md; // 12px 15px -> globals.$spacing--md globals.$spacing--md
+      border-bottom: 1px solid globals.$gray-300; // $border-color -> globals.$gray-300
+    }
+
+    th {
+      font-size: globals.$text--xs; // 0.9rem -> globals.$text--xs
+      color: globals.$text-gray-600; // $text-color-light -> globals.$text-gray-600
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    td {
+      font-size: globals.$base-font-size; // 1rem -> globals.$base-font-size
+      color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .positive {
+      color: globals.$gain; // $positive-gain -> globals.$gain
+      font-weight: 500;
+    }
+
+    .negative {
+      color: globals.$loss; // $negative-loss -> globals.$loss
+      font-weight: 500;
+    }
+  }
+}
+
+.inviteFriendsSection {
+  display: flex;
+  align-items: center;
+  gap: globals.$spacing--sm; // 10px -> globals.$spacing--sm
+  background-color: globals.$light-background; // $card-bg -> globals.$light-background
+  border-radius: globals.$border-radius-md; // $border-radius -> globals.$border-radius-md
+  padding: globals.$spacing--md; // 15px -> globals.$spacing--md
+  box-shadow: globals.$shadow-sm; // 0 1px 3px rgba(0, 0, 0, 0.05) -> globals.$shadow-sm
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: globals.$gray-100; // darken($card-bg, 3%) -> globals.$gray-100
+  }
+
+  .inviteIcon {
+    font-size: globals.$text--lg; // 1.5rem -> globals.$text--lg
+  }
+
+  .inviteText {
+    font-size: globals.$base-font-size; // 1rem -> globals.$base-font-size
+    color: globals.$text-gray-900; // $text-color-dark -> globals.$text-gray-900
+    margin: 0;
+  }
+}
+
+// Responsive adjustments
+@include globals.breakpoint(md) {
+  // 768px -> globals.$md
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: globals.$spacing--md; // 15px -> globals.$spacing--md
+  }
+
+  .summaryCards {
+    grid-template-columns: 1fr;
+  }
+
+  .listCardsContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .moversTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }

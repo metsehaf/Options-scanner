@@ -6,11 +6,13 @@ import { User } from 'src/user/entities/user.entity';
 import {
   ApiNewsResponse,
   EnrichedWatchlistItem,
+  IEarningsCalendar,
   IWatchlistData,
   watchlistRelated,
 } from './watchlist.model';
 import { HttpService } from '@nestjs/axios';
 import { NextCursor } from 'src/holdings/holdings.model';
+import { of } from 'rxjs';
 
 @Injectable()
 export class WatchlistService {
@@ -154,6 +156,56 @@ export class WatchlistService {
 
     // Return the updated watchlist
     return this.getWatchlist(auth0Id, apiKey, epURL, limit, cursorId);
+  }
+
+  async getEarningsCalendar(
+    epURL: string | undefined,
+    apiKey: string | undefined,
+  ): Promise<IEarningsCalendar[]> {
+    const url = `${epURL}/stable/earnings-calendar`;
+    const getEarningsQueryDateRange = () => {
+      const today = new Date();
+      const from = today.toISOString().split('T')[0];
+
+      const in30Days = new Date();
+      in30Days.setDate(today.getDate() + 30);
+      const to = in30Days.toISOString().split('T')[0];
+
+      return { from, to };
+    };
+
+    // Example usage:
+    const { from, to } = getEarningsQueryDateRange();
+    try {
+      const response = await this.http.axiosRef.get<IEarningsCalendar[]>(url, {
+        params: {
+          from: from,
+          to: to,
+          apikey: apiKey,
+        },
+      });
+      return this.uniqEarningsCalendar(response.data);
+    } catch (err) {
+      console.error('Error fetching earnings calendar:', err);
+      // throw new Error('Failed to fetch earnings calendar');
+      return []; // Return an empty array on error
+    }
+  }
+
+  uniqEarningsCalendar(
+    earningsArray: IEarningsCalendar[],
+  ): IEarningsCalendar[] {
+    const seen = new Map(); // Using Map is generally better for keys that might not be simple strings
+    return earningsArray.filter((item) => {
+      // Create a unique key for each item, e.g., "SYMBOL_DATE"
+      const key = `${item.symbol}_${item.date}`;
+      if (seen.has(key)) {
+        return false; // Already seen this combination
+      } else {
+        seen.set(key, true); // Mark this combination as seen
+        return true; // Keep this item
+      }
+    });
   }
 
   async getRelatedStocks(

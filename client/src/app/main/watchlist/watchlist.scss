@@ -152,6 +152,34 @@
     gap: globals.$spacing--xl; // Gap between sections
     margin-top: globals.$spacing--xl;
 
+    &--section {
+      display: flex;
+      width: 100%;
+      gap: globals.$spacing--2xl; // Gap between items in section
+    }
+
+    &--calendar {
+      max-height: 600px;
+      height: 600px;
+      background-color: globals.$light-text; // White background
+      border-radius: 8px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04); // Shadow
+      width: 50%;
+      padding: globals.$spacing--lg globals.$spacing--xl; // Adjusted padding
+
+      h2 {
+        font-size: globals.$text--lg;
+        font-weight: 500;
+        margin-bottom: $spacing--md;
+      }
+      &_container {
+        overflow-y: auto; // Enable vertical scrolling
+        max-height: 500px;
+      }
+    }
+
     &--table-wrapper {
       background-color: globals.$light-text; // White background
       border-radius: 8px;
