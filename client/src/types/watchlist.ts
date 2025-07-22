@@ -15,6 +15,16 @@ export interface IWatchlistResponse {
   nextCursor: cursor | null;
 }
 
+export type IEarningsCalendar = {
+  symbol: string;
+  date: string;
+  epsActual: number;
+  epsEstimated: number;
+  revenueActual: number;
+  revenueEstimated: number;
+  lastUpdated: string;
+};
+
 export type IWatchlistNews = {
   id: string;
   title: string;

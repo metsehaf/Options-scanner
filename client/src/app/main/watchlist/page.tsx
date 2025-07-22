@@ -8,6 +8,7 @@ import { Link, Tab, Tabs } from "@mui/material";
 import SearchModal, {
   SearchModalData,
 } from "@components/search-modal/search-modal";
+import { EarningsCard } from "@components/earnings-calendar/earnings-card";
 import PortfolioModal from "@components/portfolio-modal/portfolio-modal";
 import ScreenerSkeleton from "@components/skeletons/ScreenerSkeleton";
 import { watchlistService } from "@lib/services/watchlist.service";
@@ -18,6 +19,8 @@ import {
 } from "@types/watchlist";
 import { useRouter } from "next/navigation";
 import { Cursor } from "@types/portfolio";
+import { IEarningsCalendar } from "../../../types/watchlist";
+import { getLogoUrl } from "@utils/logo";
 
 interface NavItem {
   id: number;
@@ -31,6 +34,7 @@ export default function Watchlist() {
   const [watchlistData, setWatchlistData] = useState<IWatchlistResponse>(); // Initialize with an empty array
   const [nextCursor, setNextCursor] = useState<Cursor | null>(null);
   const [hasMore, setHasMore] = useState(true); // To control "Show More" button visibility
+  const [earningsData, setEarningsData] = useState<IEarningsCalendar[]>([]);
   const [isPortfolioModalOpen, setPortfolioModalOpen] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -55,12 +59,14 @@ export default function Watchlist() {
           const fetchedWatchlist = await watchlistService.getWatchlist();
           const relatedStocks = await watchlistService.getRelatedStocks();
           const newsData = await watchlistService.getNews();
+          const earningsData = await watchlistService.getEarningsCalendar();
           console.log(fetchedWatchlist);
           if (isMountedCleanup) {
             setWatchlistData(fetchedWatchlist);
             setMore(relatedStocks); // Update the 'more' state with related stocks
             setNews(newsData || []); // Update the 'news' state with fetched news data
             setIsLoading(false); // Set loading to false after data is fetched
+            setEarningsData(earningsData || []); // Update earnings data
             setNextCursor(fetchedWatchlist.nextCursor);
             setHasMore(!!fetchedWatchlist.nextCursor); // If nextCursor is null, no more pages
           }
@@ -139,16 +145,6 @@ export default function Watchlist() {
   };
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
-
-  const handleSelection = (e: string) => {
-    console.log("Item clicked:", e);
-    const ticker = e;
-    console.log("Selected ticker:", ticker);
-    if (ticker) {
-      // window.location.href = `/main/watchlist/${ticker}`;
-      router.push(`/main/watchlist/${ticker}`);
-    }
   };
 
   const navigation: NavItem[] = [
@@ -230,71 +226,87 @@ export default function Watchlist() {
         <ScreenerSkeleton />
       ) : watchlistData?.results && watchlistData.results.length > 0 ? (
         <div className="l-watchlist__populated">
-          <div className="l-watchlist__populated--table-wrapper">
-            <table className="l-watchlist__populated--table">
-              <thead className="l-watchlist__populated--table__header">
-                {/* Added ACTIONS column */}
-                <tr className="l-watchlist__populated--table__header__contents">
-                  <th>SYMBOL</th>
-                  <th>LAST PRICE</th>
-                  <th>% CHANGE</th>
-                  <th>COMPANY NAME</th>
-                  <th>ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="l-watchlist__populated--table__body">
-                {watchlistData.results.map((stock, index) => (
-                  <tr
-                    key={stock.id}
-                    className="l-watchlist__populated--table__body__contents"
-                    style={{ cursor: "pointer" }}
-                    onClick={() =>
-                      router.push(`/main/watchlist/${stock.ticker}`)
-                    }
-                  >
-                    <td>{stock.ticker}</td>
-                    <td>{stock.lastPrice}</td>
-                    <td>
-                      <span
-                        className={
-                          stock.change > 0
-                            ? "l-watchlist__populated--table__body__contents__positive"
-                            : stock.change < 0
-                              ? "l-watchlist__populated--table__body__contents__negative"
-                              : ""
-                        }
-                      >
-                        {stock.change}%
-                      </span>
-                    </td>
-                    <td>{stock.name}</td>
-                    <td>
-                      <Trash2
-                        size={18}
-                        className="l-watchlist__delete-icon"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeFromWatchlist(stock.id);
-                        }}
-                        style={{ cursor: "pointer" }}
-                      />
-                    </td>
+          <div className="l-watchlist__populated--section">
+            <div className="l-watchlist__populated--table-wrapper">
+              <table className="l-watchlist__populated--table">
+                <thead className="l-watchlist__populated--table__header">
+                  {/* Added ACTIONS column */}
+                  <tr className="l-watchlist__populated--table__header__contents">
+                    <th>SYMBOL</th>
+                    <th>LAST PRICE</th>
+                    <th>% CHANGE</th>
+                    <th>COMPANY NAME</th>
+                    <th>ACTIONS</th>
                   </tr>
+                </thead>
+                <tbody className="l-watchlist__populated--table__body">
+                  {watchlistData.results.map((stock, index) => (
+                    <tr
+                      key={stock.id}
+                      className="l-watchlist__populated--table__body__contents"
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        router.push(`/main/watchlist/${stock.ticker}`)
+                      }
+                    >
+                      <td>{stock.ticker}</td>
+                      <td>{stock.lastPrice}</td>
+                      <td>
+                        <span
+                          className={
+                            stock.change > 0
+                              ? "l-watchlist__populated--table__body__contents__positive"
+                              : stock.change < 0
+                                ? "l-watchlist__populated--table__body__contents__negative"
+                                : ""
+                          }
+                        >
+                          {stock.change}%
+                        </span>
+                      </td>
+                      <td>{stock.name}</td>
+                      <td>
+                        <Trash2
+                          size={18}
+                          className="l-watchlist__delete-icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeFromWatchlist(stock.id);
+                          }}
+                          style={{ cursor: "pointer" }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {watchlistData?.nextCursor && (
+                <button
+                  onClick={loadMore}
+                  className="l-watchlist__populated--table-wrapper--show-more"
+                >
+                  Show More
+                </button>
+              )}
+              {!hasMore &&
+                !isLoading &&
+                watchlistData?.results &&
+                watchlistData?.results.length > 0 && <div></div>}
+            </div>
+            <div className="l-watchlist__populated--calendar">
+              <h2>Upcoming Earnings calendar</h2>
+              <div className="l-watchlist__populated--calendar_container">
+                {earningsData.map((stock) => (
+                  <EarningsCard
+                    key={stock.symbol}
+                    companyName={stock.symbol || stock.symbol}
+                    symbol={stock.symbol}
+                    earningsDate={stock.date}
+                    logoUrl={getLogoUrl(stock.symbol)}
+                  />
                 ))}
-              </tbody>
-            </table>
-            {watchlistData?.nextCursor && (
-              <button
-                onClick={loadMore}
-                className="l-watchlist__populated--table-wrapper--show-more"
-              >
-                Show More
-              </button>
-            )}
-            {!hasMore &&
-              !isLoading &&
-              watchlistData?.results &&
-              watchlistData?.results.length > 0 && <div></div>}
+              </div>
+            </div>
           </div>
           <div className="l-watchlist__populated--news">
             <h2>Your Watchlist in the News</h2>

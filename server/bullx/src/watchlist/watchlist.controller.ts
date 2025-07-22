@@ -18,16 +18,26 @@ import { ConfigService } from '@nestjs/config';
 export class WatchlistController {
   private apiKey: string | undefined;
   private epURL: string | undefined;
+  private FMP_URL_BASE: string | undefined;
   private polygonApiKey: string | undefined;
   private polygon_URL_BASE: string | undefined;
+  private AlphaVantage_API_URL: string | undefined;
+  private AlphaVantage_API_KEY: string | undefined;
   constructor(
     private readonly watchlistService: WatchlistService,
     private readonly configService: ConfigService,
   ) {
+    this.FMP_URL_BASE = this.configService.get<string>('FMP_API_URL_BASE');
     this.epURL = this.configService.get<string>('FMP_API_URL_v3');
     this.apiKey = this.configService.get<string>('FMP_API_KEY');
     this.polygonApiKey = this.configService.get<string>('Polygon_API_KEY');
     this.polygon_URL_BASE = this.configService.get<string>('Polygon_API_URL');
+    this.AlphaVantage_API_URL = this.configService.get<string>(
+      'AlphaVantage_API_URL',
+    );
+    this.AlphaVantage_API_KEY = this.configService.get<string>(
+      'AlphaVantage_API_KEY',
+    );
   }
 
   @Post()
@@ -93,6 +103,14 @@ export class WatchlistController {
       auth0Id,
       this.polygonApiKey,
       this.polygon_URL_BASE,
+    );
+  }
+
+  @Get('earnings-calendar')
+  async getEarnings() {
+    return this.watchlistService.getEarningsCalendar(
+      this.FMP_URL_BASE,
+      this.apiKey,
     );
   }
 }

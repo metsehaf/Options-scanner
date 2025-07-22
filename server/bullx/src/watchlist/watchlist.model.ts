@@ -5,6 +5,16 @@ export type EnrichedWatchlistItem = {
   results: watchlistResults[];
 };
 
+export type IEarningsCalendar = {
+  symbol: string;
+  date: string;
+  epsActual: number;
+  epsEstimated: number;
+  revenueActual: number;
+  revenueEstimated: number;
+  lastUpdated: string;
+};
+
 type watchlistResults = {
   id: number;
   ticker: string;

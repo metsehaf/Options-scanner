@@ -1,4 +1,4 @@
-@use 'src/scss/globals.module' as globals;
+@use "src/scss/globals.module" as globals;
 .header {
   position: sticky;
   top: 0;
@@ -17,6 +17,8 @@
   font-size: 1.125rem;
   font-weight: 600;
   color: #1f2937; // Tailwind's gray-800
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .actions {

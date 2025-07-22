@@ -113,7 +113,7 @@ export class SearchService implements SearchServiceModel {
                 marketData,
                 peRatio,
                 chartData,
-                dividendYield[0].yield,
+                dividendYield[0]?.yield ?? 0,
               );
               this.logger.log(mapped);
               return mapped;
