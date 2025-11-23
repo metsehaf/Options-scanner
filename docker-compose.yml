@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: options-scanner-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./server/bullx
+      target: production
+    container_name: options-scanner-backend
+    environment:
+      - NODE_ENV=production
+      - PORT=${BACKEND_PORT}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
+      - AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - FMP_API_KEY=${FMP_API_KEY}
+      - FMP_API_URL_v3=${FMP_API_URL_v3}
+      - FMP_API_URL_BASE=${FMP_API_URL_BASE}
+      - Polygon_API_KEY=${POLYGON_API_KEY}
+      - Polygon_API_URL=${POLYGON_API_URL}
+      - MarketStack_API_KEY=${MARKETSTACK_API_KEY}
+      - MarketStack_API_URL=${MARKETSTACK_API_URL}
+      - AlphaVantage_API_KEY=${ALPHAVANTAGE_API_KEY}
+      - AlphaVantage_API_URL=${ALPHAVANTAGE_API_URL}
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${BACKEND_PORT}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./client
+      target: runner
+    container_name: options-scanner-frontend
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://backend:${BACKEND_PORT}
+      - FRONTEND_APP_AUTH0_BASE_URL=${FRONTEND_APP_AUTH0_BASE_URL}
+      - FRONTEND_APP_AUTH0_ISSUER_BASE_URL=${FRONTEND_APP_AUTH0_ISSUER_BASE_URL}
+      - FRONTEND_APP_AUTH0_CLIENT_ID=${FRONTEND_APP_AUTH0_CLIENT_ID}
+      - FRONTEND_APP_AUTH0_AUDIENCE=${FRONTEND_APP_AUTH0_AUDIENCE}
+      - FRONTEND_APP_AUTH0_REDIRECT_URI=${FRONTEND_APP_AUTH0_REDIRECT_URI}
+      - FRONTEND_APP_AUTH0_POST_LOGOUT_REDIRECT_URI=${FRONTEND_APP_AUTH0_POST_LOGOUT_REDIRECT_URI}
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    driver: bridge
