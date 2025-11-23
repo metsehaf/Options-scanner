@@ -1,7 +1,6 @@
 "use client";
 import "./landing.scss";
 import banner from "@public/assets/image/banner.jpg";
-import searchImage from "@public/assets/image/search.avif";
 import predictionImage from "@public/assets/image/banners/trends.jpg";
 import watchlistImage from "@public/assets/image/banners/paper-trading.jpg";
 import bannerImage from "@public/assets/image/banners/scanner.jpg";
@@ -25,7 +24,7 @@ const cardElement: cardType[] = [
   {
     title: "Quick Search & Analysis",
     content: "Instantly scan any stock option",
-    image: searchImage,
+    image: "searchImage",
   },
   {
     title: "AI predictions",

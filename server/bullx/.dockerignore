@@ -1,0 +1,69 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Docker files
+Dockerfile*
+.dockerignore
+
+# Environment files (keep .env for container, but not .env.local, .env.test, etc.)
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Dependencies
+node_modules/
+
+# Build outputs (keep dist/ for production builds)
+# dist/
+
+# Testing
+coverage/
+.nyc_output/
+*.test.js
+*.spec.js
+test/
+e2e/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# NestJS specific
+dist-ssr/
+*.tsbuildinfo
+
+# Misc
+.npm
+.yarn-integrity
+.eslintcache
